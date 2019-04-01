@@ -8,6 +8,7 @@ namespace Thread_.NET.DAL.Entities
         public Post()
         {
             Comments = new List<Comment>();
+            Reactions = new List<LikeableEntity>();
         }
 
         public User Author { get; set; }
@@ -15,6 +16,7 @@ namespace Thread_.NET.DAL.Entities
 
         public string Body { get; set; }
 
-        public List<Comment> Comments { get; private set; }
+        public ICollection<Comment> Comments { get; private set; }
+        public ICollection<LikeableEntity> Reactions { get; private set; }
     }
 }
