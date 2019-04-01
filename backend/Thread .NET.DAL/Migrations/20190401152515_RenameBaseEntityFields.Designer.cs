@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Thread_.NET.DAL.Context;
 
 namespace Thread_.NET.DAL.Migrations
 {
     [DbContext(typeof(ThreadContext))]
-    partial class ThreadContextModelSnapshot : ModelSnapshot
+    [Migration("20190401152515_RenameBaseEntityFields")]
+    partial class RenameBaseEntityFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
