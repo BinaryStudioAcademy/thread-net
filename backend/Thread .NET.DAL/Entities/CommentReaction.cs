@@ -2,14 +2,12 @@
 
 namespace Thread_.NET.DAL.Entities
 {
-    public class LikeableEntity : BaseEntity
+    public class CommentReaction: BaseEntity
     {
-        public int ParentId { get; set; }
-
-        public ReactionTo ReactionTo { get; set; }
+        public int ReactionId { get; set; }
         public Reaction Reaction { get; set; }
 
+        public int CommentId { get; set; }
         public Comment Comment { get; set; }
-        public Post Post { get; set; }
     }
 }

@@ -7,14 +7,17 @@ namespace Thread_.NET.DAL.Entities
     {
         public Comment()
         {
-            Reactions = new List<LikeableEntity>();
+            Reactions = new List<CommentReaction>();
         }
 
+        public int AuthorId { get; set; }
         public User Author { get; set; }
+
+        public int PostId { get; set; }
         public Post Post { get; set; }
 
         public string Body { get; set; }
 
-        public ICollection<LikeableEntity> Reactions { get; private set; }
+        public ICollection<CommentReaction> Reactions { get; private set; }
     }
 }
