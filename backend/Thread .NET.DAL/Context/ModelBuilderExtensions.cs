@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Thread_.NET.DAL.Entities;
+using Thread_.NET.DAL.Entities.Abstract;
 
 namespace Thread_.NET.DAL.Context
 {
@@ -50,15 +51,13 @@ namespace Thread_.NET.DAL.Context
 
             var users = GenerateRandomUsers(avatars);
             var posts = GenerateRandomPosts(users, previewImages);
-            var reactions = GenerateRandomReactions(users);
             var comments = GenerateRandomComments(users, posts);
-            var postReactions = GenerateRandomPostReactions(reactions, posts);
-            var commentReactions = GenerateRandomCommentReactions(reactions, comments);
+            var postReactions = GenerateRandomPostReactions(posts, users);
+            var commentReactions = GenerateRandomCommentReactions(comments, users);
 
             modelBuilder.Entity<Image>().HasData(avatars.Concat(previewImages));
             modelBuilder.Entity<User>().HasData(users);
             modelBuilder.Entity<Post>().HasData(posts);
-            modelBuilder.Entity<Reaction>().HasData(reactions);
             modelBuilder.Entity<Comment>().HasData(comments);
             modelBuilder.Entity<PostReaction>().HasData(postReactions);
             modelBuilder.Entity<CommentReaction>().HasData(commentReactions);
@@ -139,26 +138,28 @@ namespace Thread_.NET.DAL.Context
             return reactionsFake.Generate(ENTITY_COUNT);
         }
 
-        public static ICollection<PostReaction> GenerateRandomPostReactions(ICollection<Reaction> reactions, ICollection<Post> posts)
+        public static ICollection<PostReaction> GenerateRandomPostReactions(ICollection<Post> posts, ICollection<User> users)
         {
             int postReactionId = 1;
 
             var postReactionsFake = new Faker<PostReaction>()
                 .RuleFor(pr => pr.Id, f => postReactionId++)
-                .RuleFor(pr => pr.ReactionId, f => f.PickRandom(reactions).Id)
+                .RuleFor(cr => cr.IsLike, f => f.Random.Bool())
+                .RuleFor(cr => cr.UserId, f => f.PickRandom(users).Id)
                 .RuleFor(pr => pr.PostId, f => f.PickRandom(posts).Id);
 
             return postReactionsFake.Generate(ENTITY_COUNT);
         }
 
-        public static ICollection<CommentReaction> GenerateRandomCommentReactions(ICollection<Reaction> reactions, ICollection<Comment> comments)
+        public static ICollection<CommentReaction> GenerateRandomCommentReactions(ICollection<Comment> comments, ICollection<User> users)
         {
             int commentReactionId = 1;
 
             var commentReactionsFake = new Faker<CommentReaction>()
-                .RuleFor(pr => pr.Id, f => commentReactionId++)
-                .RuleFor(pr => pr.ReactionId, f => f.PickRandom(reactions).Id)
-                .RuleFor(pr => pr.CommentId, f => f.PickRandom(comments).Id);
+                .RuleFor(cr => cr.Id, f => commentReactionId++)
+                .RuleFor(cr => cr.IsLike, f => f.Random.Bool())
+                .RuleFor(cr => cr.UserId, f => f.PickRandom(users).Id)
+                .RuleFor(cr => cr.CommentId, f => f.PickRandom(comments).Id);
 
             return commentReactionsFake.Generate(ENTITY_COUNT);
         }
