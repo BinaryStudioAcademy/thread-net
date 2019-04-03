@@ -1,8 +1,6 @@
-﻿using Thread_.NET.DAL.Entities.Abstract;
-
-namespace Thread_.NET.DAL.Entities
+﻿namespace Thread_.NET.DAL.Entities.Abstract
 {
-    public class Reaction : BaseEntity
+    public abstract class Reaction : BaseEntity
     {
         public int UserId { get; set; }
         public User User { get; set; }
