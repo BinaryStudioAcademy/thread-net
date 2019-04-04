@@ -11,16 +11,6 @@ namespace Thread_.NET.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            if (context.Exception is ValidationException)
-            {
-                context.HttpContext.Response.ContentType = "application/json";
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Result = new JsonResult(
-                    ((ValidationException)context.Exception).Failures);
-
-                return;
-            }
-
             var code = HttpStatusCode.InternalServerError;
 
             if (context.Exception is NotFoundException)
