@@ -5,4 +5,13 @@
     <RootNamespace>Thread_.NET.BLL</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Thread .NET.Common\Thread .NET.Common.csproj" />
+    <ProjectReference Include="..\Thread .NET.DAL\Thread .NET.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

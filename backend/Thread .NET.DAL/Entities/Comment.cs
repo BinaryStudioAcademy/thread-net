@@ -3,7 +3,7 @@ using Thread_.NET.DAL.Entities.Abstract;
 
 namespace Thread_.NET.DAL.Entities
 {
-    public class Comment : BaseEntity
+    public sealed class Comment : BaseEntity
     {
         public Comment()
         {

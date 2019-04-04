@@ -3,7 +3,7 @@ using Thread_.NET.DAL.Entities.Abstract;
 
 namespace Thread_.NET.DAL.Entities
 {
-    public class Post : BaseEntity
+    public sealed class Post : BaseEntity
     {
         public Post()
         {

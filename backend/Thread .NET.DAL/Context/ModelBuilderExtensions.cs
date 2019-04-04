@@ -9,7 +9,7 @@ namespace Thread_.NET.DAL.Context
 {
     public static class ModelBuilderExtensions
     {
-        private static readonly int ENTITY_COUNT = 20;
+        private const int ENTITY_COUNT = 20;
 
         public static void Configure(this ModelBuilder modelBuilder)
         {

@@ -3,16 +3,16 @@ using Thread_.NET.DAL.Entities;
 
 namespace Thread_.NET.DAL.Context
 {
-    public class ThreadContext : DbContext
+    public sealed class ThreadContext : DbContext
     {
         public ThreadContext(DbContextOptions<ThreadContext> options) : base(options) { }
 
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<CommentReaction> CommentReactions { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<PostReaction> PostReactions { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Comment> Comments { get; private set; }
+        public DbSet<CommentReaction> CommentReactions { get; private set; }
+        public DbSet<Image> Images { get; private set; }
+        public DbSet<Post> Posts { get; private set; }
+        public DbSet<PostReaction> PostReactions { get; private set; }
+        public DbSet<User> Users { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

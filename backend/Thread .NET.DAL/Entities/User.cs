@@ -2,7 +2,7 @@
 
 namespace Thread_.NET.DAL.Entities
 {
-    public class User : BaseEntity
+    public sealed class User : BaseEntity
     {
         public int AvatarId { get; set; }
         public Image Avatar { get; set; }
