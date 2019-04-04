@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Thread_.NET.DAL.Context;
+using Thread_.NET.Filters;
 
 namespace Thread_.NET
 {
@@ -24,7 +25,9 @@ namespace Thread_.NET
             services.AddDbContext<ThreadContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ThreadDBConnection")));
             services.AddAutoMapper();
             services.RegisterServices();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

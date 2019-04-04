@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Abstract;
+using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.Common.DTOs;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.DAL.Entities;
@@ -27,6 +28,11 @@ namespace Thread_.NET.BLL
             var user = await _context.Users
                 .Include(u => u.Avatar)
                 .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                throw new NotFoundException(nameof(User), id);
+            }
 
             return _mapper.Map<User, UserDTO>(user);
         }

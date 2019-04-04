@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL;
@@ -19,22 +20,19 @@ namespace Thread_.NET.Controllers
 
         // GET api/values
         [HttpGet]
-        public async Task<ICollection<UserDTO>> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<ICollection<UserDTO>>> Get()
         {
-            return await _userService.GetUsers();
+            return Ok(await _userService.GetUsers());
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserDTO>> Get(int id)
         {
-            var user = await _userService.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
+            return Ok(await _userService.GetUserById(id));
         }
 
         // POST api/values
