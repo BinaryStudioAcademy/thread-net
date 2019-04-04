@@ -1,0 +1,10 @@
+@import '~@angular/material/theming'
+@include mat-core()
+
+$thread-primary: mat-palette($mat-blue-grey)
+$thread-accent:  mat-palette($mat-cyan, 500, 900, A100)
+$thread-warn:    mat-palette($mat-deep-orange)
+
+$thread-theme: mat-light-theme($thread-primary, $thread-accent, $thread-warn)
+
+@include angular-material-theme($thread-theme)
