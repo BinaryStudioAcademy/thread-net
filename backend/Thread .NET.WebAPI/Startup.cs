@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using Thread_.NET.BLL.AutoMapper;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.Filters;
 
@@ -24,7 +26,7 @@ namespace Thread_.NET
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ThreadContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ThreadDBConnection")));
-            services.AddAutoMapper();
+            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
 
             services.RegisterCustomServices();
             services.RegisterCustomValidators();
