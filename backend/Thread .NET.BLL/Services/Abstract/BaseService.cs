@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Thread_.NET.DAL.Context;
 
-namespace Thread_.NET.BLL.Abstract
+namespace Thread_.NET.BLL.Services.Abstract
 {
     public abstract class BaseService
     {

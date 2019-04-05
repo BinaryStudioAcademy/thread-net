@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Thread_.NET.BLL;
+using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTOs;
 
 namespace Thread_.NET.Controllers

@@ -1,10 +1,12 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using Thread_.NET.BLL;
-using Thread_.NET.BLL.Validators;
+using Thread_.NET.BLL.MappingProfiles;
+using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTOs;
+using Thread_.NET.Validators;
 
 namespace Thread_.NET
 {
@@ -18,6 +20,14 @@ namespace Thread_.NET
         public static void RegisterCustomValidators(this IServiceCollection services)
         {
             services.AddSingleton<IValidator<UserDTO>, UserDTOValidator>();
+        }
+
+        public static void RegisterAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<UserProfile>();
+            });
         }
 
         public static void ConfigureCustomValidationErrors(this IServiceCollection services)
