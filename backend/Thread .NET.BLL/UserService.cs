@@ -36,5 +36,36 @@ namespace Thread_.NET.BLL
 
             return _mapper.Map<User, UserDTO>(user);
         }
+
+        public async Task<UserDTO> CreateUser(UserDTO user)
+        {
+            var userEntity = _mapper.Map<UserDTO, User>(user);
+
+            _context.Users.Add(userEntity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<User, UserDTO>(userEntity);
+        }
+
+        public async Task UpdateUser(UserDTO user)
+        {
+            var userEntity = _mapper.Map<UserDTO, User>(user);
+
+            _context.Users.Update(userEntity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(nameof(User), userId);
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

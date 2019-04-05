@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Thread_.NET.BLL;
+using Thread_.NET.BLL.Validators;
+using Thread_.NET.Common.DTOs;
 
 namespace Thread_.NET
 {
@@ -14,7 +17,7 @@ namespace Thread_.NET
 
         public static void RegisterCustomValidators(this IServiceCollection services)
         {
-            // TODO: add services.AddSingleton<IValidator<User>, UserValidator>(); and others
+            services.AddSingleton<IValidator<UserDTO>, UserDTOValidator>();
         }
 
         public static void ConfigureCustomValidationErrors(this IServiceCollection services)

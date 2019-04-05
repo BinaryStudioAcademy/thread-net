@@ -9,6 +9,7 @@ namespace Thread_.NET.BLL.MappingProfiles
         public UserProfile()
         {
             CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>();
         }
     }
 }

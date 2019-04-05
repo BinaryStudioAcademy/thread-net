@@ -9,6 +9,7 @@ namespace Thread_.NET.BLL.MappingProfiles
         public ImageProfile()
         {
             CreateMap<Image, ImageDTO>();
+            CreateMap<ImageDTO, Image>();
         }
     }
 }

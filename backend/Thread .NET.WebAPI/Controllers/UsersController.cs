@@ -18,7 +18,7 @@ namespace Thread_.NET.Controllers
             _userService = userService;
         }
 
-        // GET api/values
+        // GET api/users
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ICollection<UserDTO>>> Get()
@@ -26,31 +26,43 @@ namespace Thread_.NET.Controllers
             return Ok(await _userService.GetUsers());
         }
 
-        // GET api/values/5
+        // GET api/users/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<UserDTO>> Get(int id)
+        public async Task<ActionResult<UserDTO>> GetById(int id)
         {
             return Ok(await _userService.GetUserById(id));
         }
 
-        // POST api/values
+        // POST api/users
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Post([FromBody] UserDTO user)
         {
+            var createdUser = await _userService.CreateUser(user);
+            return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/users
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Put([FromBody] UserDTO user)
         {
+            await _userService.UpdateUser(user);
+            return NoContent();
         }
 
-        // DELETE api/values/5
+        // DELETE api/users/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
         {
+            await _userService.DeleteUser(id);
+            return NoContent();
         }
     }
 }

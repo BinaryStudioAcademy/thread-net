@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Thread_.NET.DAL.Entities;
@@ -69,7 +70,9 @@ namespace Thread_.NET.DAL.Context
 
             var avatarImagesFake = new Faker<Image>()
                .RuleFor(pi => pi.Id, f => avatarImageId++)
-               .RuleFor(pi => pi.URL, f => f.Internet.Avatar());
+               .RuleFor(pi => pi.URL, f => f.Internet.Avatar())
+               .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+               .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             var avatarImages = avatarImagesFake.Generate(ENTITY_COUNT);
             lastImageId = avatarImageId; // lastImageId will be used to continue generating Images
@@ -81,7 +84,9 @@ namespace Thread_.NET.DAL.Context
         {
             var previewImagesFake = new Faker<Image>()
                 .RuleFor(pi => pi.Id, f => lastImageId++)
-                .RuleFor(pi => pi.URL, f => f.Image.PicsumUrl());
+                .RuleFor(pi => pi.URL, f => f.Image.PicsumUrl())
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return previewImagesFake.Generate(ENTITY_COUNT);
         }
@@ -95,7 +100,9 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(u => u.UserName, f => f.Internet.UserName())
                 .RuleFor(u => u.Email, f => f.Internet.Email())
                 .RuleFor(u => u.Password, f => f.Internet.Password(8))
-                .RuleFor(u => u.AvatarId, f => f.PickRandom(avatars).Id);
+                .RuleFor(u => u.AvatarId, f => f.PickRandom(avatars).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return testUsersFake.Generate(ENTITY_COUNT);
         }
@@ -108,7 +115,9 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(p => p.Id, f => postId++)
                 .RuleFor(p => p.Body, f => f.Lorem.Text())
                 .RuleFor(p => p.PreviewId, f => f.PickRandom(previewImages).Id)
-                .RuleFor(p => p.AuthorId, f => f.PickRandom(randomUsers).Id);
+                .RuleFor(p => p.AuthorId, f => f.PickRandom(randomUsers).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return postsFake.Generate(ENTITY_COUNT);
         }
@@ -121,7 +130,9 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(c => c.Id, f => commentId++)
                 .RuleFor(c => c.Body, f => f.Lorem.Sentence())
                 .RuleFor(c => c.AuthorId, f => f.PickRandom(users).Id)
-                .RuleFor(c => c.PostId, f => f.PickRandom(posts).Id);
+                .RuleFor(c => c.PostId, f => f.PickRandom(posts).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return commentsFake.Generate(ENTITY_COUNT);
         }
@@ -133,7 +144,9 @@ namespace Thread_.NET.DAL.Context
             var reactionsFake = new Faker<Reaction>()
                 .RuleFor(r => r.Id, f => reactionId++)
                 .RuleFor(r => r.IsLike, f => f.Random.Bool())
-                .RuleFor(r => r.UserId, f => f.PickRandom(users).Id);
+                .RuleFor(r => r.UserId, f => f.PickRandom(users).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return reactionsFake.Generate(ENTITY_COUNT);
         }
@@ -146,7 +159,9 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(pr => pr.Id, f => postReactionId++)
                 .RuleFor(cr => cr.IsLike, f => f.Random.Bool())
                 .RuleFor(cr => cr.UserId, f => f.PickRandom(users).Id)
-                .RuleFor(pr => pr.PostId, f => f.PickRandom(posts).Id);
+                .RuleFor(pr => pr.PostId, f => f.PickRandom(posts).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return postReactionsFake.Generate(ENTITY_COUNT);
         }
@@ -159,7 +174,9 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(cr => cr.Id, f => commentReactionId++)
                 .RuleFor(cr => cr.IsLike, f => f.Random.Bool())
                 .RuleFor(cr => cr.UserId, f => f.PickRandom(users).Id)
-                .RuleFor(cr => cr.CommentId, f => f.PickRandom(comments).Id);
+                .RuleFor(cr => cr.CommentId, f => f.PickRandom(comments).Id)
+                .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
+                .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
             return commentReactionsFake.Generate(ENTITY_COUNT);
         }
