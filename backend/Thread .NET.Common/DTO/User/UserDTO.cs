@@ -1,6 +1,6 @@
 ﻿using Thread_.NET.Common.DTOs.Abstract;
 
-namespace Thread_.NET.Common.DTOs
+namespace Thread_.NET.Common.DTO.User
 {
     public sealed class UserDTO : BaseDTO
     {

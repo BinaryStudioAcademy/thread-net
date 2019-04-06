@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.BLL.Services.Abstract;
-using Thread_.NET.Common.DTOs;
+using Thread_.NET.Common.DTO.User;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.DAL.Entities;
 

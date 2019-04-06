@@ -28,8 +28,11 @@ namespace Thread_.NET
             services.RegisterCustomServices();
             services.RegisterCustomValidators();
 
+            services.ConfigureJwt(Configuration);
+
             services
                 .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .AddAuthorization()
                 .AddJsonFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation();
@@ -51,6 +54,7 @@ namespace Thread_.NET
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

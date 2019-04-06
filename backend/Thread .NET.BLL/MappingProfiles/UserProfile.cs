@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Thread_.NET.Common.DTOs;
+using Thread_.NET.Common.DTO.User;
 using Thread_.NET.DAL.Entities;
 
 namespace Thread_.NET.BLL.MappingProfiles
