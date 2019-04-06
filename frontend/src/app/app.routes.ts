@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { HomeComponent } from './components/home/home.component';
+import { MainThreadComponent } from './components/main-thread/main-thread.component';
 
-export const AppRoutes: Routes = [{ path: '', component: HomeComponent, canActivateChild: [AuthGuard] }, { path: '**', component: HomeComponent }];
+export const AppRoutes: Routes = [
+    { path: '', component: MainThreadComponent, pathMatch: 'full' },
+    { path: 'thread', component: MainThreadComponent, pathMatch: 'full' },
+    { path: '**', redirectTo: '' }
+];

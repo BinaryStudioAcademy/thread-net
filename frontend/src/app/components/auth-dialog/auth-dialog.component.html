@@ -1,0 +1,35 @@
+<h2 mat-dialog-title class="title">Tell me who you are</h2>
+<div mat-dialog-content class="root-container">
+  <mat-tab-group [selectedIndex]="data.dialogType === dialogType.SignIn ? 0 : 1">
+    <mat-tab label="Sign In">
+      <form name="inForm" #inForm="ngForm" class="main-content">
+        <mat-form-field>
+          <input name="inEmail" [(ngModel)]="user.email" #inEmail="ngModel" matInput placeholder="Email">
+        </mat-form-field>
+        <mat-form-field>
+          <input name="inPassword" [(ngModel)]="user.password" #inPassword="ngModel" matInput placeholder="Password">
+        </mat-form-field>
+      </form>
+    </mat-tab>
+    <mat-tab label="Sign Up">
+      <form name="upForm" #upForm="ngForm" class="main-content">
+        <mat-form-field>
+          <input name="upEmail" [(ngModel)]="user.email" #upEmail="ngModel" matInput placeholder="Email">
+        </mat-form-field>
+        <mat-form-field>
+          <input name="upNickname" [(ngModel)]="user.nickname" #upNickname="ngModel" matInput placeholder="Nickname">
+        </mat-form-field>
+        <mat-form-field>
+          <input name="upName" [(ngModel)]="user.name" #upName="ngModel" matInput placeholder="Name">
+        </mat-form-field>
+        <mat-form-field>
+          <input name="upPassword" [(ngModel)]="user.password" #upPassword="ngModel" matInput placeholder="Password">
+        </mat-form-field>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-raised-button color="primary" (click)="close()">Back</button>
+  <button mat-raised-button (click)="save()">Next</button>
+</div>

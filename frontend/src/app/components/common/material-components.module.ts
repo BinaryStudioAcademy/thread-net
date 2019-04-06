@@ -26,7 +26,12 @@ import {
     MatCheckboxModule,
     MatExpansionModule,
     MatStepperModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSortModule
 } from '@angular/material';
 
 @NgModule({
@@ -56,7 +61,12 @@ import {
         MatCheckboxModule,
         MatExpansionModule,
         MatStepperModule,
-        MatRadioModule
+        MatRadioModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatSortModule
     ],
     exports: [
         MatToolbarModule,
@@ -83,7 +93,12 @@ import {
         MatCheckboxModule,
         MatExpansionModule,
         MatStepperModule,
-        MatRadioModule
+        MatRadioModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatSortModule
     ],
     declarations: []
 })
