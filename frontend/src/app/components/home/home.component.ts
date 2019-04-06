@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
             data: { dialogType: type },
             autoFocus: true,
             backdropClass: 'dialog-backdrop',
-            minWidth: '30%',
             position: {
                 top: '0'
             }

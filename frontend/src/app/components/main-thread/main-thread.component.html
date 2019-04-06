@@ -1,3 +1,5 @@
-<p>
-  main-thread works!
-</p>
+<div class="main-thread">
+  <div *ngFor="let _post of posts" class="user-post">
+    <app-post [post]="_post"></app-post>
+  </div>
+</div>

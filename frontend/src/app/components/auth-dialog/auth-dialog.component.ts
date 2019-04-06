@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
+import { User } from 'src/app/models/user';
 
 @Component({
     templateUrl: './auth-dialog.component.html',
@@ -22,12 +23,4 @@ export class AuthDialogComponent implements OnInit {
     public save() {
         this.dialogRef.close(true);
     }
-}
-
-// tslint:disable-next-line:max-classes-per-file
-export class User {
-    public email = '';
-    public name = '';
-    public password = '';
-    public nickname = '';
 }
