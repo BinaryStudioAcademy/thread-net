@@ -22,11 +22,8 @@ namespace Thread_.NET
     {
         public static void RegisterCustomServices(this IServiceCollection services)
         {
-            services.AddScoped<JwtTokenValidator>();
-            services.AddScoped<JwtTokenHandler>();
             services.AddScoped<JwtIssuerOptions>();
             services.AddScoped<JwtFactory>();
-            services.AddScoped<TokenFactory>();
 
             services.AddScoped<AuthService>();
             services.AddScoped<UserService>();

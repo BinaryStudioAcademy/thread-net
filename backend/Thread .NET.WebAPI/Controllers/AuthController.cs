@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
@@ -19,13 +18,6 @@ namespace Thread_.NET.WebAPI.Controllers
             _authService = authService;
         }
 
-        [HttpGet]
-        [Authorize]
-        public string Get()
-        {
-            return "WORKS!";
-        }
-
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -41,6 +33,14 @@ namespace Thread_.NET.WebAPI.Controllers
         public async Task<ActionResult<AccessTokenDTO>> Refresh(RefreshTokenDTO dto)
         {
             return Ok(await _authService.RefreshToken(dto));
+        }
+
+        [HttpDelete("revoke")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult RevokeRefreshToken(string refreshToken)
+        {
+            _authService.RevokeRefreshToken(refreshToken);
+            return Ok();
         }
     }
 }

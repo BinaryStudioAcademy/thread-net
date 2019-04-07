@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using Thread_.NET.Common.Auth;
 
@@ -10,14 +13,15 @@ namespace Thread_.NET.BLL.Auth
 {
     public sealed class JwtFactory
     {
-        private readonly JwtTokenHandler _jwtTokenHandler;
         private readonly JwtIssuerOptions _jwtOptions;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public JwtFactory(JwtTokenHandler jwtTokenHandler, IOptions<JwtIssuerOptions> jwtOptions)
+        public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions)
         {
-            _jwtTokenHandler = jwtTokenHandler;
             _jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(_jwtOptions);
+
+            _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
         public async Task<AccessToken> GenerateEncodedToken(int id, string userName)
@@ -41,7 +45,49 @@ namespace Thread_.NET.BLL.Auth
                 _jwtOptions.Expiration,
                 _jwtOptions.SigningCredentials);
 
-            return new AccessToken(_jwtTokenHandler.WriteToken(jwt), (int)_jwtOptions.ValidFor.TotalSeconds);
+            return new AccessToken(_jwtSecurityTokenHandler.WriteToken(jwt), (int)_jwtOptions.ValidFor.TotalSeconds);
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        public ClaimsPrincipal GetPrincipalFromToken(string token, string signingKey)
+        {
+            return ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
+                ValidateLifetime = false // we check expired tokens here
+            });
+        }
+
+        private ClaimsPrincipal ValidateToken(string token, TokenValidationParameters tokenValidationParameters)
+        {
+            try
+            {
+                var principal = _jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+
+                if (!(securityToken is JwtSecurityToken jwtSecurityToken) || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new SecurityTokenException("Invalid token");
+                }
+
+                return principal;
+            }
+            catch (Exception)
+            {
+                // Token validation failed
+                return null;
+            }
         }
 
         private static ClaimsIdentity GenerateClaimsIdentity(int id, string userName)

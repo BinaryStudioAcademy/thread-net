@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +16,6 @@ namespace Thread_.NET.BLL.Services
     public sealed class AuthService : BaseService
     {
         private readonly JwtFactory _jwtFactory;
-        private readonly TokenFactory _tokenFactory;
-        private readonly JwtTokenValidator _jwtTokenValidator;
         private static readonly ISet<string> _refreshTokens;
 
         static AuthService()
@@ -25,24 +24,20 @@ namespace Thread_.NET.BLL.Services
             _refreshTokens = new HashSet<string>();
         }
 
-        public AuthService(ThreadContext context, IMapper mapper, JwtFactory jwtFactory, TokenFactory tokenFactory, JwtTokenValidator jwtTokenValidator) : base(context, mapper)
+        public AuthService(ThreadContext context, IMapper mapper, JwtFactory jwtFactory) : base(context, mapper)
         {
             _jwtFactory = jwtFactory;
-            _tokenFactory = tokenFactory;
-            _jwtTokenValidator = jwtTokenValidator;
         }
 
         public async Task<AccessTokenDTO> Authorize(UserLoginDTO userDto)
         {
             if (!string.IsNullOrEmpty(userDto.Username) && !string.IsNullOrEmpty(userDto.Password))
             {
-                // var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username && u.Password == userDto.Password);
-
-                var user = await _context.Users.FindAsync(1);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username && u.Password == userDto.Password);
 
                 if (user != null)
                 {
-                    var refreshToken = _tokenFactory.GenerateToken();
+                    var refreshToken = _jwtFactory.GenerateRefreshToken();
                     _refreshTokens.Add(refreshToken);
 
                     var accessToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName);
@@ -56,7 +51,7 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AccessTokenDTO> RefreshToken(RefreshTokenDTO dto)
         {
-            var claimsPrincipal = _jwtTokenValidator.GetPrincipalFromToken(dto.AccessToken, dto.SigningKey);
+            var claimsPrincipal = _jwtFactory.GetPrincipalFromToken(dto.AccessToken, dto.SigningKey);
 
             // invalid token/signing key was passed and we can't extract user claims
             if (claimsPrincipal != null)
@@ -74,7 +69,7 @@ namespace Thread_.NET.BLL.Services
                 if (!string.IsNullOrEmpty(rToken))
                 {
                     var jwtToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName);
-                    var refreshToken = _tokenFactory.GenerateToken();
+                    var refreshToken = _jwtFactory.GenerateRefreshToken();
 
                     _refreshTokens.Remove(dto.RefreshToken); // delete the token we've exchanged
                     _refreshTokens.Add(refreshToken); // add the new one
