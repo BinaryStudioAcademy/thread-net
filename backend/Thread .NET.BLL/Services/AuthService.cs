@@ -31,22 +31,19 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AccessTokenDTO> Authorize(UserLoginDTO userDto)
         {
-            if (!string.IsNullOrEmpty(userDto.Username) && !string.IsNullOrEmpty(userDto.Password))
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username && u.Password == userDto.Password);
+
+            if (user == null)
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username && u.Password == userDto.Password);
-
-                if (user != null)
-                {
-                    var refreshToken = _jwtFactory.GenerateRefreshToken();
-                    _refreshTokens.Add(refreshToken);
-
-                    var accessToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
-
-                    return new AccessTokenDTO(accessToken, refreshToken);
-                }
+                throw new InvalidUsernameOrPasswordException();
             }
 
-            throw new InvalidUsernameOrPasswordException();
+            var refreshToken = _jwtFactory.GenerateRefreshToken();
+            _refreshTokens.Add(refreshToken);
+
+            var accessToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
+
+            return new AccessTokenDTO(accessToken, refreshToken);
         }
 
         public async Task<AccessTokenDTO> RefreshToken(RefreshTokenDTO dto)

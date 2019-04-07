@@ -32,6 +32,7 @@ namespace Thread_.NET
         public static void RegisterCustomValidators(this IServiceCollection services)
         {
             services.AddSingleton<IValidator<UserDTO>, UserDTOValidator>();
+            services.AddSingleton<IValidator<UserLoginDTO>, UserLoginDTOValidator>();
         }
 
         public static void RegisterAutoMapper(this IServiceCollection services)
