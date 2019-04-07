@@ -24,7 +24,7 @@ namespace Thread_.NET.BLL.Auth
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<AccessToken> GenerateEncodedToken(int id, string userName)
+        public async Task<AccessToken> GenerateAccessToken(int id, string userName)
         {
             var identity = GenerateClaimsIdentity(id, userName);
 

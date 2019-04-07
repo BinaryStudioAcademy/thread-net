@@ -40,7 +40,7 @@ namespace Thread_.NET.BLL.Services
                     var refreshToken = _jwtFactory.GenerateRefreshToken();
                     _refreshTokens.Add(refreshToken);
 
-                    var accessToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName);
+                    var accessToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
 
                     return new AccessTokenDTO(accessToken, refreshToken);
                 }
@@ -68,7 +68,7 @@ namespace Thread_.NET.BLL.Services
 
                 if (!string.IsNullOrEmpty(rToken))
                 {
-                    var jwtToken = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName);
+                    var jwtToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
                     var refreshToken = _jwtFactory.GenerateRefreshToken();
 
                     _refreshTokens.Remove(dto.RefreshToken); // delete the token we've exchanged
