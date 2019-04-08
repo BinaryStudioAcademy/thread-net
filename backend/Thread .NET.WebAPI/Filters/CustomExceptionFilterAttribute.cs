@@ -18,7 +18,7 @@ namespace Thread_.NET.Filters
                 code = HttpStatusCode.NotFound;
             }
 
-            if (context.Exception is InvalidUsernameOrPasswordException || context.Exception is InvalidTokenException)
+            if (context.Exception is InvalidUsernameOrPasswordException || context.Exception is InvalidTokenException || context.Exception is ExpiredRefreshTokenException)
             {
                 code = HttpStatusCode.Unauthorized;
             }

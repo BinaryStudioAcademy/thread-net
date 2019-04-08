@@ -14,6 +14,8 @@ namespace Thread_.NET.DAL.Context
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<RefreshToken>().Ignore(t => t.IsActive);
+
             modelBuilder.Entity<PostReaction>()
                 .HasOne(pr => pr.Post)
                 .WithMany()

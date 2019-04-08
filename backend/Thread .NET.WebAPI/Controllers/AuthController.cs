@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
+using System.Linq;
 
 namespace Thread_.NET.WebAPI.Controllers
 {
@@ -30,16 +32,19 @@ namespace Thread_.NET.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AccessTokenDTO>> Refresh(RefreshTokenDTO dto)
+        public async Task<ActionResult<AccessTokenDTO>> Refresh([FromBody] RefreshTokenDTO dto)
         {
             return Ok(await _authService.RefreshToken(dto));
         }
 
-        [HttpDelete("revoke")]
+        [HttpPost("revoke")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult RevokeRefreshToken(string refreshToken)
+        public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDTO dto)
         {
-            _authService.RevokeRefreshToken(refreshToken);
+            var userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "id").Value);
+
+            await _authService.RevokeRefreshToken(dto.RefreshToken, userId);
             return Ok();
         }
     }

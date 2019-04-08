@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Auth;
@@ -16,13 +15,6 @@ namespace Thread_.NET.BLL.Services
     public sealed class AuthService : BaseService
     {
         private readonly JwtFactory _jwtFactory;
-        private static readonly ISet<string> _refreshTokens;
-
-        static AuthService()
-        {
-            // Note: better to link with the user and check: only 1 active refresh token for the 1 user
-            _refreshTokens = new HashSet<string>();
-        }
 
         public AuthService(ThreadContext context, IMapper mapper, JwtFactory jwtFactory) : base(context, mapper)
         {
@@ -39,7 +31,14 @@ namespace Thread_.NET.BLL.Services
             }
 
             var refreshToken = _jwtFactory.GenerateRefreshToken();
-            _refreshTokens.Add(refreshToken);
+
+            _context.RefreshTokens.Add(new RefreshToken
+            {
+                Token = refreshToken,
+                UserId = user.Id
+            });
+
+            await _context.SaveChangesAsync();
 
             var accessToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
 
@@ -51,41 +50,57 @@ namespace Thread_.NET.BLL.Services
             var claimsPrincipal = _jwtFactory.GetPrincipalFromToken(dto.AccessToken, dto.SigningKey);
 
             // invalid token/signing key was passed and we can't extract user claims
-            if (claimsPrincipal != null)
+            if (claimsPrincipal == null)
             {
-                var userId = int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
-                var user = await _context.Users.FindAsync(userId);
-
-                if (user == null)
-                {
-                    throw new NotFoundException(nameof(User), userId);
-                }
-
-                var rToken = _refreshTokens.FirstOrDefault(t => t == dto.RefreshToken);
-
-                if (!string.IsNullOrEmpty(rToken))
-                {
-                    var jwtToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
-                    var refreshToken = _jwtFactory.GenerateRefreshToken();
-
-                    _refreshTokens.Remove(dto.RefreshToken); // delete the token we've exchanged
-                    _refreshTokens.Add(refreshToken); // add the new one
-
-                    return new AccessTokenDTO(jwtToken, refreshToken);
-                }
+                throw new InvalidTokenException("access");
             }
 
-            throw new InvalidTokenException();
+            var userId = int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(nameof(User), userId);
+            }
+
+            var rToken = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == dto.RefreshToken && t.UserId == userId);
+
+            if (rToken == null)
+            {
+                throw new InvalidTokenException("refresh");
+            }
+
+            if (!rToken.IsActive)
+            {
+                throw new ExpiredRefreshTokenException();
+            }
+
+            var jwtToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
+            var refreshToken = _jwtFactory.GenerateRefreshToken();
+
+            _context.RefreshTokens.Remove(rToken); // delete the token we've exchanged
+            _context.RefreshTokens.Add(new RefreshToken // add the new one
+            {
+                Token = refreshToken,
+                UserId = user.Id
+            });
+
+            await _context.SaveChangesAsync();
+
+            return new AccessTokenDTO(jwtToken, refreshToken);
         }
 
-        public void RevokeRefreshToken(string refreshToken)
+        public async Task RevokeRefreshToken(string refreshToken, int userId)
         {
-            var rToken = _refreshTokens.FirstOrDefault(t => t == refreshToken);
+            var rToken = _context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken && t.UserId == userId);
 
-            if (!string.IsNullOrEmpty(rToken))
+            if (rToken == null)
             {
-                _refreshTokens.Remove(refreshToken);
+                throw new InvalidTokenException("refresh");
             }
+
+            _context.RefreshTokens.Remove(rToken);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -13,6 +13,7 @@ using Thread_.NET.BLL.Auth;
 using Thread_.NET.BLL.MappingProfiles;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.Auth;
+using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
 using Thread_.NET.Validators;
 
@@ -31,6 +32,9 @@ namespace Thread_.NET
 
         public static void RegisterCustomValidators(this IServiceCollection services)
         {
+            services.AddSingleton<IValidator<RevokeRefreshTokenDTO>, RevokeRefreshTokenDTOValidator>();
+            services.AddSingleton<IValidator<RefreshTokenDTO>, RefreshTokenDTOValidator>();
+
             services.AddSingleton<IValidator<UserDTO>, UserDTOValidator>();
             services.AddSingleton<IValidator<UserLoginDTO>, UserLoginDTOValidator>();
         }
@@ -64,7 +68,7 @@ namespace Thread_.NET
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var secretKey = Environment.GetEnvironmentVariable("SecretJWTKey");
+            var secretKey = configuration["SecretJWTKey"]; // get value from system environment
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 
             // jwt wire up
