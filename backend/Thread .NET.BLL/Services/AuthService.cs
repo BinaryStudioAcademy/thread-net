@@ -7,6 +7,7 @@ using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Common.Security;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.DAL.Entities;
 
@@ -23,9 +24,14 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AccessTokenDTO> Authorize(UserLoginDTO userDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username && u.Password == userDto.Password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username);
 
             if (user == null)
+            {
+                throw new NotFoundException(nameof(User));
+            }
+
+            if (!SecurityHelper.ValidatePassword(userDto.Password, user.Password, user.Salt))
             {
                 throw new InvalidUsernameOrPasswordException();
             }

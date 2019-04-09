@@ -3,11 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Thread_.NET.Common.Auth;
+using Thread_.NET.Common.Security;
 
 namespace Thread_.NET.BLL.Auth
 {
@@ -50,12 +50,7 @@ namespace Thread_.NET.BLL.Auth
 
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+            return Convert.ToBase64String(SecurityHelper.GetRandomBytes());
         }
 
         public ClaimsPrincipal GetPrincipalFromToken(string token, string signingKey)

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Thread_.NET.Common.Security;
 using Thread_.NET.DAL.Entities;
 using Thread_.NET.DAL.Entities.Abstract;
 
@@ -101,12 +102,30 @@ namespace Thread_.NET.DAL.Context
                 .RuleFor(u => u.Id, f => userId++)
                 .RuleFor(u => u.UserName, f => f.Internet.UserName())
                 .RuleFor(u => u.Email, f => f.Internet.Email())
-                .RuleFor(u => u.Password, f => f.Internet.Password(8))
+                .RuleFor(u => u.Salt, f => Convert.ToBase64String(SecurityHelper.GetRandomBytes()))
+                .RuleFor(u => u.Password, (f, u) => SecurityHelper.HashPassword(f.Internet.Password(12), Convert.FromBase64String(u.Salt)))
                 .RuleFor(u => u.AvatarId, f => f.PickRandom(avatars).Id)
                 .RuleFor(pi => pi.CreatedAt, f => DateTime.Now)
                 .RuleFor(pi => pi.UpdatedAt, f => DateTime.Now);
 
-            return testUsersFake.Generate(ENTITY_COUNT);
+            var generatedUsers = testUsersFake.Generate(ENTITY_COUNT);
+
+            var salt = Convert.ToBase64String(SecurityHelper.GetRandomBytes());
+            var hashedPassword = SecurityHelper.HashPassword("passw0rd", Convert.FromBase64String(salt));
+
+            var myUser = new User
+            {
+                Id = userId,
+                Email = "test@gmail.com",
+                Password = hashedPassword,
+                Salt = salt,
+                UserName = "testUser"
+            };
+
+            generatedUsers.Add(myUser);
+
+            return generatedUsers;
+
         }
 
         public static ICollection<Post> GenerateRandomPosts(ICollection<User> randomUsers, ICollection<Image> previewImages)
