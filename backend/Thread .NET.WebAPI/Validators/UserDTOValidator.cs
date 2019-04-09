@@ -3,9 +3,9 @@ using Thread_.NET.Common.DTO.User;
 
 namespace Thread_.NET.Validators
 {
-    public sealed class UserDTOValidator : AbstractValidator<UserDTO>
+    public sealed class UserRegisterDTOValidator : AbstractValidator<UserRegisterDTO>
     {
-        public UserDTOValidator()
+        public UserRegisterDTOValidator()
         {
             RuleFor(u => u.UserName)
                 .NotEmpty()

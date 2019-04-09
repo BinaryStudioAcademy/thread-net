@@ -39,7 +39,7 @@ namespace Thread_.NET.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> Post([FromBody] UserDTO user)
+        public async Task<IActionResult> Post([FromBody] UserRegisterDTO user)
         {
             var createdUser = await _userService.CreateUser(user);
             return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);

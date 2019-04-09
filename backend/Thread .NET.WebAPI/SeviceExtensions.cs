@@ -27,6 +27,7 @@ namespace Thread_.NET
             services.AddScoped<JwtFactory>();
 
             services.AddScoped<AuthService>();
+            services.AddScoped<PostService>();
             services.AddScoped<UserService>();
         }
 
@@ -35,7 +36,7 @@ namespace Thread_.NET
             services.AddSingleton<IValidator<RevokeRefreshTokenDTO>, RevokeRefreshTokenDTOValidator>();
             services.AddSingleton<IValidator<RefreshTokenDTO>, RefreshTokenDTOValidator>();
 
-            services.AddSingleton<IValidator<UserDTO>, UserDTOValidator>();
+            services.AddSingleton<IValidator<UserRegisterDTO>, UserRegisterDTOValidator>();
             services.AddSingleton<IValidator<UserLoginDTO>, UserLoginDTOValidator>();
         }
 
@@ -43,6 +44,8 @@ namespace Thread_.NET
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.AddProfile<CommentProfile>();
+                cfg.AddProfile<PostProfile>();
                 cfg.AddProfile<UserProfile>();
             });
         }

@@ -125,7 +125,6 @@ namespace Thread_.NET.DAL.Context
             generatedUsers.Add(myUser);
 
             return generatedUsers;
-
         }
 
         public static ICollection<Post> GenerateRandomPosts(ICollection<User> randomUsers, ICollection<Image> previewImages)

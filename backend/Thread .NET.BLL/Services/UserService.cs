@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Common.Security;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.DAL.Entities;
 
@@ -25,9 +27,7 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<UserDTO> GetUserById(int id)
         {
-            var user = await _context.Users
-                .Include(u => u.Avatar)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            var user = await GetUserByIdInternal(id);
 
             if (user == null)
             {
@@ -37,9 +37,13 @@ namespace Thread_.NET.BLL.Services
             return _mapper.Map<User, UserDTO>(user);
         }
 
-        public async Task<UserDTO> CreateUser(UserDTO user)
+        public async Task<UserDTO> CreateUser(UserRegisterDTO user)
         {
-            var userEntity = _mapper.Map<UserDTO, User>(user);
+            var userEntity = _mapper.Map<UserRegisterDTO, User>(user);
+            var salt = SecurityHelper.GetRandomBytes();
+
+            userEntity.Salt = Convert.ToBase64String(salt);
+            userEntity.Password = SecurityHelper.HashPassword(user.Password, salt);
 
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
@@ -47,9 +51,42 @@ namespace Thread_.NET.BLL.Services
             return _mapper.Map<User, UserDTO>(userEntity);
         }
 
-        public async Task UpdateUser(UserDTO user)
+        public async Task UpdateUser(UserDTO userDto)
         {
-            var userEntity = _mapper.Map<UserDTO, User>(user);
+            var userEntity = await GetUserByIdInternal(userDto.Id);
+            if (userEntity == null)
+            {
+                throw new NotFoundException(nameof(User), userDto.Id);
+            }
+
+            var timeNow = DateTime.Now;
+
+            userEntity.Email = userDto.Email;
+            userEntity.UserName = userDto.UserName;
+            userEntity.UpdatedAt = timeNow;
+
+            if (!string.IsNullOrEmpty(userDto.Avatar))
+            {
+                if (userEntity.Avatar == null)
+                {
+                    userEntity.Avatar = new Image
+                    {
+                        URL = userDto.Avatar
+                    };
+                }
+                else
+                {
+                    userEntity.Avatar.URL = userDto.Avatar;
+                    userEntity.Avatar.UpdatedAt = timeNow;
+                }
+            }
+            else
+            {
+                if (userEntity.Avatar != null)
+                {
+                    _context.Images.Remove(userEntity.Avatar);
+                }
+            }
 
             _context.Users.Update(userEntity);
             await _context.SaveChangesAsync();
@@ -66,6 +103,13 @@ namespace Thread_.NET.BLL.Services
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+        }
+
+        private async Task<User> GetUserByIdInternal(int id)
+        {
+            return await _context.Users
+                .Include(u => u.Avatar)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }
