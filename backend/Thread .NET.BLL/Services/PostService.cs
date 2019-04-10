@@ -26,5 +26,18 @@ namespace Thread_.NET.BLL.Services
             return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);
         }
 
+        public async Task<PostDTO> CreatePost(PostCreateDTO postDto)
+        {
+            var postEntity = _mapper.Map<PostCreateDTO, Post>(postDto);
+
+            _context.Posts.Add(postEntity);
+            await _context.SaveChangesAsync();
+
+            // Include Author info
+            var author = await _context.Users.FindAsync(postEntity.AuthorId);
+            postEntity.Author = author;
+
+            return _mapper.Map<Post, PostDTO>(postEntity);
+        }
     }
 }

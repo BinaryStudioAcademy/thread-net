@@ -17,7 +17,6 @@ namespace Thread_.NET.WebAPI.Controllers
             _userService = userService;
         }
 
-        // POST api/register
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]

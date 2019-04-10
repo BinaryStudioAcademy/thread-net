@@ -17,7 +17,7 @@ using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
 using Thread_.NET.Validators;
 
-namespace Thread_.NET
+namespace Thread_.NET.Extensions
 {
     public static class SeviceExtensions
     {

@@ -14,7 +14,7 @@ namespace Thread_.NET.DAL.Entities
         public int AuthorId { get; set; }
         public User Author { get; set; }
 
-        public int PreviewId { get; set; }
+        public int? PreviewId { get; set; }
         public Image Preview { get; set; }
 
         public string Body { get; set; }

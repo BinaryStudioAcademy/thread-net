@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Thread_.NET.DAL.Context;
+using Thread_.NET.Extensions;
 using Thread_.NET.Filters;
 
 namespace Thread_.NET

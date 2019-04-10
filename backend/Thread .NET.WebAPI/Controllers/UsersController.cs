@@ -18,7 +18,6 @@ namespace Thread_.NET.Controllers
             _userService = userService;
         }
 
-        // GET api/users
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ICollection<UserDTO>>> Get()
@@ -26,7 +25,6 @@ namespace Thread_.NET.Controllers
             return Ok(await _userService.GetUsers());
         }
 
-        // GET api/users/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -35,7 +33,6 @@ namespace Thread_.NET.Controllers
             return Ok(await _userService.GetUserById(id));
         }
 
-        // PUT api/users
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,7 +42,6 @@ namespace Thread_.NET.Controllers
             return NoContent();
         }
 
-        // DELETE api/users/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
