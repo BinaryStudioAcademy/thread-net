@@ -35,16 +35,6 @@ namespace Thread_.NET.Controllers
             return Ok(await _userService.GetUserById(id));
         }
 
-        // POST api/users
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesDefaultResponseType]
-        public async Task<IActionResult> Post([FromBody] UserRegisterDTO user)
-        {
-            var createdUser = await _userService.CreateUser(user);
-            return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
-        }
-
         // PUT api/users
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

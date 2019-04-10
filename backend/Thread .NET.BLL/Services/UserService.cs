@@ -28,7 +28,6 @@ namespace Thread_.NET.BLL.Services
         public async Task<UserDTO> GetUserById(int id)
         {
             var user = await GetUserByIdInternal(id);
-
             if (user == null)
             {
                 throw new NotFoundException(nameof(User), id);
@@ -37,13 +36,13 @@ namespace Thread_.NET.BLL.Services
             return _mapper.Map<User, UserDTO>(user);
         }
 
-        public async Task<UserDTO> CreateUser(UserRegisterDTO user)
+        public async Task<UserDTO> CreateUser(UserRegisterDTO userDto)
         {
-            var userEntity = _mapper.Map<UserRegisterDTO, User>(user);
+            var userEntity = _mapper.Map<UserRegisterDTO, User>(userDto);
             var salt = SecurityHelper.GetRandomBytes();
 
             userEntity.Salt = Convert.ToBase64String(salt);
-            userEntity.Password = SecurityHelper.HashPassword(user.Password, salt);
+            userEntity.Password = SecurityHelper.HashPassword(userDto.Password, salt);
 
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
@@ -94,14 +93,14 @@ namespace Thread_.NET.BLL.Services
 
         public async Task DeleteUser(int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user == null)
+            if (userEntity == null)
             {
                 throw new NotFoundException(nameof(User), userId);
             }
 
-            _context.Users.Remove(user);
+            _context.Users.Remove(userEntity);
             await _context.SaveChangesAsync();
         }
 

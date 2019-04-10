@@ -24,14 +24,14 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AccessTokenDTO> Authorize(UserLoginDTO userDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username);
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username);
 
-            if (user == null)
+            if (userEntity == null)
             {
                 throw new NotFoundException(nameof(User));
             }
 
-            if (!SecurityHelper.ValidatePassword(userDto.Password, user.Password, user.Salt))
+            if (!SecurityHelper.ValidatePassword(userDto.Password, userEntity.Password, userEntity.Salt))
             {
                 throw new InvalidUsernameOrPasswordException();
             }
@@ -41,12 +41,12 @@ namespace Thread_.NET.BLL.Services
             _context.RefreshTokens.Add(new RefreshToken
             {
                 Token = refreshToken,
-                UserId = user.Id
+                UserId = userEntity.Id
             });
 
             await _context.SaveChangesAsync();
 
-            var accessToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
+            var accessToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName);
 
             return new AccessTokenDTO(accessToken, refreshToken);
         }
@@ -62,9 +62,9 @@ namespace Thread_.NET.BLL.Services
             }
 
             var userId = int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
-            var user = await _context.Users.FindAsync(userId);
+            var userEntity = await _context.Users.FindAsync(userId);
 
-            if (user == null)
+            if (userEntity == null)
             {
                 throw new NotFoundException(nameof(User), userId);
             }
@@ -81,14 +81,14 @@ namespace Thread_.NET.BLL.Services
                 throw new ExpiredRefreshTokenException();
             }
 
-            var jwtToken = await _jwtFactory.GenerateAccessToken(user.Id, user.UserName);
+            var jwtToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName);
             var refreshToken = _jwtFactory.GenerateRefreshToken();
 
             _context.RefreshTokens.Remove(rToken); // delete the token we've exchanged
             _context.RefreshTokens.Add(new RefreshToken // add the new one
             {
                 Token = refreshToken,
-                UserId = user.Id
+                UserId = userEntity.Id
             });
 
             await _context.SaveChangesAsync();
