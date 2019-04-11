@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogType } from 'src/app/components-module/models/auth-dialog-type';
+import { DialogType } from 'src/app/models/common/auth-dialog-type';
 import { MatDialog } from '@angular/material';
 import { AuthDialogComponent } from '../auth-dialog/auth-dialog.component';
 
