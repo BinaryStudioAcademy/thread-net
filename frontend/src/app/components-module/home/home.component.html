@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <div class="header">
-    <div class="header-content title">
+    <div class="header-content title" [routerLink]="['/']">
       <img src="/assets/thread.png">
       Thread.NET
     </div>
@@ -10,8 +10,8 @@
     </div>
     <div *ngIf="isSignedIn" class="header-content">
       <img class="avatar" src="https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810"
-        alt="Here should be an avatar">
-      <div class="user-name">
+        alt="Here should be an avatar" [routerLink]="['/profile']">
+      <div class="user-name" [routerLink]="['/profile']">
         <div>User</div>
         <div>@nick_name</div>
       </div>

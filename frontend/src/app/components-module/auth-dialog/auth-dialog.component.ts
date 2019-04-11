@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { User } from 'src/app/models/user';
+import { DialogType } from 'src/app/components-module/models/auth-dialog-type';
+import { User } from 'src/app/components-module/models/user';
 
 @Component({
     templateUrl: './auth-dialog.component.html',

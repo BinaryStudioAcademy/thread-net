@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from 'src/app/models/post';
-import { User } from 'src/app/models/user';
-import { Image } from 'src/app/models/image';
+import { Post } from 'src/app/components-module/models/post';
+import { User } from 'src/app/components-module/models/user';
+import { Image } from 'src/app/components-module/models/image';
 
 @Component({
     selector: 'app-main-thread',
@@ -50,5 +50,5 @@ export class MainThreadComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit() {}
+    public ngOnInit() {}
 }
