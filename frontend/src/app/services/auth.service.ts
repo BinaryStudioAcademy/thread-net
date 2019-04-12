@@ -7,6 +7,8 @@ import { HttpResponse } from '@angular/common/http';
 export class AuthenticationService {
     public static logout = () => localStorage.removeItem('currentUser');
 
+    public static isAuthenticated = () => !!localStorage.getItem('currentUser');
+
     constructor(private httpService: HttpInternalService) {}
 
     public login(email: string, password: string): Observable<HttpResponse<string>> {
