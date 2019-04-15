@@ -10,6 +10,8 @@
     flex-direction: row
     align-items: center
     height: 100%
+    &:focus
+        outline: none
 
 .auth-area
     font-size: 13px
@@ -33,12 +35,16 @@
     flex-shrink: 0
     object-fit: cover
     cursor: pointer
+    &:focus
+        outline: none
 
 .user-name
     line-height: normal
     font-size: 13px
     cursor: default
     margin-left: 5px
+    &:focus
+        outline: none
     div
         margin: 3px 0
         width: fit-content
