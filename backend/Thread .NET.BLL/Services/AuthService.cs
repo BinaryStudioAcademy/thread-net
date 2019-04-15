@@ -22,9 +22,9 @@ namespace Thread_.NET.BLL.Services
             _jwtFactory = jwtFactory;
         }
 
-        public async Task<AccessTokenDTO> Authorize(UserLoginDTO userDto)
+        public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
         {
-            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userDto.Username);
+            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
             if (userEntity == null)
             {
@@ -36,17 +36,29 @@ namespace Thread_.NET.BLL.Services
                 throw new InvalidUsernameOrPasswordException();
             }
 
+            var token = await GenerateAccessToken(userEntity.Id, userEntity.UserName, userEntity.Email);
+            var user = _mapper.Map<User, UserDTO>(userEntity);
+
+            return new AuthUserDTO
+            {
+                User = user,
+                Token = token
+            };
+        }
+
+        public async Task<AccessTokenDTO> GenerateAccessToken(int userId, string userName, string email)
+        {
             var refreshToken = _jwtFactory.GenerateRefreshToken();
 
             _context.RefreshTokens.Add(new RefreshToken
             {
                 Token = refreshToken,
-                UserId = userEntity.Id
+                UserId = userId
             });
 
             await _context.SaveChangesAsync();
 
-            var accessToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName);
+            var accessToken = await _jwtFactory.GenerateAccessToken(userId, userName, email);
 
             return new AccessTokenDTO(accessToken, refreshToken);
         }
@@ -81,7 +93,7 @@ namespace Thread_.NET.BLL.Services
                 throw new ExpiredRefreshTokenException();
             }
 
-            var jwtToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName);
+            var jwtToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.UserName, userEntity.Email);
             var refreshToken = _jwtFactory.GenerateRefreshToken();
 
             _context.RefreshTokens.Remove(rToken); // delete the token we've exchanged

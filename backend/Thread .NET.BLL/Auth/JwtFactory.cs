@@ -24,13 +24,14 @@ namespace Thread_.NET.BLL.Auth
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
-        public async Task<AccessToken> GenerateAccessToken(int id, string userName)
+        public async Task<AccessToken> GenerateAccessToken(int id, string userName, string email)
         {
             var identity = GenerateClaimsIdentity(id, userName);
 
             var claims = new[]
             {
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
+                 new Claim(JwtRegisteredClaimNames.Email, email),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
                  identity.FindFirst("id")

@@ -7,7 +7,7 @@ namespace Thread_.NET.Validators
     {
         public UserLoginDTOValidator()
         {
-            RuleFor(u => u.Username).NotNull();
+            RuleFor(u => u.Email).NotNull();
             RuleFor(u => u.Password).NotNull();
         }
     }
