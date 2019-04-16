@@ -35,12 +35,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDTO dto)
         {
-            var userId = this.GetCurrentUserId();
-            if (userId == 0)
-            {
-                throw new InvalidTokenException("refresh");
-            }
-
+            var userId = this.GetUserIdFromToken();
             await _authService.RevokeRefreshToken(dto.RefreshToken, userId);
             return Ok();
         }

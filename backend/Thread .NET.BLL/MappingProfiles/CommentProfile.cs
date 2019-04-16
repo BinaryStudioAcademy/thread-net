@@ -9,6 +9,8 @@ namespace Thread_.NET.BLL.MappingProfiles
         public CommentProfile()
         {
             CreateMap<Comment, CommentDTO>();
+
+            CreateMap<NewCommentDTO, Comment>();
         }
     }
 }
