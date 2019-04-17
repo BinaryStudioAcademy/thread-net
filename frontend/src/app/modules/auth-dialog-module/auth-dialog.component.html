@@ -1,0 +1,20 @@
+<h2 mat-dialog-title class="title">Tell me who you are and {{title.toLowerCase()}}</h2>
+<div mat-dialog-content>
+  <form name="authForm" #authForm="ngForm" class="main-content">
+    <mat-form-field>
+      <input name="authEmail" [(ngModel)]="email" #inEmail="ngModel" matInput placeholder="Email">
+    </mat-form-field>
+    <mat-form-field *ngIf="data.dialogType === dialogType.SignUp">
+      <input name="authUserName" [(ngModel)]="userName" #upNickname="ngModel" matInput placeholder="Username">
+    </mat-form-field>
+    <mat-form-field>
+      <input name="authPassword" [(ngModel)]="password" #upPassword="ngModel" matInput
+        [type]="hidePass ? 'password' : 'text'" placeholder="Password">
+      <mat-icon matSuffix (click)="hidePass = !hidePass">{{hidePass ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </mat-form-field>
+  </form>
+</div>
+<div class="actions">
+  <button mat-raised-button color="primary" (click)="close()">Back</button>
+  <button mat-raised-button (click)="data.dialogType === dialogType.SignUp ? signUp() : signIn()">{{title}}</button>
+</div>

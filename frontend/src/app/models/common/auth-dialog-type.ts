@@ -1,4 +1,4 @@
 export enum DialogType {
-    SignIn = 1,
+    SignIn = 0,
     SignUp
 }

@@ -2,12 +2,27 @@
 html,
 body
     height: 100%
-
-body
     margin: 0
     font-family: 'Roboto', sans-serif
     font-size: 16px
 
-
 .dialog-backdrop
     background: rgba(255, 255, 255, 0.7)
+
+.avatar
+    border-radius: 50%
+    flex-shrink: 0
+    object-fit: cover
+    cursor: default      
+    &:focus
+        outline: none
+    font-size: 12px
+
+snack-bar-container
+    &.error-snack-bar 
+        background: #a90707
+        text-align: center
+    &.usual-snack-bar 
+        text-align: center
+    & span 
+        width: 100%

@@ -4,16 +4,14 @@
       <img src="/assets/thread.png">
       Thread.NET
     </div>
-    <div *ngIf="!isSignedIn" class="header-content auth-area">
+    <div *ngIf="!authorizedUser" class="header-content auth-area">
       <p (click)="openAuthDialog(dialogType.SignIn)">Sign In</p> |
       <p (click)="openAuthDialog(dialogType.SignUp)">Sign Up</p>
     </div>
-    <div *ngIf="isSignedIn" class="header-content">
-      <img class="avatar" src="https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810"
-        alt="Here should be an avatar" [routerLink]="['/profile']">
+    <div *ngIf="authorizedUser" class="header-content">
+      <img class="avatar avatar-size" src="{{authorizedUser.avatar}}" alt="Ava" [routerLink]="['/profile']">
       <div class="user-name" [routerLink]="['/profile']">
-        <div>User</div>
-        <div>@nick_name</div>
+        <div>{{authorizedUser.userName}}</div>
       </div>
     </div>
   </div>

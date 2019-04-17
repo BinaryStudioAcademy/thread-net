@@ -24,7 +24,9 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
         {
-            var userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email);
+            var userEntity = await _context.Users
+				.Include(u => u.Avatar)
+				.FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
             if (userEntity == null)
             {

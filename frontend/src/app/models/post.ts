@@ -3,6 +3,6 @@ import { Image } from './image';
 
 export class Post {
     public user: User;
-    public preview: Image;
+    public preview: string;
     public body: string;
 }

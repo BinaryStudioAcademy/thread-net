@@ -1,5 +1,5 @@
 <mat-card class="main-content align-center">
-  <img class="avatar" src="{{user.avatar.url}}" alt="Here should be an avatar">
+  <img class="avatar avatar-size" src="{{user.avatar.url}}" alt="Here should be an avatar">
   <form name="userForm" #userForm="ngForm" class="main-content">
     <mat-form-field>
       <input name="email" [(ngModel)]="user.email" #email="ngModel" matInput placeholder="Email">

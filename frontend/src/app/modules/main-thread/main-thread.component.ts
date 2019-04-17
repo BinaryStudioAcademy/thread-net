@@ -10,15 +10,13 @@ import { Image } from 'src/app/models/image';
 })
 export class MainThreadComponent implements OnInit {
     public mainUser: User = {
+        id: 1,
         email: 'avatar@test',
-        password: '111',
-        userName: 'Avatar',
-        avatar: { url: 'https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810' }
+        username: 'Avatar',
+        avatar: 'https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810'
     };
 
-    public mainImage: Image = {
-        url: 'https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__340.jpg'
-    };
+    public mainImage = 'https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__340.jpg';
 
     public posts: Post[] = [
         {
