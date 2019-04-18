@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Thread_.NET.Common.Auth;
 using Thread_.NET.Common.Security;
 
-namespace Thread_.NET.BLL.Auth
+namespace Thread_.NET.BLL.JWT
 {
     public sealed class JwtFactory
     {

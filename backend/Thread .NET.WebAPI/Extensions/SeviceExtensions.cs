@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Auth;
+using Thread_.NET.BLL.JWT;
 using Thread_.NET.BLL.MappingProfiles;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.Auth;
