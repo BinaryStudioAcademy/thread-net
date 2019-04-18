@@ -24,6 +24,7 @@ namespace Thread_.NET.WebAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ICollection<PostDTO>>> Get()
         {
