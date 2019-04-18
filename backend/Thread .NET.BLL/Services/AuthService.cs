@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Auth;
 using Thread_.NET.BLL.Exceptions;
+using Thread_.NET.BLL.JWT;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
@@ -25,8 +25,8 @@ namespace Thread_.NET.BLL.Services
         public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
         {
             var userEntity = await _context.Users
-				.Include(u => u.Avatar)
-				.FirstOrDefaultAsync(u => u.Email == userDto.Email);
+                .Include(u => u.Avatar)
+                .FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
             if (userEntity == null)
             {
