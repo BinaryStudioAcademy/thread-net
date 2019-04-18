@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { Location } from '@angular/common';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -8,16 +11,19 @@ import { Location } from '@angular/common';
     styleUrls: ['./user-profile.component.sass']
 })
 export class UserProfileComponent implements OnInit {
-    public user: User = {
-        id: 1,
-        email: 'avatar@test',
-        username: 'Avatar',
-        avatar: 'https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810'
-    };
+    public user = new User();
+    public subscription = new Subscription();
+    public newPassword: string;
 
-    constructor(private location: Location) {}
+    constructor(private location: Location, private route: ActivatedRoute, private userService: UserService) {}
 
-    public ngOnInit() {}
+    public ngOnInit() {
+        this.subscription.add(
+            this.userService.getUserFromToken().subscribe((resp) => {
+                this.user = resp.body;
+            })
+        );
+    }
 
     public goBack() {
         this.location.back();

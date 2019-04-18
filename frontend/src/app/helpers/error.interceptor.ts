@@ -7,14 +7,13 @@ import { AuthenticationService } from '../services/auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router) {}
+    constructor(private router: Router, private authService: AuthenticationService) {}
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
             catchError((err) => {
                 if (err.status === 401) {
-                    AuthenticationService.logout();
-                    // this.router.navigate(['/login']);
+                    this.authService.refreshToken();
                 }
 
                 console.log(err);

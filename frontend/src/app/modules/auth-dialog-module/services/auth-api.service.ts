@@ -7,6 +7,7 @@ import { AuthUser } from '../models/auth-user';
 import { AccessTokenDto } from 'src/app/models/access-token-dto';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Injectable()
 export class AuthApiService {
@@ -35,6 +36,7 @@ export class AuthApiService {
         if (tokens && tokens.accessToken && tokens.refreshToken) {
             localStorage.setItem('accessToken', JSON.stringify(tokens.accessToken.token));
             localStorage.setItem('refreshToken', JSON.stringify(tokens.refreshToken));
+            AuthenticationService.isAuthenticated = true;
         }
     }
 }

@@ -10,21 +10,22 @@ import { RouterModule } from '@angular/router';
 import { AppRoutes } from './app.routes';
 import { FormsModule } from '@angular/forms';
 import { HttpInternalService } from './services/http-internal.service';
-import { HomeModule } from './modules/home-module/home.module';
 import { MainThreadComponent } from './modules/main-thread/main-thread.component';
 import { PostComponent } from './modules/post/post.component';
-import { UserProfileComponent } from './modules/user-profile/user-profile.component';
 import { AuthDialogModule } from './modules/auth-dialog-module/auth-dialog.module';
 import { MaterialComponentsModule } from './modules/common/material-components.module';
+import { AuthenticationService } from './services/auth.service';
+import { HomeComponent } from './modules/home/home.component';
+import { UserProfileComponent } from './modules/user-profile/user-profile.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
-    declarations: [AppComponent, MainThreadComponent, PostComponent, UserProfileComponent],
+    declarations: [AppComponent, MainThreadComponent, PostComponent, HomeComponent, UserProfileComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
         AuthDialogModule,
-        HomeModule,
         MaterialComponentsModule,
         RouterModule.forRoot(AppRoutes),
         FormsModule
@@ -32,6 +33,8 @@ import { MaterialComponentsModule } from './modules/common/material-components.m
     exports: [MaterialComponentsModule],
     providers: [
         HttpInternalService,
+        AuthenticationService,
+        UserService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],

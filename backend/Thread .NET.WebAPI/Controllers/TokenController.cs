@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Extensions;

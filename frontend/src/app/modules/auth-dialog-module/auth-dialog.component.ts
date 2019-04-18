@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
 import { AuthApiService } from './services/auth-api.service';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./auth-dialog.component.sass'],
     providers: [AuthApiService]
 })
-export class AuthDialogComponent implements OnInit {
+export class AuthDialogComponent implements OnInit, OnDestroy {
     public dialogType = DialogType;
     public userName: string;
     public password: string;
@@ -34,6 +34,10 @@ export class AuthDialogComponent implements OnInit {
         this.title = this.data.dialogType === DialogType.SignIn ? 'Sign In' : 'Sign Up';
     }
 
+    public ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
     public close() {
         this.dialogRef.close(false);
     }
@@ -42,9 +46,7 @@ export class AuthDialogComponent implements OnInit {
         this.subscription.add(
             this.authApiService.login(new UserLoginDto(this.email, this.password)).subscribe(
                 (response) => {
-                    if (response) {
-                        this.dialogRef.close(response);
-                    }
+                    this.dialogRef.close(response);
                 },
                 (error) => {
                     this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' });
@@ -57,9 +59,7 @@ export class AuthDialogComponent implements OnInit {
         this.subscription.add(
             this.authApiService.register(new UserRegisterDto(this.userName, this.password, this.email, this.avatar)).subscribe(
                 (response) => {
-                    if (response) {
-                        this.dialogRef.close(response);
-                    }
+                    this.dialogRef.close(response);
                 },
                 (error) => {
                     this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' });

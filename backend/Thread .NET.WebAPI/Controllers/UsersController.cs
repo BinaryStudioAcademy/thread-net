@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Extensions;
 
 namespace Thread_.NET.Controllers
 {
@@ -32,6 +33,14 @@ namespace Thread_.NET.Controllers
         {
             return Ok(await _userService.GetUserById(id));
         }
+
+		[HttpGet("fromToken")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<UserDTO>> GetUserFromToken()
+		{
+			return Ok(await _userService.GetUserById(this.GetUserIdFromToken()));
+		}
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

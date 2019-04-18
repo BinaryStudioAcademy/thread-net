@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
-import { Image } from 'src/app/models/image';
 
 @Component({
     selector: 'app-main-thread',
@@ -12,7 +11,7 @@ export class MainThreadComponent implements OnInit {
     public mainUser: User = {
         id: 1,
         email: 'avatar@test',
-        username: 'Avatar',
+        userName: 'Avatar',
         avatar: 'https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810'
     };
 
