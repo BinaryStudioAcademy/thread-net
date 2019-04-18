@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Net;
 using Thread_.NET.BLL.Exceptions;
+using Thread_.NET.Enums;
 
 namespace Thread_.NET.Filters
 {
@@ -11,23 +12,39 @@ namespace Thread_.NET.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            var code = HttpStatusCode.InternalServerError;
+            HttpStatusCode statusCode;
+            ErrorCode errorCode;
 
-            if (context.Exception is NotFoundException)
+            switch (context.Exception)
             {
-                code = HttpStatusCode.NotFound;
-            }
-
-            if (context.Exception is InvalidUsernameOrPasswordException || context.Exception is InvalidTokenException || context.Exception is ExpiredRefreshTokenException)
-            {
-                code = HttpStatusCode.Unauthorized;
+                case NotFoundException _:
+                    statusCode = HttpStatusCode.NotFound;
+                    errorCode = ErrorCode.NotFound;
+                    break;
+                case InvalidUsernameOrPasswordException _:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    errorCode = ErrorCode.InvalidUsernameOrPassword;
+                    break;
+                case InvalidTokenException _:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    errorCode = ErrorCode.InvalidToken;
+                    break;
+                case ExpiredRefreshTokenException _:
+                    statusCode = HttpStatusCode.Unauthorized;
+                    errorCode = ErrorCode.ExpiredRefreshToken;
+                    break;
+                default:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    errorCode = ErrorCode.General;
+                    break;
             }
 
             context.HttpContext.Response.ContentType = "application/json";
-            context.HttpContext.Response.StatusCode = (int)code;
+            context.HttpContext.Response.StatusCode = (int)statusCode;
             context.Result = new JsonResult(new
             {
-                error = context.Exception.Message
+                error = context.Exception.Message,
+                code = errorCode
             });
         }
     }
