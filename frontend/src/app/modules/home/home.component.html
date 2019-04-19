@@ -8,10 +8,14 @@
       <p (click)="openAuthDialog(dialogType.SignIn)">Sign In</p> |
       <p (click)="openAuthDialog(dialogType.SignUp)">Sign Up</p>
     </div>
-    <div *ngIf="authorizedUser" class="header-content">
-      <img class="avatar avatar-size" src="{{authorizedUser.avatar}}" alt="Ava" [routerLink]="['/profile']">
-      <div class="user-name" [routerLink]="['/profile']">
+    <div *ngIf="authorizedUser" class="header-content" [matMenuTriggerFor]="menu">
+      <img class="avatar avatar-size" src="{{authorizedUser.avatar}}" alt="Ava">
+      <div class="user-area">
         <div>{{authorizedUser.userName}}</div>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <div mat-menu-item [routerLink]="['/profile']">Go to profile</div>
+          <div mat-menu-item (click)="logout()"><u>Logout</u></div>
+        </mat-menu>
       </div>
     </div>
   </div>

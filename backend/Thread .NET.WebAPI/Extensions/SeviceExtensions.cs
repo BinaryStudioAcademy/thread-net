@@ -29,6 +29,7 @@ namespace Thread_.NET.Extensions
             services.AddScoped<AuthService>();
             services.AddScoped<PostService>();
             services.AddScoped<UserService>();
+            services.AddScoped<LikeService>();
         }
 
         public static void RegisterCustomValidators(this IServiceCollection services)

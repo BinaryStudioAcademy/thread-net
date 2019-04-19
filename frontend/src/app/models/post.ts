@@ -1,8 +1,11 @@
 import { User } from './user';
-import { Image } from './image';
+import { Comment } from './comment';
 
 export class Post {
-    public user: User;
-    public preview: string;
+    public id: number;
+    public createdAt: Date;
+    public author: User;
+    public previewImage: string;
     public body: string;
+    public comments: Comment[];
 }

@@ -15,4 +15,17 @@ export class UserService {
     public getUserById(userId: number) {
         return this.httpService.getFullRequest<User>(`${this.routePrefix}`, { id: userId });
     }
+
+    public updateUser(user: User) {
+        return this.httpService.putFullRequest<User>(`${this.routePrefix}`, user);
+    }
+
+    public copyUser(user: User) {
+        return {
+            avatar: user.avatar,
+            email: user.email,
+            userName: user.userName,
+            id: user.id
+        };
+    }
 }

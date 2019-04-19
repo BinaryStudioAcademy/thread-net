@@ -1,51 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
+import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
+import { AuthenticationService } from 'src/app/services/auth.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
     selector: 'app-main-thread',
     templateUrl: './main-thread.component.html',
     styleUrls: ['./main-thread.component.sass']
 })
-export class MainThreadComponent implements OnInit {
-    public mainUser: User = {
-        id: 1,
-        email: 'avatar@test',
-        userName: 'Avatar',
-        avatar: 'https://cdn.shopify.com/s/files/1/0183/2727/products/LV_airbender_pin2.jpg?v=1552601810'
-    };
+export class MainThreadComponent implements OnInit, OnDestroy {
+    public posts: Post[] = [];
+    public subscription = new Subscription();
 
-    public mainImage = 'https://cdn.pixabay.com/photo/2018/01/12/10/19/fantasy-3077928__340.jpg';
+    public constructor(private snackBar: MatSnackBar, private authService: AuthenticationService, private postService: PostService) {}
 
-    public posts: Post[] = [
-        {
-            user: this.mainUser,
-            body: 'Lorem ipsum',
-            preview: undefined
-        },
-        {
-            user: this.mainUser,
-            body: 'Lorem ipsum Lorem ipsum',
-            preview: this.mainImage
-        },
-        {
-            user: this.mainUser,
-            body: 'Lorem ipsum Lorem ipsum Lorem ipsum',
-            preview: undefined
-        },
-        {
-            user: this.mainUser,
-            body: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-            preview: this.mainImage
-        },
-        {
-            user: this.mainUser,
-            body: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-            preview: this.mainImage
-        }
-    ];
+    public ngOnInit() {
+        this.getPosts();
+    }
 
-    constructor() {}
+    public ngOnDestroy = () => this.subscription.unsubscribe();
 
-    ngOnInit() {}
+    public getPosts() {
+        this.subscription.add(
+            this.postService.getPosts().subscribe((resp) => {
+                if (resp) {
+                    this.posts = resp.body;
+                }
+            })
+        );
+    }
 }
