@@ -10,7 +10,7 @@ namespace Thread_.NET.BLL.Services
     {
         public LikeService(ThreadContext context, IMapper mapper) : base(context, mapper) { }
 
-        public async Task LikePost(ReactionDTO reaction)
+        public async Task LikePost(NewReactionDTO reaction)
         {
             _context.PostReactions.Add(new DAL.Entities.PostReaction
             {

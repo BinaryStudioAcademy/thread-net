@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Post;
@@ -13,7 +14,23 @@ namespace Thread_.NET.BLL.Services
     {
         public PostService(ThreadContext context, IMapper mapper) : base(context, mapper) { }
 
-        public async Task<ICollection<PostDTO>> GetPosts()
+        public async Task<ICollection<PostDTO>> GetAllPosts()
+        {
+            var posts = await _context.Posts
+                .Include(post => post.Author)
+                    .ThenInclude(author => author.Avatar)
+                .Include(post => post.Preview)
+                .Include(post => post.Reactions)
+                .Include(post => post.Comments)
+                    .ThenInclude(comment => comment.Reactions)
+                .Include(post => post.Comments)
+                    .ThenInclude(comment => comment.Author)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);
+        }
+
+        public async Task<ICollection<PostDTO>> GetAllPosts(int userId)
         {
             var posts = await _context.Posts
                 .Include(post => post.Author)
@@ -21,6 +38,7 @@ namespace Thread_.NET.BLL.Services
                 .Include(post => post.Preview)
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Author)
+                .Where(p => p.AuthorId == userId) // Filter here
                 .ToListAsync();
 
             return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);

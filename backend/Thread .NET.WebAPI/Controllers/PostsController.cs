@@ -28,7 +28,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ICollection<PostDTO>>> Get()
         {
-            return Ok(await _postService.GetPosts());
+            return Ok(await _postService.GetAllPosts());
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [HttpPost("like")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> LikePost(ReactionDTO reaction)
+        public async Task<IActionResult> LikePost(NewReactionDTO reaction)
         {
             reaction.UserId = this.GetUserIdFromToken();
 

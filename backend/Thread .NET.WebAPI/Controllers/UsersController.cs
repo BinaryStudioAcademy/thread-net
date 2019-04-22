@@ -37,13 +37,13 @@ namespace Thread_.NET.Controllers
             return Ok(await _userService.GetUserById(id));
         }
 
-		[HttpGet("fromToken")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<UserDTO>> GetUserFromToken()
-		{
-			return Ok(await _userService.GetUserById(this.GetUserIdFromToken()));
-		}
+        [HttpGet("fromToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserDTO>> GetUserFromToken()
+        {
+            return Ok(await _userService.GetUserById(this.GetUserIdFromToken()));
+        }
 
         [HttpPut]
         [Authorize]

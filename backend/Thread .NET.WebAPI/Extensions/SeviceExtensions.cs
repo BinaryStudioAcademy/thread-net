@@ -27,6 +27,7 @@ namespace Thread_.NET.Extensions
             services.AddScoped<JwtFactory>();
 
             services.AddScoped<AuthService>();
+            services.AddScoped<LikeService>();
             services.AddScoped<PostService>();
             services.AddScoped<UserService>();
         }
@@ -45,6 +46,7 @@ namespace Thread_.NET.Extensions
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<CommentProfile>();
+                cfg.AddProfile<ReactionProfile>();
                 cfg.AddProfile<PostProfile>();
                 cfg.AddProfile<UserProfile>();
             });
