@@ -345,3 +345,4 @@ MigrationBackup/
 frontend/src/.prettierrc.json
 frontend/.vscode/settings.json
 frontend/.vscode/launch.json
+frontend/test.rest

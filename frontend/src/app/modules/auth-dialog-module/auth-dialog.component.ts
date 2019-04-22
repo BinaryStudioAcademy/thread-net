@@ -1,15 +1,14 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { AuthApiService } from './services/auth-api.service';
-import { UserRegisterDto } from './models/user-register-dto';
-import { UserLoginDto } from './models/user-login-dto';
+import { UserRegisterDto } from '../../models/auth/user-register-dto';
+import { UserLoginDto } from '../../models/auth/user-login-dto';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/auth.service';
 
 @Component({
     templateUrl: './auth-dialog.component.html',
-    styleUrls: ['./auth-dialog.component.sass'],
-    providers: [AuthApiService]
+    styleUrls: ['./auth-dialog.component.sass']
 })
 export class AuthDialogComponent implements OnInit, OnDestroy {
     public dialogType = DialogType;
@@ -25,7 +24,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     constructor(
         private dialogRef: MatDialogRef<AuthDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private authApiService: AuthApiService,
+        private authService: AuthenticationService,
         private snackBar: MatSnackBar
     ) {}
 
@@ -44,7 +43,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public signIn() {
         this.subscription.add(
-            this.authApiService.login(new UserLoginDto(this.email, this.password)).subscribe(
+            this.authService.login(new UserLoginDto(this.email, this.password)).subscribe(
                 (response) => {
                     this.dialogRef.close(response);
                 },
@@ -57,7 +56,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public signUp() {
         this.subscription.add(
-            this.authApiService.register(new UserRegisterDto(this.userName, this.password, this.email, this.avatar)).subscribe(
+            this.authService.register(new UserRegisterDto(this.userName, this.password, this.email, this.avatar)).subscribe(
                 (response) => {
                     this.dialogRef.close(response);
                 },

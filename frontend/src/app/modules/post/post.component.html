@@ -1,9 +1,9 @@
 <mat-card>
   <mat-card-header>
-    <img mat-card-avatar src="{{post.user.avatar}}" alt="Here should be an avatar">
-    <mat-card-title>{{post.user.username}}</mat-card-title>
+    <img mat-card-avatar src="{{post.author.avatar}}" alt="Avatar">
+    <mat-card-title>{{post.author.userName}}</mat-card-title>
   </mat-card-header>
-  <img mat-card-image *ngIf="post.preview" mat-card-image src="{{post.preview}}" alt="Photo of nature">
+  <img mat-card-image *ngIf="post.previewImage" mat-card-image src="{{post.previewImage}}" alt="Photo">
   <mat-card-content>
     <p>{{post.body}}</p>
   </mat-card-content>
