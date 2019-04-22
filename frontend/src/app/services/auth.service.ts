@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from './http-internal.service';
-import { AccessTokenDto } from '../models/access-token-dto';
+import { AccessTokenDto } from '../models/token/access-token-dto';
 import { map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { UserRegisterDto } from '../models/auth/user-register-dto';

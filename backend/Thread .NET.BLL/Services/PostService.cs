@@ -21,6 +21,7 @@ namespace Thread_.NET.BLL.Services
                     .ThenInclude(author => author.Avatar)
                 .Include(post => post.Preview)
                 .Include(post => post.Reactions)
+					.ThenInclude(reaction => reaction.User)
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Reactions)
                 .Include(post => post.Comments)

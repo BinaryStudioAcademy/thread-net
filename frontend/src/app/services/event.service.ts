@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // tslint:disable:member-ordering
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EventService {
     private onUserChanged = new Subject<void>();
     public userChangedEvent$ = this.onUserChanged.asObservable();

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from './http-internal.service';
 import { Post } from '../models/post';
+import { NewReaction } from '../models/reactions/newReaction';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PostService {
     public routePrefix = '/api/posts';
 
@@ -10,5 +11,13 @@ export class PostService {
 
     public getPosts() {
         return this.httpService.getFullRequest<Post[]>(`${this.routePrefix}`);
+    }
+
+    public createPost(post: Post) {
+        return this.httpService.postFullRequest<Post>(`${this.routePrefix}`, post);
+    }
+
+    public likePost(reaction: NewReaction) {
+        return this.httpService.postFullRequest<Post>(`${this.routePrefix}/like`, reaction);
     }
 }
