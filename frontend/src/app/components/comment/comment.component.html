@@ -2,7 +2,7 @@
   <mat-card-header>
     <img mat-card-avatar src="{{comment.author.avatar}}" alt="Avatar">
     <mat-card-title>{{comment.author.userName}} </mat-card-title>
-    <div>{{getCommentDate(comment.createdAt)}}</div>
+    <div>{{comment.createdAt | date:'MMM d, h:mm:ss a'}}</div>
   </mat-card-header>
   <mat-card-content>
     <p>{{comment.body}}</p>
