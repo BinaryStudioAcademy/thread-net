@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,9 @@ namespace Thread_.NET.BLL.Services
                     .ThenInclude(comment => comment.Reactions)
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Author)
+				.OrderByDescending(post => post.CreatedAt)
                 .ToListAsync();
-
+			
             return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);
         }
 
@@ -53,7 +55,7 @@ namespace Thread_.NET.BLL.Services
             await _context.SaveChangesAsync();
 
             // Include Author info
-            var author = await _context.Users.FindAsync(postEntity.AuthorId);
+			var author = await _context.Users.Include(x => x.Avatar).FirstAsync(x => x.Id == postEntity.AuthorId);
             postEntity.Author = author;
 
             return _mapper.Map<Post, PostDTO>(postEntity);

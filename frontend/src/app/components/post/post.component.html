@@ -2,6 +2,7 @@
   <mat-card-header>
     <img mat-card-avatar src="{{post.author.avatar}}" alt="Avatar">
     <mat-card-title>{{post.author.userName}}</mat-card-title>
+    <div class="date">{{post.createdAt | date:'d/M/yy, h:mm a'}}</div>
   </mat-card-header>
   <img mat-card-image *ngIf="post.previewImage" mat-card-image src="{{post.previewImage}}" alt="Photo">
   <mat-card-content>
@@ -21,6 +22,18 @@
     </button>
   </mat-card-actions>
   <div *ngIf="showComments">
-    <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
+    <mat-divider></mat-divider>
+    <div class="new-comment">
+      <mat-form-field>
+        <textarea [(ngModel)]="newComment.body" matInput placeholder="Comment it..."></textarea>
+      </mat-form-field>
+      <button mat-icon-button color="primary" matTooltip="Send" (click)="sendComment()">
+        <mat-icon aria-label="Send">send</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="post.comments.length > 0" class="comments-count">
+      Just {{post.comments.length}} in all
+    </div>
+    <app-comment *ngFor="let _comment of post.comments" [comment]="_comment"></app-comment>
   </div>
 </mat-card>

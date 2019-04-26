@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from './http-internal.service';
-import { Post } from '../models/post';
+import { Post } from '../models/post/post';
 import { NewReaction } from '../models/reactions/newReaction';
+import { NewPost } from '../models/post/new-post';
 
 @Injectable({ providedIn: 'root' })
 export class PostService {
@@ -13,7 +14,7 @@ export class PostService {
         return this.httpService.getFullRequest<Post[]>(`${this.routePrefix}`);
     }
 
-    public createPost(post: Post) {
+    public createPost(post: NewPost) {
         return this.httpService.postFullRequest<Post>(`${this.routePrefix}`, post);
     }
 

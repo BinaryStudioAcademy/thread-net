@@ -14,6 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((response: HttpErrorResponse) => {
                 if (response.status === 401) {
+                    // doesn't work, need to check, there is no such header 'Token-Expired'
                     if (response.headers.has('Token-Expired')) {
                         this.authService.refreshTokens();
                         return next.handle(req);
@@ -21,12 +22,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
                     if (response.error) {
                         if (response.error.code === ErrorCode.InvalidToken && !this.authService.areTokensExist()) {
-                            return next.handle(undefined);
+                            return throwError(response.error.error);
                         }
-                        if (response.error.code === ErrorCode.InvalidToken || response.error.code === ErrorCode.ExpiredRefreshToken) {
+                        if (response.error.code === ErrorCode.ExpiredRefreshToken) {
                             this.router.navigate(['/']);
                             this.authService.logout();
-                            throwError(response.error.error);
+                            return throwError(response.error.error);
                         }
                     }
                 }

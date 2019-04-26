@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './auth.service';
-import { Post } from '../models/post';
+import { Post } from '../models/post/post';
 import { NewReaction } from '../models/reactions/newReaction';
 import { PostService } from './post.service';
 import { User } from '../models/user';

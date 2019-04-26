@@ -23,7 +23,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<CommentDTO>> CreatePost([FromBody] NewCommentDTO comment)
+        public async Task<ActionResult<CommentDTO>> CreateComment([FromBody] NewCommentDTO comment)
         {
             comment.AuthorId = this.GetUserIdFromToken();
             return Ok(await _commentService.CreateComment(comment));

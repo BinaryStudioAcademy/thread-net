@@ -31,9 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         this.getUser();
 
-        this.eventService.userChangedEvent$.subscribe(() => {
-            this.authService.getUser().subscribe((user) => (this.authorizedUser = this.userService.copyUser(user)));
-        });
+        this.eventService.userChangedEvent$.subscribe((user) => (this.authorizedUser = user ? this.userService.copyUser(user) : undefined));
     }
 
     public ngOnDestroy() {

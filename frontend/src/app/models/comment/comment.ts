@@ -1,6 +1,5 @@
-import { User } from './user';
-import { Post } from './post';
-import { Reaction } from './reactions/reaction';
+import { User } from '../user';
+import { Reaction } from '../reactions/reaction';
 
 export class Comment {
     public id: number;

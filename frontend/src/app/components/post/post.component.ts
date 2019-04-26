@@ -1,41 +1,46 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Post } from 'src/app/models/post';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Post } from 'src/app/models/post/post';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { AuthDialogService } from 'src/app/services/auth-dialog.service';
 import { Subscription } from 'rxjs';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { PostService } from 'src/app/services/post.service';
-import { NewReaction } from 'src/app/models/reactions/newReaction';
 import { LikeService } from 'src/app/services/like.service';
+import { NewComment } from 'src/app/models/comment/new-comment';
+import { CommentService } from 'src/app/services/comment.service';
+import { User } from 'src/app/models/user';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'app-post',
     templateUrl: './post.component.html',
     styleUrls: ['./post.component.sass']
 })
-export class PostComponent implements OnInit {
-    @Input()
-    public post: Post;
+export class PostComponent implements OnInit, OnDestroy {
+    @Input() public post: Post;
+    @Input() public currentUser: User;
+
     public showComments = false;
     public subscription = new Subscription();
+    public newComment = new NewComment();
 
     public constructor(
         private authService: AuthenticationService,
         private authDialogService: AuthDialogService,
-        private postService: PostService,
-        private likeService: LikeService
+        private likeService: LikeService,
+        private commentService: CommentService,
+        private snackBar: MatSnackBar
     ) {}
 
     public ngOnInit() {}
+
+    public ngOnDestroy = () => this.subscription.unsubscribe();
 
     public toggleComments() {
         this.subscription.add(
             this.authService.getUser().subscribe(
                 (user) => {
-                    if (user) {
-                        if (this.post && this.post.comments.length !== 0) {
-                            this.showComments = !this.showComments;
-                        }
+                    if (user && this.post) {
+                        this.showComments = !this.showComments;
                     }
                 },
                 (error) => this.openAuthDialog()
@@ -56,6 +61,23 @@ export class PostComponent implements OnInit {
                     }
                 },
                 (error) => this.openAuthDialog()
+            )
+        );
+    }
+
+    public sendComment() {
+        this.newComment.authorId = this.currentUser.id;
+        this.newComment.postId = this.post.id;
+
+        this.subscription.add(
+            this.commentService.createComment(this.newComment).subscribe(
+                (resp) => {
+                    if (resp) {
+                        this.post.comments = this.post.comments.concat(resp.body);
+                        this.newComment.body = undefined;
+                    }
+                },
+                (error) => this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' })
             )
         );
     }

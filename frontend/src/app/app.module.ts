@@ -9,13 +9,13 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { RouterModule } from '@angular/router';
 import { AppRoutes } from './app.routes';
 import { FormsModule } from '@angular/forms';
-import { MainThreadComponent } from './modules/main-thread/main-thread.component';
-import { PostComponent } from './modules/post/post.component';
-import { MaterialComponentsModule } from './modules/common/material-components.module';
-import { HomeComponent } from './modules/home/home.component';
-import { UserProfileComponent } from './modules/user-profile/user-profile.component';
-import { AuthDialogComponent } from './modules/auth-dialog-module/auth-dialog.component';
-import { CommentComponent } from './modules/comment/comment.component';
+import { MainThreadComponent } from './components/main-thread/main-thread.component';
+import { PostComponent } from './components/post/post.component';
+import { HomeComponent } from './components/home/home.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { AuthDialogComponent } from './components/auth-dialog/auth-dialog.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { MaterialComponentsModule } from './components/common/material-components.module';
 
 @NgModule({
     declarations: [AppComponent, MainThreadComponent, PostComponent, HomeComponent, UserProfileComponent, AuthDialogComponent, CommentComponent],

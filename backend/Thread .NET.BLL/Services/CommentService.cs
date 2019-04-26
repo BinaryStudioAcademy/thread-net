@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Comment;
 using Thread_.NET.DAL.Context;
@@ -19,7 +20,7 @@ namespace Thread_.NET.BLL.Services
             await _context.SaveChangesAsync();
 
             // Include Author info
-            var author = await _context.Users.FindAsync(commentEntity.AuthorId);
+            var author = await _context.Users.Include(x => x.Avatar).FirstAsync(x => x.Id == commentEntity.AuthorId);
             commentEntity.Author = author;
 
             return _mapper.Map<Comment, CommentDTO>(commentEntity);
