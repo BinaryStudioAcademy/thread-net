@@ -9,6 +9,7 @@ import { NewComment } from 'src/app/models/comment/new-comment';
 import { CommentService } from 'src/app/services/comment.service';
 import { User } from 'src/app/models/user';
 import { MatSnackBar } from '@angular/material';
+import { Comment } from 'src/app/models/comment/comment';
 
 @Component({
     selector: 'app-post',
@@ -73,7 +74,7 @@ export class PostComponent implements OnInit, OnDestroy {
             this.commentService.createComment(this.newComment).subscribe(
                 (resp) => {
                     if (resp) {
-                        this.post.comments = this.post.comments.concat(resp.body);
+                        this.post.comments = this.sortCommentArray(this.post.comments.concat(resp.body));
                         this.newComment.body = undefined;
                     }
                 },
@@ -94,4 +95,6 @@ export class PostComponent implements OnInit, OnDestroy {
                 })
         );
     }
+
+    private sortCommentArray = (array: Comment[]): Comment[] => array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
 }

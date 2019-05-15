@@ -84,8 +84,8 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         this.subscription.add(
             postSubscription.subscribe(
                 (respPost) => {
-                    this.posts = this.posts.concat(respPost.body);
-                    this.cachedPosts = this.cachedPosts.concat(respPost.body);
+                    this.posts = this.sortPostArray(this.posts.concat(respPost.body));
+                    this.cachedPosts = this.sortPostArray(this.cachedPosts.concat(respPost.body));
                     this.removeImage();
                     this.post = new NewPost();
                     this.loading = false;
@@ -120,4 +120,6 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     }
 
     public getUser = () => this.subscription.add(this.authService.getUser().subscribe((user) => (this.currentUser = user)));
+
+    private sortPostArray = (array: Post[]): Post[] => array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
 }
