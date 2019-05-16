@@ -1,0 +1,79 @@
+.main-thread
+    display: flex
+    justify-content: center
+    flex-direction: column
+    align-items: center
+    height: 100%
+    width: 100%
+    margin-top: 20px
+
+.user-post
+    width: 100%
+    margin: 10px 0
+
+textarea
+    min-height: 60px
+
+mat-card-header
+    padding-bottom: 5px
+
+mat-card-content
+    font-size: 15px
+    margin: 0
+
+mat-form-field
+    width: 100%
+
+mat-card-actions
+    display: flex
+    justify-content: space-between
+
+.link
+    margin: auto    
+    color: #607d8b
+    &:hover
+        color: #00bcd4
+        text-decoration: underline
+        cursor: pointer
+
+.post-image
+    width: auto
+    height: 200px
+    max-width: 100%
+    margin: 10px auto  
+
+.image-container
+    position: relative
+    width: fit-content
+    .mat-icon
+        display: none
+    &:hover
+        .mat-icon
+            display: inline-block
+            position: absolute
+            right: -20px
+            top: -7px
+            cursor: pointer
+
+.posts-container
+    margin: 30px -40px
+    padding: 16px 24px
+
+.post-create-container
+    position: relative
+    margin: auto -40px
+    .mat-icon
+        font-size: 30px
+
+.main-actions
+    width: 100%
+    margin-bottom: 20px
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    .mat-icon
+        font-size: 24px
+
+.mat-spinner-wrapper 
+    margin: -16px

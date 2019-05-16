@@ -15,6 +15,7 @@
   </form>
 </div>
 <div class="actions">
-  <button mat-raised-button color="primary" (click)="close()">Back</button>
-  <button mat-raised-button (click)="data.dialogType === dialogType.SignUp ? signUp() : signIn()">{{title}}</button>
+  <button mat-raised-button (click)="close()">Back</button>
+  <button mat-raised-button color="primary"
+    (click)="data.dialogType === dialogType.SignUp ? signUp() : signIn()">{{title}}</button>
 </div>

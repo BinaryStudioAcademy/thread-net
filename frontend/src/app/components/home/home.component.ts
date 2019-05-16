@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { User } from 'src/app/models/user';
-import { AuthDialogComponent } from '../auth-dialog-module/auth-dialog.component';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { AuthDialogService } from 'src/app/services/auth-dialog.service';
 
 @Component({
     selector: 'app-home',
@@ -16,12 +16,11 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     public dialogType = DialogType;
-    public isSignedIn = false;
     public authorizedUser: User;
     public subscription = new Subscription();
 
     constructor(
-        private dialog: MatDialog,
+        private authDialogService: AuthDialogService,
         private snackBar: MatSnackBar,
         private authService: AuthenticationService,
         private eventService: EventService,
@@ -32,9 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         this.getUser();
 
-        this.eventService.userChangedEvent$.subscribe(() => {
-            this.authService.getUser().subscribe((user) => (this.authorizedUser = this.userService.copyUser(user)));
-        });
+        this.eventService.userChangedEvent$.subscribe((user) => (this.authorizedUser = user ? this.userService.copyUser(user) : undefined));
     }
 
     public ngOnDestroy() {
@@ -48,21 +45,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public openAuthDialog(type: DialogType) {
-        const dialog = this.dialog.open(AuthDialogComponent, {
-            data: { dialogType: type },
-            minWidth: 300,
-            autoFocus: true,
-            backdropClass: 'dialog-backdrop',
-            position: {
-                top: '0'
-            }
-        });
-
-        dialog.afterClosed().subscribe((result: User) => {
-            if (result) {
-                this.authorizedUser = result;
-            }
-        });
+        this.subscription.add(
+            this.authDialogService
+                .openAuthDialog(type)
+                .afterClosed()
+                .subscribe((resp) => {
+                    if (resp) {
+                        this.authorizedUser = resp;
+                    }
+                })
+        );
     }
 
     private getUser() {

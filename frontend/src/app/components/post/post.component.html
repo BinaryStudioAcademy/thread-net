@@ -1,0 +1,39 @@
+<mat-card [ngClass]="{'post-with-comments': showComments}">
+  <mat-card-header>
+    <img mat-card-avatar src="{{post.author.avatar}}" alt="Avatar">
+    <mat-card-title>{{post.author.userName}}</mat-card-title>
+    <div class="date">{{post.createdAt | date:'d/M/yy, h:mm a'}}</div>
+  </mat-card-header>
+  <img mat-card-image *ngIf="post.previewImage" mat-card-image src="{{post.previewImage}}" alt="Photo">
+  <mat-card-content>
+    <p>{{post.body}}</p>
+  </mat-card-content>
+  <mat-card-actions class="actions-buttons" align="end">
+    <button mat-icon-button color="primary" (click)="likePost()">
+      <mat-icon matBadge="{{post.reactions.length}}" matBadgeColor="accent" matBadgeSize="medium"
+        [matBadgeHidden]="post.reactions.length === 0" aria-label="Like">favorite</mat-icon>
+    </button>
+    <button mat-icon-button color="accent">
+      <mat-icon aria-label="Share">share</mat-icon>
+    </button>
+    <button mat-icon-button color="basic" (click)=" toggleComments()">
+      <mat-icon matBadge="{{post.comments.length}}" matBadgeColor="warn" matBadgeSize="medium"
+        [matBadgeHidden]="post.comments.length === 0" aria-label="Add comment">comment</mat-icon>
+    </button>
+  </mat-card-actions>
+  <div *ngIf="showComments">
+    <mat-divider></mat-divider>
+    <div class="new-comment">
+      <mat-form-field>
+        <textarea [(ngModel)]="newComment.body" matInput placeholder="Comment it..."></textarea>
+      </mat-form-field>
+      <button mat-icon-button color="primary" matTooltip="Send" (click)="sendComment()">
+        <mat-icon aria-label="Send">send</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="post.comments.length > 0" class="comments-count">
+      Just {{post.comments.length}} in all
+    </div>
+    <app-comment *ngFor="let _comment of post.comments" [comment]="_comment"></app-comment>
+  </div>
+</mat-card>

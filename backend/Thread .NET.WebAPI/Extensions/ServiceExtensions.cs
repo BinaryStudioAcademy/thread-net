@@ -19,7 +19,7 @@ using Thread_.NET.Validators;
 
 namespace Thread_.NET.Extensions
 {
-    public static class SeviceExtensions
+    public static class ServiceExtensions
     {
         public static void RegisterCustomServices(this IServiceCollection services)
         {
@@ -30,7 +30,7 @@ namespace Thread_.NET.Extensions
             services.AddScoped<LikeService>();
             services.AddScoped<PostService>();
             services.AddScoped<UserService>();
-            services.AddScoped<LikeService>();
+            services.AddScoped<CommentService>();
         }
 
         public static void RegisterCustomValidators(this IServiceCollection services)

@@ -1,0 +1,40 @@
+<mat-card class="post-create-container" *ngIf="currentUser && showPostContainer">
+  <div *ngIf="loading" class="mat-spinner-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-card-content>
+    <mat-form-field>
+      <textarea [(ngModel)]="post.body" matInput placeholder="Write something..."></textarea>
+    </mat-form-field>
+    <div class="image-container">
+      <mat-icon aria-label="Send" (click)="removeImage()">close</mat-icon>
+      <img mat-card-image class="post-image" *ngIf="imageUrl" mat-card-image src="{{imageUrl}}" alt="Photo">
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <input hidden #file accept="image/*" type="file" (change)="loadImage($event.target)">
+    <button mat-icon-button color="accent" (click)="file.click()">
+      <mat-icon aria-label="Choose an image">image</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" matTooltip="Post it" (click)="sendPost()">
+      <mat-icon aria-label="Send">send</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+<mat-toolbar *ngIf="!currentUser">
+  <p class="link" (click)="openAuthDialog()">Want to post? Sign in</p>
+</mat-toolbar>
+
+<mat-card class="posts-container">
+  <div class="main-thread">
+    <div class="main-actions" *ngIf="currentUser">
+      <button mat-raised-button matTooltip="Write a post" (click)="toggleNewPostContainer()">
+        <mat-icon color="accent">add_comment</mat-icon>
+      </button>
+      <mat-slide-toggle (change)="sliderChanged($event)">Only mine</mat-slide-toggle>
+    </div>
+    <div *ngFor="let _post of posts" class="user-post">
+      <app-post [post]="_post" [currentUser]="currentUser"></app-post>
+    </div>
+  </div>
+</mat-card>

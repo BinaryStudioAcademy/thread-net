@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from './http-internal.service';
-import { AccessTokenDto } from '../models/access-token-dto';
+import { AccessTokenDto } from '../models/token/access-token-dto';
 import { map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { UserRegisterDto } from '../models/auth/user-register-dto';
@@ -24,15 +24,15 @@ export class AuthenticationService {
             : this.userService.getUserFromToken().pipe(
                   map((resp) => {
                       this.user = resp.body;
-                      this.eventService.userChanged();
-                      return resp.body;
+                      this.eventService.userChanged(this.user);
+                      return this.user;
                   })
               );
     }
 
     public setUser(user: User) {
         this.user = user;
-        this.eventService.userChanged();
+        this.eventService.userChanged(user);
     }
 
     public register(user: UserRegisterDto) {
@@ -47,6 +47,7 @@ export class AuthenticationService {
         this.revokeRefreshToken();
         this.removeTokensFromStorage();
         this.user = undefined;
+        this.eventService.userChanged(undefined);
     }
 
     public areTokensExist() {
@@ -65,17 +66,15 @@ export class AuthenticationService {
     }
 
     public refreshTokens() {
-        this._refreshToken().pipe(
-            map((resp) => {
-                this._setTokens(resp.body);
-            })
-        );
+        this._refreshToken().subscribe((resp) => {
+            this._setTokens(resp.body);
+        });
     }
 
     private _refreshToken() {
         return this.httpService.postFullRequest<AccessTokenDto>(`${this.routePrefix}/token/refresh`, {
-            accessToken: localStorage.getItem('accessToken'),
-            refreshToken: localStorage.getItem('refreshToken')
+            accessToken: JSON.parse(localStorage.getItem('accessToken')),
+            refreshToken: JSON.parse(localStorage.getItem('refreshToken'))
         });
     }
 
@@ -83,6 +82,8 @@ export class AuthenticationService {
         return observable.pipe(
             map((resp) => {
                 this._setTokens(resp.body.token);
+                this.user = resp.body.user;
+                this.eventService.userChanged(resp.body.user);
                 return resp.body.user;
             })
         );
@@ -92,7 +93,7 @@ export class AuthenticationService {
         if (tokens && tokens.accessToken && tokens.refreshToken) {
             localStorage.setItem('accessToken', JSON.stringify(tokens.accessToken.token));
             localStorage.setItem('refreshToken', JSON.stringify(tokens.refreshToken));
-            this.user = undefined;
+            this.getUser();
         }
     }
 }

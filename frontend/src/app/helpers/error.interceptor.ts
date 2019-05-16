@@ -14,22 +14,28 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((response: HttpErrorResponse) => {
                 if (response.status === 401) {
-                    if (response.error) {
-                        if (response.error.code === ErrorCode.InvalidToken || response.error.code === ErrorCode.ExpiredRefreshToken) {
-                            this.router.navigate(['/']);
-                            this.authService.logout();
-                            throwError(response.error.error);
-                        }
-                    }
-
+                    // doesn't work, need to check, there is no such header 'Token-Expired'
                     if (response.headers.has('Token-Expired')) {
                         this.authService.refreshTokens();
                         return next.handle(req);
                     }
+
+                    if (response.error) {
+                        if (response.error.code === ErrorCode.InvalidToken && !this.authService.areTokensExist()) {
+                            return throwError(response.error.error);
+                        }
+                        if (response.error.code === ErrorCode.ExpiredRefreshToken) {
+                            this.router.navigate(['/']);
+                            this.authService.logout();
+                            return throwError(response.error.error);
+                        }
+                    }
                 }
 
                 console.log(response);
-                const error = response.error ? response.error.error : response.message || `${response.status} ${response.statusText}`;
+                const error = response.error
+                    ? response.error.error || response.error.message
+                    : response.message || `${response.status} ${response.statusText}`;
 
                 return throwError(error);
             })
