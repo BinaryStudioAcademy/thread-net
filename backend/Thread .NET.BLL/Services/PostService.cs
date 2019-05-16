@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +21,12 @@ namespace Thread_.NET.BLL.Services
                     .ThenInclude(author => author.Avatar)
                 .Include(post => post.Preview)
                 .Include(post => post.Reactions)
-					.ThenInclude(reaction => reaction.User)
+                    .ThenInclude(reaction => reaction.User)
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Reactions)
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Author)
-				.OrderByDescending(post => post.CreatedAt)
+                .OrderByDescending(post => post.CreatedAt)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<PostDTO>>(posts);
