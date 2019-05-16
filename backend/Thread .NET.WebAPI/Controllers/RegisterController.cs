@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
@@ -8,6 +7,7 @@ using Thread_.NET.Common.DTO.User;
 namespace Thread_.NET.WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [AllowAnonymous]
     [ApiController]
     public class RegisterController : ControllerBase
     {
@@ -21,9 +21,6 @@ namespace Thread_.NET.WebAPI.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesDefaultResponseType]
         public async Task<IActionResult> Post([FromBody] UserRegisterDTO user)
         {
             var createdUser = await _userService.CreateUser(user);

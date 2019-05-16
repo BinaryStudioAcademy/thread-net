@@ -2,10 +2,12 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using Thread_.NET.BLL.Exceptions;
 using Thread_.NET.Common.Auth;
 using Thread_.NET.Common.Security;
 
@@ -64,6 +66,19 @@ namespace Thread_.NET.BLL.JWT
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
                 ValidateLifetime = false // we check expired tokens here
             });
+        }
+
+        public int GetUserIdFromToken(string accessToken, string signingKey)
+        {
+            var claimsPrincipal = GetPrincipalFromToken(accessToken, signingKey);
+
+            // invalid token/signing key was passed and we can't extract user claims
+            if (claimsPrincipal == null)
+            {
+                throw new InvalidTokenException("access");
+            }
+
+            return int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
         }
 
         private ClaimsPrincipal ValidateToken(string token, TokenValidationParameters tokenValidationParameters)

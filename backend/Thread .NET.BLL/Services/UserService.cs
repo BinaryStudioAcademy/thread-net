@@ -22,7 +22,7 @@ namespace Thread_.NET.BLL.Services
                 .Include(x => x.Avatar)
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<User>, ICollection<UserDTO>>(users);
+            return _mapper.Map<ICollection<UserDTO>>(users);
         }
 
         public async Task<UserDTO> GetUserById(int id)
@@ -33,12 +33,12 @@ namespace Thread_.NET.BLL.Services
                 throw new NotFoundException(nameof(User), id);
             }
 
-            return _mapper.Map<User, UserDTO>(user);
+            return _mapper.Map<UserDTO>(user);
         }
 
         public async Task<UserDTO> CreateUser(UserRegisterDTO userDto)
         {
-            var userEntity = _mapper.Map<UserRegisterDTO, User>(userDto);
+            var userEntity = _mapper.Map<User>(userDto);
             var salt = SecurityHelper.GetRandomBytes();
 
             userEntity.Salt = Convert.ToBase64String(salt);
@@ -47,7 +47,7 @@ namespace Thread_.NET.BLL.Services
             _context.Users.Add(userEntity);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<User, UserDTO>(userEntity);
+            return _mapper.Map<UserDTO>(userEntity);
         }
 
         public async Task UpdateUser(UserDTO userDto)

@@ -39,7 +39,7 @@ namespace Thread_.NET.BLL.Services
             }
 
             var token = await GenerateAccessToken(userEntity.Id, userEntity.UserName, userEntity.Email);
-            var user = _mapper.Map<User, UserDTO>(userEntity);
+            var user = _mapper.Map<UserDTO>(userEntity);
 
             return new AuthUserDTO
             {
@@ -67,15 +67,7 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<AccessTokenDTO> RefreshToken(RefreshTokenDTO dto)
         {
-            var claimsPrincipal = _jwtFactory.GetPrincipalFromToken(dto.AccessToken, dto.SigningKey);
-
-            // invalid token/signing key was passed and we can't extract user claims
-            if (claimsPrincipal == null)
-            {
-                throw new InvalidTokenException("access");
-            }
-
-            var userId = int.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
+            var userId = _jwtFactory.GetUserIdFromToken(dto.AccessToken, dto.SigningKey);
             var userEntity = await _context.Users.FindAsync(userId);
 
             if (userEntity == null)

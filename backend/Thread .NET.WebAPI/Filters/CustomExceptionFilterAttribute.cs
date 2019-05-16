@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Net;
-using Thread_.NET.BLL.Exceptions;
-using Thread_.NET.Enums;
+using Thread_.NET.Extensions;
 
 namespace Thread_.NET.Filters
 {
@@ -12,32 +10,7 @@ namespace Thread_.NET.Filters
     {
         public override void OnException(ExceptionContext context)
         {
-            HttpStatusCode statusCode;
-            ErrorCode errorCode;
-
-            switch (context.Exception)
-            {
-                case NotFoundException _:
-                    statusCode = HttpStatusCode.NotFound;
-                    errorCode = ErrorCode.NotFound;
-                    break;
-                case InvalidUsernameOrPasswordException _:
-                    statusCode = HttpStatusCode.Unauthorized;
-                    errorCode = ErrorCode.InvalidUsernameOrPassword;
-                    break;
-                case InvalidTokenException _:
-                    statusCode = HttpStatusCode.Unauthorized;
-                    errorCode = ErrorCode.InvalidToken;
-                    break;
-                case ExpiredRefreshTokenException _:
-                    statusCode = HttpStatusCode.Unauthorized;
-                    errorCode = ErrorCode.ExpiredRefreshToken;
-                    break;
-                default:
-                    statusCode = HttpStatusCode.InternalServerError;
-                    errorCode = ErrorCode.General;
-                    break;
-            }
+            var (statusCode, errorCode) = context.Exception.ParseException();
 
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)statusCode;

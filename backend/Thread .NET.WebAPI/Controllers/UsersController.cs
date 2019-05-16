@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +9,7 @@ using Thread_.NET.Extensions;
 namespace Thread_.NET.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -22,7 +22,6 @@ namespace Thread_.NET.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ICollection<UserDTO>>> Get()
         {
             return Ok(await _userService.GetUsers());
@@ -30,25 +29,18 @@ namespace Thread_.NET.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> GetById(int id)
         {
             return Ok(await _userService.GetUserById(id));
         }
 
         [HttpGet("fromToken")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserDTO>> GetUserFromToken()
         {
             return Ok(await _userService.GetUserById(this.GetUserIdFromToken()));
         }
 
         [HttpPut]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put([FromBody] UserDTO user)
         {
             await _userService.UpdateUser(user);
@@ -56,9 +48,6 @@ namespace Thread_.NET.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             await _userService.DeleteUser(id);

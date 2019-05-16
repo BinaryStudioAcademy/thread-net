@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
@@ -9,6 +8,7 @@ using Thread_.NET.Extensions;
 namespace Thread_.NET.WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -21,22 +21,17 @@ namespace Thread_.NET.WebAPI.Controllers
 
         [HttpPost("refresh")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AccessTokenDTO>> Refresh([FromBody] RefreshTokenDTO dto)
         {
             return Ok(await _authService.RefreshToken(dto));
         }
 
         [HttpPost("revoke")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDTO dto)
         {
             var userId = this.GetUserIdFromToken();
             await _authService.RevokeRefreshToken(dto.RefreshToken, userId);
+
             return Ok();
         }
     }

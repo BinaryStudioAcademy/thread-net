@@ -27,7 +27,7 @@ namespace Thread_.NET.BLL.Services
                     .ThenInclude(comment => comment.Author)
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);
+            return _mapper.Map<ICollection<PostDTO>>(posts);
         }
 
         public async Task<ICollection<PostDTO>> GetAllPosts(int userId)
@@ -41,21 +41,21 @@ namespace Thread_.NET.BLL.Services
                 .Where(p => p.AuthorId == userId) // Filter here
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<Post>, ICollection<PostDTO>>(posts);
+            return _mapper.Map<ICollection<PostDTO>>(posts);
         }
 
         public async Task<PostDTO> CreatePost(PostCreateDTO postDto)
         {
-            var postEntity = _mapper.Map<PostCreateDTO, Post>(postDto);
+            var postEntity = _mapper.Map<Post>(postDto);
 
             _context.Posts.Add(postEntity);
             await _context.SaveChangesAsync();
 
-            // Include Author info
-            var author = await _context.Users.FindAsync(postEntity.AuthorId);
-            postEntity.Author = author;
+            var createdPost = await _context.Posts
+                .Include(post => post.Author)
+                .FirstAsync(post => post.Id == postEntity.Id);
 
-            return _mapper.Map<Post, PostDTO>(postEntity);
+            return _mapper.Map<PostDTO>(createdPost);
         }
     }
 }
