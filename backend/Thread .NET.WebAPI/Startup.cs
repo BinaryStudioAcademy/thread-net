@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Thread_.NET.BLL.Hubs;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.Extensions;
 using Thread_.NET.Filters;
@@ -30,6 +31,9 @@ namespace Thread_.NET
             services.RegisterCustomValidators();
 
             services.ConfigureJwt(Configuration);
+            services.AddCors();
+
+            services.AddSignalR();
 
             services
                 .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
@@ -53,6 +57,17 @@ namespace Thread_.NET
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors(builder => builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:4200"));
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<PostHub>("/notifications/post");
+            });
 
             app.UseHttpsRedirection();
             app.UseAuthentication();

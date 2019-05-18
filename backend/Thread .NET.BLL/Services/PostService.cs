@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Thread_.NET.BLL.Hubs;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Post;
 using Thread_.NET.DAL.Context;
@@ -12,7 +14,12 @@ namespace Thread_.NET.BLL.Services
 {
     public sealed class PostService : BaseService
     {
-        public PostService(ThreadContext context, IMapper mapper) : base(context, mapper) { }
+        private readonly IHubContext<PostHub> _postHub;
+
+        public PostService(ThreadContext context, IMapper mapper, IHubContext<PostHub> postHub) : base(context, mapper)
+        {
+            _postHub = postHub;
+        }
 
         public async Task<ICollection<PostDTO>> GetAllPosts()
         {
@@ -57,7 +64,10 @@ namespace Thread_.NET.BLL.Services
                 .Include(post => post.Author)
                 .FirstAsync(post => post.Id == postEntity.Id);
 
-            return _mapper.Map<PostDTO>(createdPost);
+            var createdPostDTO = _mapper.Map<PostDTO>(createdPost);
+            await _postHub.Clients.All.SendAsync("NewPost", createdPostDTO);
+
+            return createdPostDTO;
         }
     }
 }
