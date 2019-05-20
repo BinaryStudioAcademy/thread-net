@@ -21,6 +21,7 @@ namespace Thread_.NET.BLL.Services
 
             var createdComment = await _context.Comments
                 .Include(comment => comment.Author)
+                    .ThenInclude(user => user.Avatar)
                 .FirstAsync(comment => comment.Id == commentEntity.Id);
 
             return _mapper.Map<CommentDTO>(createdComment);
