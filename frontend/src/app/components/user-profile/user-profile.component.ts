@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material';
 import { AuthenticationService } from 'src/app/services/auth.service';
-import { EventService } from 'src/app/services/event.service';
 import { ImgurService } from 'src/app/services/imgur.service';
 import { environment } from 'src/environments/environment';
 import { switchMap } from 'rxjs/operators';
@@ -16,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
     styleUrls: ['./user-profile.component.sass']
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-    public user = new User();
+    public user = {} as User;
     public subscription = new Subscription();
     public loading = false;
     public imageFile: File;
@@ -40,7 +39,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         );
     }
 
-    public ngOnDestroy = () => this.subscription.unsubscribe();
+    public ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     public saveNewInfo() {
         const userSubscription = !this.imageFile

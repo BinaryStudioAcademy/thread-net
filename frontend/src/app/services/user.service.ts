@@ -12,20 +12,20 @@ export class UserService {
         return this.httpService.getFullRequest<User>(`${this.routePrefix}/fromToken`);
     }
 
-    public getUserById(userId: number) {
-        return this.httpService.getFullRequest<User>(`${this.routePrefix}`, { id: userId });
+    public getUserById(id: number) {
+        return this.httpService.getFullRequest<User>(`${this.routePrefix}`, { id });
     }
 
     public updateUser(user: User) {
         return this.httpService.putFullRequest<User>(`${this.routePrefix}`, user);
     }
 
-    public copyUser(user: User) {
+    public copyUser({ avatar, email, userName, id }: User) {
         return {
-            avatar: user.avatar,
-            email: user.email,
-            userName: user.userName,
-            id: user.id
+            avatar,
+            email,
+            userName,
+            id
         };
     }
 }

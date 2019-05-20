@@ -9,11 +9,7 @@ export class ImgurService {
     constructor(private httpService: HttpInternalService) {}
 
     public uploadToImgur(clientId: string, image: Blob, title: string) {
-        return this.imageDataToBase64(image as Blob).pipe(
-            switchMap((imageBase64: string) => {
-                return this.sendImgurRequest(clientId, imageBase64, title);
-            })
-        );
+        return this.imageDataToBase64(image).pipe(switchMap((imageBase64: string) => this.sendImgurRequest(clientId, imageBase64, title)));
     }
 
     public deleteFromImgur(clientId: string, imageHash: string) {

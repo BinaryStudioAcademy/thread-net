@@ -1,5 +1,5 @@
-export class NewReaction {
-    public entityId: number;
-    public isLike: boolean;
-    public userId: number;
+export interface NewReaction {
+    entityId: number;
+    isLike: boolean;
+    userId: number;
 }

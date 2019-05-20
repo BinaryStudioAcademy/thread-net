@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Post } from 'src/app/models/post/post';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { AuthDialogService } from 'src/app/services/auth-dialog.service';
-import { Subscription } from 'rxjs';
+import { Subscription, empty, Observable } from 'rxjs';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
 import { LikeService } from 'src/app/services/like.service';
 import { NewComment } from 'src/app/models/comment/new-comment';
@@ -10,19 +10,20 @@ import { CommentService } from 'src/app/services/comment.service';
 import { User } from 'src/app/models/user';
 import { MatSnackBar } from '@angular/material';
 import { Comment } from 'src/app/models/comment/comment';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-post',
     templateUrl: './post.component.html',
     styleUrls: ['./post.component.sass']
 })
-export class PostComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnDestroy {
     @Input() public post: Post;
     @Input() public currentUser: User;
 
     public showComments = false;
     public subscription = new Subscription();
-    public newComment = new NewComment();
+    public newComment = {} as NewComment;
 
     public constructor(
         private authService: AuthenticationService,
@@ -32,37 +33,31 @@ export class PostComponent implements OnInit, OnDestroy {
         private snackBar: MatSnackBar
     ) {}
 
-    public ngOnInit() {}
-
-    public ngOnDestroy = () => this.subscription.unsubscribe();
+    public ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
     public toggleComments() {
         this.subscription.add(
-            this.authService.getUser().subscribe(
-                (user) => {
-                    if (user && this.post) {
-                        this.showComments = !this.showComments;
-                    }
-                },
-                (error) => this.openAuthDialog()
-            )
+            this.catchError(this.authService.getUser()).subscribe((user) => {
+                if (user && this.post) {
+                    this.showComments = !this.showComments;
+                }
+            })
         );
     }
 
     public likePost() {
         this.subscription.add(
-            this.authService.getUser().subscribe(
-                (userResp) => {
-                    if (userResp) {
-                        this.subscription.add(
-                            this.likeService.likePost(this.post, userResp).subscribe((post) => {
-                                this.post = post;
-                            })
-                        );
-                    }
-                },
-                (error) => this.openAuthDialog()
-            )
+            this.catchError(this.authService.getUser())
+                .pipe(
+                    switchMap((userResp) => {
+                        return this.likeService.likePost(this.post, userResp);
+                    })
+                )
+                .subscribe((post) => {
+                    this.post = post;
+                })
         );
     }
 
@@ -84,17 +79,20 @@ export class PostComponent implements OnInit, OnDestroy {
     }
 
     public openAuthDialog() {
-        this.subscription.add(
-            this.authDialogService
-                .openAuthDialog(DialogType.SignIn)
-                .afterClosed()
-                .subscribe((resp) => {
-                    if (resp) {
-                        this.authService.setUser(resp);
-                    }
-                })
+        this.authDialogService.openAuthDialog(DialogType.SignIn);
+    }
+
+    private catchError(obs: Observable<User>) {
+        return obs.pipe(
+            catchError(() => {
+                this.openAuthDialog();
+
+                return empty();
+            })
         );
     }
 
-    private sortCommentArray = (array: Comment[]): Comment[] => array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+    private sortCommentArray(array: Comment[]): Comment[] {
+        return array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+    }
 }

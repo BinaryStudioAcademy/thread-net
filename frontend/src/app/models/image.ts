@@ -1,3 +1,3 @@
-export class Image {
-    public url: string;
+export interface Image {
+    url: string;
 }

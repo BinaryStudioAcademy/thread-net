@@ -45,16 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public openAuthDialog(type: DialogType) {
-        this.subscription.add(
-            this.authDialogService
-                .openAuthDialog(type)
-                .afterClosed()
-                .subscribe((resp) => {
-                    if (resp) {
-                        this.authorizedUser = resp;
-                    }
-                })
-        );
+        this.authDialogService.openAuthDialog(type);
     }
 
     private getUser() {
@@ -63,12 +54,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
 
         this.subscription.add(
-            this.authService.getUser().subscribe(
-                (user) => {
-                    this.authorizedUser = this.userService.copyUser(user);
-                },
-                (error) => this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' })
-            )
+            this.authService.getUser().subscribe((user) => {
+                this.authorizedUser = this.userService.copyUser(user);
+            })
         );
     }
 }
