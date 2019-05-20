@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { UserRegisterDto } from '../../models/auth/user-register-dto';
-import { UserLoginDto } from '../../models/auth/user-login-dto';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/auth.service';
 
@@ -43,7 +41,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public signIn() {
         this.subscription.add(
-            this.authService.login(new UserLoginDto(this.email, this.password)).subscribe(
+            this.authService.login({ email: this.email, password: this.password }).subscribe(
                 (response) => {
                     this.dialogRef.close(response);
                 },
@@ -56,7 +54,7 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
 
     public signUp() {
         this.subscription.add(
-            this.authService.register(new UserRegisterDto(this.userName, this.password, this.email, this.avatar)).subscribe(
+            this.authService.register({ userName: this.userName, password: this.password, email: this.email, avatar: this.avatar }).subscribe(
                 (response) => {
                     this.dialogRef.close(response);
                 },

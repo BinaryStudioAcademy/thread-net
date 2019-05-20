@@ -1,5 +1,5 @@
-export class NewComment {
-    public authorId: number;
-    public postId: number;
-    public body: string;
+export interface NewComment {
+    authorId: number;
+    postId: number;
+    body: string;
 }

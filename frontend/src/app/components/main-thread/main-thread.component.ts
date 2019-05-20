@@ -12,6 +12,7 @@ import { ImgurService } from 'src/app/services/imgur.service';
 import { environment } from 'src/environments/environment';
 import { NewPost } from 'src/app/models/post/new-post';
 import { switchMap } from 'rxjs/operators';
+import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 
 @Component({
     selector: 'app-main-thread',
@@ -25,9 +26,10 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     public currentUser: User;
     public imageUrl: string;
     public imageFile: File;
-    public post = new NewPost();
+    public post = {} as NewPost;
     public showPostContainer = false;
     public loading = false;
+    public hub: HubConnection;
 
     public constructor(
         private snackBar: MatSnackBar,
@@ -38,7 +40,20 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         private eventService: EventService
     ) {}
 
+    public ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+    public toggleNewPostContainer() {
+        this.showPostContainer = !this.showPostContainer;
+    }
+
     public ngOnInit() {
+        // this.hub = new HubConnectionBuilder().withUrl('http://localhost:5000/main-thread').build();
+        // this.hub.on('like', (data) => {
+        //     console.log(data);
+        // });
+        // this.hub.start().catch((error) => console.log(error));
+
         this.getPosts();
         this.getUser();
 
@@ -48,26 +63,16 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         });
     }
 
-    public ngOnDestroy = () => this.subscription.unsubscribe();
+    public getPosts() {
+        this.subscription.add(this.postService.getPosts().subscribe((resp) => (this.posts = this.cachedPosts = resp.body)));
+    }
 
-    public getPosts = () => this.subscription.add(this.postService.getPosts().subscribe((resp) => (this.posts = this.cachedPosts = resp.body)));
-
-    public sliderChanged = (event: MatSlideToggleChange) =>
+    public sliderChanged(event: MatSlideToggleChange) {
         event.checked ? (this.posts = this.posts.filter((x) => x.author.id === this.currentUser.id)) : (this.posts = this.cachedPosts);
-
-    public toggleNewPostContainer = () => (this.showPostContainer = !this.showPostContainer);
+    }
 
     public openAuthDialog() {
-        this.subscription.add(
-            this.authDialogService
-                .openAuthDialog(DialogType.SignIn)
-                .afterClosed()
-                .subscribe((resp) => {
-                    if (resp) {
-                        this.authService.setUser(resp);
-                    }
-                })
-        );
+        this.authDialogService.openAuthDialog(DialogType.SignIn);
     }
 
     public sendPost() {
@@ -87,7 +92,8 @@ export class MainThreadComponent implements OnInit, OnDestroy {
                     this.posts = this.sortPostArray(this.posts.concat(respPost.body));
                     this.cachedPosts = this.sortPostArray(this.cachedPosts.concat(respPost.body));
                     this.removeImage();
-                    this.post = new NewPost();
+                    this.post.body = undefined;
+                    this.post.previewImage = undefined;
                     this.loading = false;
                 },
                 (error) => this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' })
@@ -119,7 +125,11 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         this.imageFile = undefined;
     }
 
-    public getUser = () => this.subscription.add(this.authService.getUser().subscribe((user) => (this.currentUser = user)));
+    public getUser() {
+        this.subscription.add(this.authService.getUser().subscribe((user) => (this.currentUser = user)));
+    }
 
-    private sortPostArray = (array: Post[]): Post[] => array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+    private sortPostArray(array: Post[]): Post[] {
+        return array.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
+    }
 }

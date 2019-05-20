@@ -1,10 +1,10 @@
 import { User } from '../user';
 import { Reaction } from '../reactions/reaction';
 
-export class Comment {
-    public id: number;
-    public createdAt: Date;
-    public author: User;
-    public body: string;
-    public reactions: Reaction[];
+export interface Comment {
+    id: number;
+    createdAt: Date;
+    author: User;
+    body: string;
+    reactions: Reaction[];
 }

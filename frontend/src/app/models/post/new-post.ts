@@ -1,5 +1,5 @@
-export class NewPost {
-    public authorId: number;
-    public body: string;
-    public previewImage: string;
+export interface NewPost {
+    authorId: number;
+    body: string;
+    previewImage: string;
 }

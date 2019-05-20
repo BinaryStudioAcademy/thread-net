@@ -1,6 +1,6 @@
 import { User } from '../user';
 
-export class Reaction {
-    public isLike: boolean;
-    public user: User;
+export interface Reaction {
+    isLike: boolean;
+    user: User;
 }

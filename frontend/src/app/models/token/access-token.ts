@@ -1,4 +1,4 @@
-export class AccessToken {
-    public token: string;
-    public expiresIn: number;
+export interface AccessToken {
+    token: string;
+    expiresIn: number;
 }
