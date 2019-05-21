@@ -5,7 +5,7 @@
 - [.NET Core](https://dotnet.microsoft.com/download)
 - [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads)
 - [EF Core](https://docs.microsoft.com/ef/core)
-- [FluenValidation](https://github.com/JeremySkinner/FluentValidation)
+- [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 - [AutoMapper](https://github.com/AutoMapper/AutoMapper)
 - [Bogus](https://github.com/bchavez/Bogus)
 - [JWT](https://jwt.io)
