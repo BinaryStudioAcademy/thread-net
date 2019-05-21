@@ -9,6 +9,7 @@
 - [AutoMapper](https://github.com/AutoMapper/AutoMapper)
 - [Bogus](https://github.com/bchavez/Bogus)
 - [JWT](https://jwt.io)
+- [SignalR](https://dotnet.microsoft.com/apps/aspnet/real-time)
 
 ### Frontend:
 - [Angular](https://angular.io)
@@ -51,6 +52,6 @@ export const environment = {
     - **Note:** By default, the backend application will run on port 44344 and will be available at https://localhost:44344. If you start the application using the `dotnet run` command or change the default port, you must also change _apiUrl_ in the **frontend/src/environments/environment.ts** file. Also, you must update _JwtIssuerOptions.Audience_ property in the `appsettings.json` file in the **backend/Thread .NET.WebAPI** folder.
 
 - **Frontend**:
-  - Open **frontend/** folder via Visual Studio Code and execute the `ng serve` command.
+  - Open **frontend/** folder via Visual Studio Code and execute the `ng serve` command. Application will run on port 4200 and will be available at http://localhost:4200.
   
   💻 Happy coding! 😊
