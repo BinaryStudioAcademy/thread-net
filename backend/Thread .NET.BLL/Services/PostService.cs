@@ -62,6 +62,7 @@ namespace Thread_.NET.BLL.Services
 
             var createdPost = await _context.Posts
                 .Include(post => post.Author)
+					.ThenInclude(author => author.Avatar)
                 .FirstAsync(post => post.Id == postEntity.Id);
 
             var createdPostDTO = _mapper.Map<PostDTO>(createdPost);

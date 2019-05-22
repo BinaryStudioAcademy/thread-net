@@ -8,16 +8,15 @@ import { map, switchMap } from 'rxjs/operators';
 export class ImgurService {
     constructor(private httpService: HttpInternalService) {}
 
-    public uploadToImgur(clientId: string, image: Blob, title: string) {
-        return this.imageDataToBase64(image).pipe(switchMap((imageBase64: string) => this.sendImgurRequest(clientId, imageBase64, title)));
+    public uploadToImgur(image: Blob, title: string) {
+        return this.imageDataToBase64(image).pipe(switchMap((imageBase64: string) => this.sendImgurRequest(imageBase64, title)));
     }
 
-    public deleteFromImgur(clientId: string, imageHash: string) {
-        this.httpService.setHeader('Authorization', `Client-ID ${clientId}`);
+    public deleteFromImgur(imageHash: string) {
         return this.httpService.deleteFullRequest(`https://api.imgur.com/3/image/${imageHash}`);
     }
 
-    private sendImgurRequest(clientId: string, imageBase64: string, imageTitle: string) {
+    private sendImgurRequest(imageBase64: string, imageTitle: string) {
         const body = {
             image: imageBase64,
             title: imageTitle,
@@ -30,12 +29,8 @@ export class ImgurService {
         const reader = new FileReader();
         const result = new Subject<string>();
 
-        reader.addEventListener('load', () => {
-            result.next(this.arrayBufferToBase64(reader.result as ArrayBuffer));
-        });
-        reader.addEventListener('error', () => {
-            result.error('Error reading image data');
-        });
+        reader.addEventListener('load', () => result.next(this.arrayBufferToBase64(reader.result as ArrayBuffer)));
+        reader.addEventListener('error', () => result.error('Error reading image data'));
         reader.readAsArrayBuffer(imageData);
 
         return result;

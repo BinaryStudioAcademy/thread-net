@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { MatDialog, MatSnackBar } from '@angular/material';
 import { User } from 'src/app/models/user';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
 import { AuthDialogService } from 'src/app/services/auth-dialog.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-home',
@@ -17,11 +17,10 @@ import { AuthDialogService } from 'src/app/services/auth-dialog.service';
 export class HomeComponent implements OnInit, OnDestroy {
     public dialogType = DialogType;
     public authorizedUser: User;
-    public subscription = new Subscription();
+    private unsubscribe$ = new Subject<void>();
 
     constructor(
         private authDialogService: AuthDialogService,
-        private snackBar: MatSnackBar,
         private authService: AuthenticationService,
         private eventService: EventService,
         private userService: UserService,
@@ -31,11 +30,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         this.getUser();
 
-        this.eventService.userChangedEvent$.subscribe((user) => (this.authorizedUser = user ? this.userService.copyUser(user) : undefined));
+        this.eventService.userChangedEvent$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((user) => (this.authorizedUser = user ? this.userService.copyUser(user) : undefined));
     }
 
     public ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     public logout() {
@@ -53,10 +55,9 @@ export class HomeComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.subscription.add(
-            this.authService.getUser().subscribe((user) => {
-                this.authorizedUser = this.userService.copyUser(user);
-            })
-        );
+        this.authService
+            .getUser()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((user) => (this.authorizedUser = this.userService.copyUser(user)));
     }
 }

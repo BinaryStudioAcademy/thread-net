@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from 'src/app/models/post/post';
 import { User } from 'src/app/models/user';
-import { Subscription, Observable } from 'rxjs';
-import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
+import { Subject } from 'rxjs';
+import { MatSlideToggleChange } from '@angular/material';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { PostService } from 'src/app/services/post.service';
 import { AuthDialogService } from 'src/app/services/auth-dialog.service';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
 import { EventService } from 'src/app/services/event.service';
 import { ImgurService } from 'src/app/services/imgur.service';
-import { environment } from 'src/environments/environment';
 import { NewPost } from 'src/app/models/post/new-post';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
+import { SnackBarService } from 'src/app/services/snack-bar.service';
 
 @Component({
     selector: 'app-main-thread',
@@ -22,17 +22,21 @@ import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 export class MainThreadComponent implements OnInit, OnDestroy {
     public posts: Post[] = [];
     public cachedPosts: Post[] = [];
-    public subscription = new Subscription();
+    public isOnlyMine = false;
+
     public currentUser: User;
     public imageUrl: string;
     public imageFile: File;
     public post = {} as NewPost;
     public showPostContainer = false;
     public loading = false;
-    public hub: HubConnection;
+
+    public postHub: HubConnection;
+
+    private unsubscribe$ = new Subject<void>();
 
     public constructor(
-        private snackBar: MatSnackBar,
+        private snackBarService: SnackBarService,
         private authService: AuthenticationService,
         private postService: PostService,
         private imgurService: ImgurService,
@@ -41,44 +45,33 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    public toggleNewPostContainer() {
-        this.showPostContainer = !this.showPostContainer;
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+        this.postHub.stop();
     }
 
     public ngOnInit() {
-        // this.hub = new HubConnectionBuilder().withUrl('http://localhost:5000/main-thread').build();
-        // this.hub.on('like', (data) => {
-        //     console.log(data);
-        // });
-        // this.hub.start().catch((error) => console.log(error));
-
+        this.registerHub();
         this.getPosts();
         this.getUser();
 
-        this.eventService.userChangedEvent$.subscribe((user) => {
+        this.eventService.userChangedEvent$.pipe(takeUntil(this.unsubscribe$)).subscribe((user) => {
             this.currentUser = user;
             this.post.authorId = this.currentUser ? this.currentUser.id : undefined;
         });
     }
 
     public getPosts() {
-        this.subscription.add(this.postService.getPosts().subscribe((resp) => (this.posts = this.cachedPosts = resp.body)));
-    }
-
-    public sliderChanged(event: MatSlideToggleChange) {
-        event.checked ? (this.posts = this.posts.filter((x) => x.author.id === this.currentUser.id)) : (this.posts = this.cachedPosts);
-    }
-
-    public openAuthDialog() {
-        this.authDialogService.openAuthDialog(DialogType.SignIn);
+        this.postService
+            .getPosts()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((resp) => (this.posts = this.cachedPosts = resp.body));
     }
 
     public sendPost() {
         const postSubscription = !this.imageFile
             ? this.postService.createPost(this.post)
-            : this.imgurService.uploadToImgur(environment.imgurClientId, this.imageFile, 'title').pipe(
+            : this.imgurService.uploadToImgur(this.imageFile, 'title').pipe(
                   switchMap((imageData) => {
                       this.post.previewImage = imageData.body.data.link;
                       return this.postService.createPost(this.post);
@@ -86,18 +79,16 @@ export class MainThreadComponent implements OnInit, OnDestroy {
               );
 
         this.loading = true;
-        this.subscription.add(
-            postSubscription.subscribe(
-                (respPost) => {
-                    this.posts = this.sortPostArray(this.posts.concat(respPost.body));
-                    this.cachedPosts = this.sortPostArray(this.cachedPosts.concat(respPost.body));
-                    this.removeImage();
-                    this.post.body = undefined;
-                    this.post.previewImage = undefined;
-                    this.loading = false;
-                },
-                (error) => this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' })
-            )
+
+        postSubscription.pipe(takeUntil(this.unsubscribe$)).subscribe(
+            (respPost) => {
+                this.addNewPost(respPost.body);
+                this.removeImage();
+                this.post.body = undefined;
+                this.post.previewImage = undefined;
+                this.loading = false;
+            },
+            (error) => this.snackBarService.showErrorMessage(error)
         );
     }
 
@@ -111,7 +102,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
 
         if (this.imageFile.size / 1000000 > 5) {
             target.value = '';
-            this.snackBar.open(`Image can't be heavier than ~5MB`, '', { duration: 3000, panelClass: 'error-snack-bar' });
+            this.snackBarService.showErrorMessage(`Image can't be heavier than ~5MB`);
             return;
         }
 
@@ -125,8 +116,49 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         this.imageFile = undefined;
     }
 
-    public getUser() {
-        this.subscription.add(this.authService.getUser().subscribe((user) => (this.currentUser = user)));
+    public sliderChanged(event: MatSlideToggleChange) {
+        if (event.checked) {
+            this.isOnlyMine = true;
+            this.posts = this.cachedPosts.filter((x) => x.author.id === this.currentUser.id);
+        } else {
+            this.isOnlyMine = false;
+            this.posts = this.cachedPosts;
+        }
+    }
+
+    public toggleNewPostContainer() {
+        this.showPostContainer = !this.showPostContainer;
+    }
+
+    public openAuthDialog() {
+        this.authDialogService.openAuthDialog(DialogType.SignIn);
+    }
+
+    public registerHub() {
+        this.postHub = new HubConnectionBuilder().withUrl('https://localhost:44344/notifications/post').build();
+        this.postHub.start().catch((error) => this.snackBarService.showErrorMessage(error));
+
+        this.postHub.on('NewPost', (newPost: Post) => {
+            if (newPost) {
+                this.addNewPost(newPost);
+            }
+        });
+    }
+
+    public addNewPost(newPost: Post) {
+        if (!this.cachedPosts.some((x) => x.id === newPost.id)) {
+            this.cachedPosts = this.sortPostArray(this.cachedPosts.concat(newPost));
+            if (!this.isOnlyMine || (this.isOnlyMine && newPost.author.id === this.currentUser.id)) {
+                this.posts = this.sortPostArray(this.posts.concat(newPost));
+            }
+        }
+    }
+
+    private getUser() {
+        this.authService
+            .getUser()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((user) => (this.currentUser = user));
     }
 
     private sortPostArray(array: Post[]): Post[] {

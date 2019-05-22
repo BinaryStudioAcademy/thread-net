@@ -3,13 +3,13 @@ import { DialogType } from '../models/common/auth-dialog-type';
 import { AuthDialogComponent } from '../components/auth-dialog/auth-dialog.component';
 import { User } from '../models/user';
 import { MatDialog } from '@angular/material';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from './auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthDialogService implements OnDestroy {
-    private subscription: Subscription;
+    private unsubscribe$ = new Subject<void>();
 
     public constructor(private dialog: MatDialog, private authService: AuthenticationService) {}
 
@@ -24,14 +24,18 @@ export class AuthDialogService implements OnDestroy {
             }
         });
 
-        this.subscription = dialog.afterClosed().subscribe((result: User) => {
-            if (result) {
-                this.authService.setUser(result);
-            }
-        });
+        dialog
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((result: User) => {
+                if (result) {
+                    this.authService.setUser(result);
+                }
+            });
     }
 
     public ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

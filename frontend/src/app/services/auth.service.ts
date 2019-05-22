@@ -66,16 +66,17 @@ export class AuthenticationService {
     }
 
     public refreshTokens() {
-        this._refreshToken().subscribe((resp) => {
-            this._setTokens(resp.body);
-        });
-    }
-
-    private _refreshToken() {
-        return this.httpService.postFullRequest<AccessTokenDto>(`${this.routePrefix}/token/refresh`, {
-            accessToken: JSON.parse(localStorage.getItem('accessToken')),
-            refreshToken: JSON.parse(localStorage.getItem('refreshToken'))
-        });
+        return this.httpService
+            .postFullRequest<AccessTokenDto>(`${this.routePrefix}/token/refresh`, {
+                accessToken: JSON.parse(localStorage.getItem('accessToken')),
+                refreshToken: JSON.parse(localStorage.getItem('refreshToken'))
+            })
+            .pipe(
+                map((resp) => {
+                    this._setTokens(resp.body);
+                    return resp.body;
+                })
+            );
     }
 
     private _handleAuthResponse(observable: Observable<HttpResponse<AuthUser>>) {

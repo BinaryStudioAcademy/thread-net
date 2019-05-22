@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { takeUntil } from 'rxjs/operators';
+import { SnackBarService } from 'src/app/services/snack-bar.service';
 
 @Component({
     templateUrl: './auth-dialog.component.html',
@@ -15,15 +17,15 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     public avatar: string;
     public email: string;
 
-    public subscription = new Subscription();
     public hidePass = true;
     public title: string;
+    private unsubscribe$ = new Subject<void>();
 
     constructor(
         private dialogRef: MatDialogRef<AuthDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private authService: AuthenticationService,
-        private snackBar: MatSnackBar
+        private snackBarService: SnackBarService
     ) {}
 
     public ngOnInit() {
@@ -32,7 +34,8 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     public close() {
@@ -40,28 +43,16 @@ export class AuthDialogComponent implements OnInit, OnDestroy {
     }
 
     public signIn() {
-        this.subscription.add(
-            this.authService.login({ email: this.email, password: this.password }).subscribe(
-                (response) => {
-                    this.dialogRef.close(response);
-                },
-                (error) => {
-                    this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' });
-                }
-            )
-        );
+        this.authService
+            .login({ email: this.email, password: this.password })
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((response) => this.dialogRef.close(response), (error) => this.snackBarService.showErrorMessage(error));
     }
 
     public signUp() {
-        this.subscription.add(
-            this.authService.register({ userName: this.userName, password: this.password, email: this.email, avatar: this.avatar }).subscribe(
-                (response) => {
-                    this.dialogRef.close(response);
-                },
-                (error) => {
-                    this.snackBar.open(error, '', { duration: 3000, panelClass: 'error-snack-bar' });
-                }
-            )
-        );
+        this.authService
+            .register({ userName: this.userName, password: this.password, email: this.email, avatar: this.avatar })
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((response) => this.dialogRef.close(response), (error) => this.snackBarService.showErrorMessage(error));
     }
 }

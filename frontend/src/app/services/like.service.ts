@@ -21,10 +21,11 @@ export class LikeService {
         };
 
         // update current array instantly
-        const hasReaction = innerPost.reactions.some((x) => x.user.id === currentUser.id);
+        let hasReaction = innerPost.reactions.some((x) => x.user.id === currentUser.id);
         innerPost.reactions = hasReaction
             ? innerPost.reactions.filter((x) => x.user.id !== currentUser.id)
             : innerPost.reactions.concat({ isLike: true, user: currentUser });
+        hasReaction = innerPost.reactions.some((x) => x.user.id === currentUser.id);
 
         return this.postService.likePost(reaction).pipe(
             map(() => innerPost),
