@@ -1,6 +1,13 @@
-# Thread .NET
+# Thread .NET - mini-project Thread
 
-## Technologies | Libs used:
+## Описание:
+**Thread** - это [SPA](https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58) с готовой архитектурой и структурой, подключенным базовым стеком технологий и стартовым функционалом, предназначенный для самостоятельной практики студентов.
+
+Тематика проекта - социальная сеть, похожая на Twitter.
+
+Основная идея проекта - ознакомить студентов с нашим виденьем того, как реальный проект должен выглядеть изнутри, и дать возможность самостоятельно исследовать, как устроена архитектура и структура проекта, посмотреть его возможные конфигурации, попробовать покопаться и разобраться в чужом коде.
+
+## Технологии:
 ### Backend:
 - [.NET Core](https://dotnet.microsoft.com/download)
 - [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads)
@@ -15,17 +22,16 @@
 - [Angular](https://angular.io)
 - [Angular Material](https://material.angular.io)
 
-## Recommended tools:
+## Рекомендованные инструменты:
 - [Visual Studio IDE](https://visualstudio.microsoft.com/vs)
 - [Visual Studio Code](https://code.visualstudio.com)
 - [Postman](https://www.getpostman.com)
 
-## Setting up the project:
-- Make sure you have installed [.NET Core](https://dotnet.microsoft.com/download) v.2.2.x, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS ver. and [Angular CLI](https://angular.io/cli).
-- Fork or copy the contents of this repository to your PC.
-- Add a new environment variable `SecretJWTKey` with a random MD5 hash to your system, for example, it can be `DD70E219DCF6408A7506EA0186D183AE`.
-- Sign up in [Imgur](https://imgur.com/register) and [add a new application](https://api.imgur.com/oauth2/addclient) **without a callback URL**.
-  - You will get _Client ID_ from Imgur - open the file **frontend/src/environments/environment.ts** and add a new string property to the variable named **imgurClientId** with your _Client ID_. It should look like:
+## Установка:
+- Убедитесь, что у Вас установлен [.NET Core](https://dotnet.microsoft.com/download) v.2.2.x, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS и [Angular CLI](https://angular.io/cli).
+- [Добавьте новую переменную окружения](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) `SecretJWTKey` со значением `DD70E219DCF6408A7506EA0186D183AE`.
+- Зарегистрируйтесь на [Imgur](https://imgur.com/register) и [создайте новое приложение](https://api.imgur.com/oauth2/addclient) с опцией **without a callback URL**.
+  - После успешного создания приложения, Вы получите _Client ID_ - откройте файл **frontend/src/environments/environment.ts** и добавьте новое свойство **imgurClientId** в объект **environment** со значением _Client ID_. Пример, как это должно выглядеть:
 ```typescript
 export const environment = {
     production: false,
@@ -34,24 +40,42 @@ export const environment = {
 };
 ```
 
-## Build the project:
+## Сборка проектов:
 - **Backend**:
-  - Open **backend/Thread .NET.sln** via Visual Studio and build the project.
-    - Or you can run a terminal and execute the `dotnet build` command in the **backend/** folder.
+  - Откройте **backend/Thread .NET.sln** с помощью Visual Studio и соберите решение.
+    - Или Вы можете выполнить в консоли команду `dotnet build` находясь в папке **backend/**.
 
 - **Frontend**:
-  - Open **frontend/** folder via Visual Studio Code and execute the `npm i` command. To build a project in production mode, you can execute the `ng build` command.
+  - Откройте папку **frontend/** с помощью Visual Studio Code и в терминале выполните команду `npm i`.
 
-## Database creation:
-- Run a terminal in the **backend/Thread .NET.WebAPI/** folder and execute the `dotnet ef update database` command.
-  - **Note:** By default, the connection string is configured to use **(local)** MS SQL Server. If you use another alias to connect to MS SQL Server, you need to update the _ThreadDBConnection_ in the `appsettings.json` file in the **backend/Thread .NET.WebAPI** folder.
+## Создание БД:
+- Откройте консоль в папке **backend/Thread .NET.WebAPI/** и выполните команду `dotnet ef update database`.
+  - **Note:** По умолчанию, строка подключения к SQL Server будет **(local)**. Если Вы используете другой алиас для подключения к SQL Server, то не забудьте обновить свойство _ThreadDBConnection_ в файле `appsettings.json`, которое находится в папке **backend/Thread .NET.WebAPI**.
   
-## Run the project:
+## Запуск проектов:
 - **Backend**:
-  - Open **backend/Thread .NET.sln** via Visual Studio, build the project and simply run **Thread .NET.WebAPI**.
-    - **Note:** By default, the backend application will run on port 44344 and will be available at https://localhost:44344. If you start the application using the `dotnet run` command or change the default port, you must also change _apiUrl_ in the **frontend/src/environments/environment.ts** file. Also, you must update _JwtIssuerOptions.Audience_ property in the `appsettings.json` file in the **backend/Thread .NET.WebAPI** folder.
+  - Откройте **backend/Thread .NET.sln** с помощью Visual Studio, соберите решение и запустите проект **Thread .NET.WebAPI**.
+    - **Note:** По умолчанию, приложение стартует на 44344 порте и будет доступно по адресу https://localhost:44344. Если Вы запускаете приложение командой `dotnet run` или Вы поменяли стандартный порт, Вам также необходимо обновить свойство _apiUrl_ в файле **frontend/src/environments/environment.ts**. А также Вы должны обновить свойство _JwtIssuerOptions.Audience_ в файле `appsettings.json`, которое находится в папке **backend/Thread .NET.WebAPI**.
 
 - **Frontend**:
-  - Open **frontend/** folder via Visual Studio Code and execute the `ng serve` command. Application will run on port 4200 and will be available at http://localhost:4200.
-  
-  💻 Happy coding! 😊
+  - Откройте папку **frontend/** с помощью Visual Studio Code и выполните в терминале команду `ng serve`. Приложение запустится на 4200 порте и будет доступно по адресу http://localhost:4200.
+
+## Задания:
+Необходимо добавить следующие возможности:
+
+1. Редактирование/удаление своих постов.
+2. Дизлайки для постов.
+3. Отобразить список пользователей, которые лайкнули/дизлайкнули пост.
+4. Редактирование/удаление своих комментариев.
+5. Лайки/дизлайки для комментариев.
+6. Отобразить список пользователей, которые лайкнули/дизлайкнули комментарий.
+7. Добавить больше real-time уведомлений (SignalR), например при обновлении/удалении поста/комментария.
+8. Добавить нотификации(toastr) для frontend'a - можно использовать сторонние библиотеки.
+9. Расширить валидацию (backend/frontend) на свое усмотрение - например, пользователь не должен иметь возможности сохранить невалидный email.
+10. Добавить фильтр - отображать только те посты, которым я (как пользователь) поставил лайк.
+11. Добавить возможность сброса пароля. Отправить email с ссылкой на страницу изменения пароля.
+> **P.S. - в данном задании НЕ НУЖНО коммитить в репозиторий Ваши SMTP данные.**
+12. Отправить пользователю email, если его посту поставили лайк.
+13. Поделиться постом по email.
+
+💻 Happy coding! 😊
