@@ -26,6 +26,9 @@
 </mat-toolbar>
 
 <mat-card class="posts-container">
+  <div *ngIf="loadingPosts" class="mat-spinner-wrapper posts-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
   <div class="main-thread">
     <div class="main-actions" *ngIf="currentUser">
       <button mat-raised-button matTooltip="Write a post" (click)="toggleNewPostContainer()">
@@ -33,6 +36,9 @@
       </button>
       <mat-slide-toggle (change)="sliderChanged($event)">Only mine</mat-slide-toggle>
     </div>
+    <mat-toolbar *ngIf="posts.length === 0 && !loadingPosts">
+      <p class="no-content">There is nothing</p>
+    </mat-toolbar>
     <div *ngFor="let _post of posts" class="user-post">
       <app-post [post]="_post" [currentUser]="currentUser"></app-post>
     </div>

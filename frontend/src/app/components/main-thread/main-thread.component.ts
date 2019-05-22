@@ -30,6 +30,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     public post = {} as NewPost;
     public showPostContainer = false;
     public loading = false;
+    public loadingPosts = false;
 
     public postHub: HubConnection;
 
@@ -62,10 +63,17 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     }
 
     public getPosts() {
+        this.loadingPosts = true;
         this.postService
             .getPosts()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((resp) => (this.posts = this.cachedPosts = resp.body));
+            .subscribe(
+                (resp) => {
+                    this.loadingPosts = false;
+                    this.posts = this.cachedPosts = resp.body;
+                },
+                (error) => (this.loadingPosts = false)
+            );
     }
 
     public sendPost() {
