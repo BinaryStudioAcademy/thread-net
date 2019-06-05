@@ -49,7 +49,7 @@ export const environment = {
   - Откройте папку **frontend/** с помощью Visual Studio Code и в терминале выполните команду `npm i`.
 
 ## Создание БД:
-- Откройте консоль в папке **backend/Thread .NET.WebAPI/** и выполните команду `dotnet ef update database`.
+- Откройте консоль в папке **backend/Thread .NET.WebAPI/** и выполните команду `dotnet ef database update`.
   - **Note:** По умолчанию, строка подключения к SQL Server будет **(local)**. Если Вы используете другой алиас для подключения к SQL Server, то не забудьте обновить свойство _ThreadDBConnection_ в файле `appsettings.json`, которое находится в папке **backend/Thread .NET.WebAPI**.
   
 ## Запуск проектов:
