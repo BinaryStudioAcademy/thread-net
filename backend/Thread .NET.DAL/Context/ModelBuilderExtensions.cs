@@ -26,7 +26,10 @@ namespace Thread_.NET.DAL.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<CommentReaction>()
-                .HasOne(pr => pr.Comment)
+                .HasAlternateKey(cr => new { cr.CommentId, cr.UserId });
+
+            modelBuilder.Entity<CommentReaction>()
+                .HasOne(cr => cr.Comment)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
