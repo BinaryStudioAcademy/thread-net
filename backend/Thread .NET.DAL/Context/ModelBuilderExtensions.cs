@@ -18,6 +18,9 @@ namespace Thread_.NET.DAL.Context
             modelBuilder.Entity<RefreshToken>().Ignore(t => t.IsActive);
 
             modelBuilder.Entity<PostReaction>()
+                .HasAlternateKey(pr => new { pr.PostId, pr.UserId });
+
+            modelBuilder.Entity<PostReaction>()
                 .HasOne(pr => pr.Post)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
