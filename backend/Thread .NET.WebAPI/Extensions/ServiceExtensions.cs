@@ -7,8 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Thread_.NET.BLL.Hubs;
 using Thread_.NET.BLL.JWT;
 using Thread_.NET.BLL.MappingProfiles;
 using Thread_.NET.BLL.Services;
@@ -31,6 +33,8 @@ namespace Thread_.NET.Extensions
             services.AddScoped<PostService>();
             services.AddScoped<UserService>();
             services.AddScoped<CommentService>();
+
+            services.AddScoped<PostHub>();
         }
 
         public static void RegisterCustomValidators(this IServiceCollection services)
@@ -50,7 +54,8 @@ namespace Thread_.NET.Extensions
                 cfg.AddProfile<ReactionProfile>();
                 cfg.AddProfile<PostProfile>();
                 cfg.AddProfile<UserProfile>();
-            });
+            },
+            Assembly.GetExecutingAssembly());
         }
 
         public static void ConfigureCustomValidationErrors(this IServiceCollection services)

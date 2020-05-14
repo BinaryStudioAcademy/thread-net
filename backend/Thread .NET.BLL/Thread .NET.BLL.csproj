@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Thread_.NET.BLL.Hubs;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.Extensions;
@@ -38,15 +39,14 @@ namespace Thread_.NET
             services
                 .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .AddAuthorization()
-                .AddJsonFormatters()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation();
 
             services.ConfigureCustomValidationErrors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,14 +65,14 @@ namespace Thread_.NET
             .AllowCredentials()
             .WithOrigins("http://localhost:4200"));
 
-            app.UseSignalR(routes =>
+            app.UseEndpoints(cfg =>
             {
-                routes.MapHub<PostHub>("/notifications/post");
+                cfg.MapControllers();
+                cfg.MapHub<PostHub>("/notifications/post");
             });
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseMvc();
         }
     }
 }
