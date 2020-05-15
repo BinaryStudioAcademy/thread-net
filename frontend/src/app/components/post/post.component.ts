@@ -1,16 +1,16 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { Post } from 'src/app/models/post/post';
-import { AuthenticationService } from 'src/app/services/auth.service';
-import { AuthDialogService } from 'src/app/services/auth-dialog.service';
+import { Post } from '../../models/post/post';
+import { AuthenticationService } from '../../services/auth.service';
+import { AuthDialogService } from '../../services/auth-dialog.service';
 import { empty, Observable, Subject } from 'rxjs';
-import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { LikeService } from 'src/app/services/like.service';
-import { NewComment } from 'src/app/models/comment/new-comment';
-import { CommentService } from 'src/app/services/comment.service';
-import { User } from 'src/app/models/user';
-import { Comment } from 'src/app/models/comment/comment';
+import { DialogType } from '../../models/common/auth-dialog-type';
+import { LikeService } from '../../services/like.service';
+import { NewComment } from '../../models/comment/new-comment';
+import { CommentService } from '../../services/comment.service';
+import { User } from '../../models/user';
+import { Comment } from '../../models/comment/comment';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
-import { SnackBarService } from 'src/app/services/snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
     selector: 'app-post',

@@ -1,5 +1,5 @@
-import { User } from 'src/app/models/user';
-import { AccessTokenDto } from 'src/app/models/token/access-token-dto';
+import { User } from '../../models/user';
+import { AccessTokenDto } from '../../models/token/access-token-dto';
 
 export interface AuthUser {
     user: User;

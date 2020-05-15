@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
-import { UserService } from 'src/app/services/user.service';
-import { AuthenticationService } from 'src/app/services/auth.service';
-import { ImgurService } from 'src/app/services/imgur.service';
+import { UserService } from '../../services/user.service';
+import { AuthenticationService } from '../../services/auth.service';
+import { ImgurService } from '../../services/imgur.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { SnackBarService } from 'src/app/services/snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
     selector: 'app-user-profile',

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subscription, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 import { HttpInternalService } from './http-internal.service';
 import { map, switchMap } from 'rxjs/operators';
 

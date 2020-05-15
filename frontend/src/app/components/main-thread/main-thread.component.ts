@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Post } from 'src/app/models/post/post';
-import { User } from 'src/app/models/user';
+import { Post } from '../../models/post/post';
+import { User } from '../../models/user';
 import { Subject } from 'rxjs';
 import { MatSlideToggleChange } from '@angular/material';
-import { AuthenticationService } from 'src/app/services/auth.service';
-import { PostService } from 'src/app/services/post.service';
-import { AuthDialogService } from 'src/app/services/auth-dialog.service';
-import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { EventService } from 'src/app/services/event.service';
-import { ImgurService } from 'src/app/services/imgur.service';
-import { NewPost } from 'src/app/models/post/new-post';
+import { AuthenticationService } from '../../services/auth.service';
+import { PostService } from '../../services/post.service';
+import { AuthDialogService } from '../../services/auth-dialog.service';
+import { DialogType } from '../../models/common/auth-dialog-type';
+import { EventService } from '../../services/event.service';
+import { ImgurService } from '../../services/imgur.service';
+import { NewPost } from '../../models/post/new-post';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
-import { SnackBarService } from 'src/app/services/snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
     selector: 'app-main-thread',

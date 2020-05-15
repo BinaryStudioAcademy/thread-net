@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DialogType } from 'src/app/models/common/auth-dialog-type';
-import { User } from 'src/app/models/user';
+import { DialogType } from '../../models/common/auth-dialog-type';
+import { User } from '../../models/user';
 import { Subject } from 'rxjs';
-import { AuthenticationService } from 'src/app/services/auth.service';
-import { EventService } from 'src/app/services/event.service';
-import { UserService } from 'src/app/services/user.service';
+import { AuthenticationService } from '../../services/auth.service';
+import { EventService } from '../../services/event.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { AuthDialogService } from 'src/app/services/auth-dialog.service';
+import { AuthDialogService } from '../../services/auth-dialog.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

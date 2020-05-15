@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { DialogType } from 'src/app/models/common/auth-dialog-type';
+import { DialogType } from '../../models/common/auth-dialog-type';
 import { Subject } from 'rxjs';
-import { AuthenticationService } from 'src/app/services/auth.service';
+import { AuthenticationService } from '../../services/auth.service';
 import { takeUntil } from 'rxjs/operators';
-import { SnackBarService } from 'src/app/services/snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
     templateUrl: './auth-dialog.component.html',
