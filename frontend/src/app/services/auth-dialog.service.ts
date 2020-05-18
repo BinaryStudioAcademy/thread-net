@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { DialogType } from '../models/common/auth-dialog-type';
 import { AuthDialogComponent } from '../components/auth-dialog/auth-dialog.component';
 import { User } from '../models/user';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { map, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from './auth.service';
 import { Subscription, Subject } from 'rxjs';

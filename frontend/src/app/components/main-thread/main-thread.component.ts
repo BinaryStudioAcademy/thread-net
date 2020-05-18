@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '../../models/post/post';
 import { User } from '../../models/user';
 import { Subject } from 'rxjs';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { AuthenticationService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
 import { AuthDialogService } from '../../services/auth-dialog.service';

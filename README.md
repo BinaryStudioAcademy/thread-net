@@ -28,7 +28,7 @@
 - [Postman](https://www.getpostman.com)
 
 ## Установка:
-- Убедитесь, что у Вас установлен [.NET Core](https://dotnet.microsoft.com/download) v.2.2.x, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS и [Angular CLI](https://angular.io/cli).
+- Убедитесь, что у Вас установлен [.NET Core](https://dotnet.microsoft.com/download) v.3.1.x, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS и [Angular CLI](https://angular.io/cli).
 - [Добавьте новую переменную окружения](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) `SecretJWTKey` со значением `DD70E219DCF6408A7506EA0186D183AE`.
 - Зарегистрируйтесь на [Imgur](https://imgur.com/register) и [создайте новое приложение](https://api.imgur.com/oauth2/addclient) с опцией **without a callback URL**.
   - После успешного создания приложения, Вы получите _Client ID_ - откройте файл **frontend/src/environments/environment.ts** и добавьте значение для свойства **imgurClientId** в объект **environment** со значением _Client ID_. Пример, как это должно выглядеть:

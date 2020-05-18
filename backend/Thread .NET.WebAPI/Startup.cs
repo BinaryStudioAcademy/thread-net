@@ -59,20 +59,20 @@ namespace Thread_.NET
             }
 
             app.UseCors(builder => builder
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithExposedHeaders("Token-Expired")
-            .AllowCredentials()
-            .WithOrigins("http://localhost:4200"));
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithExposedHeaders("Token-Expired")
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200"));
+            app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseEndpoints(cfg =>
             {
                 cfg.MapControllers();
                 cfg.MapHub<PostHub>("/notifications/post");
-            });
-
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
+            });            
         }
     }
 }

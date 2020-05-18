@@ -25,7 +25,6 @@ import { MaterialComponentsModule } from './components/common/material-component
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
-    entryComponents: [AuthDialogComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

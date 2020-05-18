@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogType } from '../../models/common/auth-dialog-type';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from '../../services/auth.service';
