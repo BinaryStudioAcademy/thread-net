@@ -67,6 +67,7 @@ namespace Thread_.NET
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+			app.UseAuthorization();
 
             app.UseEndpoints(cfg =>
             {
