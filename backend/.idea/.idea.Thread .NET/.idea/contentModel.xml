@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\SuperAdmin\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\SuperAdmin\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Thread .NET.1833221296.00" t="ExcludeRecursive" />
+    <e p="E:\WORK\BinaryStudio\thread-net\backend" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Thread .NET.BLL" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Exceptions" t="Include">
+          <e p="ExpiredRefreshTokenException.cs" t="Include" />
+          <e p="InvalidTokenException.cs" t="Include" />
+          <e p="InvalidUsernameOrPasswordException.cs" t="Include" />
+          <e p="NotFoundException.cs" t="Include" />
+        </e>
+        <e p="Hubs" t="Include">
+          <e p="PostHub.cs" t="Include" />
+        </e>
+        <e p="JWT" t="Include">
+          <e p="JwtFactory.cs" t="Include" />
+        </e>
+        <e p="MappingProfiles" t="Include">
+          <e p="CommentProfile.cs" t="Include" />
+          <e p="PostProfile.cs" t="Include" />
+          <e p="ReactionProfile.cs" t="Include" />
+          <e p="UserProfile.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="Thread .NET.BLL.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Services" t="Include">
+          <e p="Abstract" t="Include">
+            <e p="BaseService.cs" t="Include" />
+          </e>
+          <e p="AuthService.cs" t="Include" />
+          <e p="CommentService.cs" t="Include" />
+          <e p="LikeService.cs" t="Include" />
+          <e p="PostService.cs" t="Include" />
+          <e p="UserService.cs" t="Include" />
+        </e>
+        <e p="Thread .NET.BLL.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="Thread .NET.Common" t="IncludeRecursive">
+        <e p="Auth" t="Include">
+          <e p="AccessToken.cs" t="Include" />
+          <e p="JwtIssuerOptions.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="DTO" t="Include">
+          <e p="Auth" t="Include">
+            <e p="AccessTokenDTO.cs" t="Include" />
+            <e p="RefreshTokenDTO.cs" t="Include" />
+            <e p="RevokeRefreshTokenDTO.cs" t="Include" />
+          </e>
+          <e p="Comment" t="Include">
+            <e p="CommentDTO.cs" t="Include" />
+            <e p="NewCommentDTO.cs" t="Include" />
+          </e>
+          <e p="Like" t="Include">
+            <e p="NewReactionDTO.cs" t="Include" />
+            <e p="ReactionDTO.cs" t="Include" />
+          </e>
+          <e p="Post" t="Include">
+            <e p="PostCreateDTO.cs" t="Include" />
+            <e p="PostDTO.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="AuthUserDTO.cs" t="Include" />
+            <e p="UserDTO.cs" t="Include" />
+            <e p="UserLoginDTO.cs" t="Include" />
+            <e p="UserRegisterDTO.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="Thread .NET.Common.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Security" t="Include">
+          <e p="SecurityHelper.cs" t="Include" />
+        </e>
+        <e p="Thread .NET.Common.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="Thread .NET.DAL" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Context" t="Include">
+          <e p="ModelBuilderExtensions.cs" t="Include" />
+          <e p="ThreadContext.cs" t="Include" />
+        </e>
+        <e p="Entities" t="Include">
+          <e p="Abstract" t="Include">
+            <e p="BaseEntity.cs" t="Include" />
+            <e p="Reaction.cs" t="Include" />
+          </e>
+          <e p="Comment.cs" t="Include" />
+          <e p="CommentReaction.cs" t="Include" />
+          <e p="Image.cs" t="Include" />
+          <e p="Post.cs" t="Include" />
+          <e p="PostReaction.cs" t="Include" />
+          <e p="RefreshToken.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+        </e>
+        <e p="Migrations" t="Include">
+          <e p="20190402150830_InitDB.cs" t="Include" />
+          <e p="20190402150830_InitDB.Designer.cs" t="Include" />
+          <e p="20190405092644_UpdateUserAvatarId.cs" t="Include" />
+          <e p="20190405092644_UpdateUserAvatarId.Designer.cs" t="Include" />
+          <e p="20190408161233_AddRefreshTokenEntity.cs" t="Include" />
+          <e p="20190408161233_AddRefreshTokenEntity.Designer.cs" t="Include" />
+          <e p="20190409102415_AddHashedPasswords.cs" t="Include" />
+          <e p="20190409102415_AddHashedPasswords.Designer.cs" t="Include" />
+          <e p="20190410104228_SetNullableImagePreviewForPost.cs" t="Include" />
+          <e p="20190410104228_SetNullableImagePreviewForPost.Designer.cs" t="Include" />
+          <e p="20190608102411_AddPostReactionAlternateKey.cs" t="Include" />
+          <e p="20190608102411_AddPostReactionAlternateKey.Designer.cs" t="Include" />
+          <e p="20190608103002_AddCommentReactionAlternateKey.cs" t="Include" />
+          <e p="20190608103002_AddCommentReactionAlternateKey.Designer.cs" t="Include" />
+          <e p="ThreadContextModelSnapshot.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="Thread .NET.DAL.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Thread .NET.DAL.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="Thread .NET.sln" t="IncludeFlat" />
+      <e p="Thread .NET.WebAPI" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="AuthController.cs" t="Include" />
+          <e p="CommentsController.cs" t="Include" />
+          <e p="PostsController.cs" t="Include" />
+          <e p="RegisterController.cs" t="Include" />
+          <e p="TokenController.cs" t="Include" />
+          <e p="UsersController.cs" t="Include" />
+        </e>
+        <e p="Enums" t="Include">
+          <e p="ErrorCode.cs" t="Include" />
+        </e>
+        <e p="Extensions" t="Include">
+          <e p="ControllerBaseExtensions.cs" t="Include" />
+          <e p="ExceptionFilterExtensions.cs" t="Include" />
+          <e p="ServiceExtensions.cs" t="Include" />
+        </e>
+        <e p="Filters" t="Include">
+          <e p="CustomExceptionFilterAttribute.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="Thread .NET.WebAPI.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="Thread .NET.WebAPI.csproj" t="IncludeRecursive" />
+        <e p="Validators" t="Include">
+          <e p="RefreshTokenDTOValidator.cs" t="Include" />
+          <e p="RevokeRefreshTokenDTOValidator.cs" t="Include" />
+          <e p="UserDTOValidator.cs" t="Include" />
+          <e p="UserLoginDTOValidator.cs" t="Include" />
+        </e>
+      </e>
+    </e>
+  </component>
+</project>

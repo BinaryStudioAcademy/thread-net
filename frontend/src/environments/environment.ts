@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     apiUrl: 'https://localhost:44344',
-    imgurClientId: ''
+    imgurClientId: 'c955b197923fb59'
 };
 
 /*
