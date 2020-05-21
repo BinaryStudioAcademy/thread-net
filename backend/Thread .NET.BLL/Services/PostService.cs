@@ -74,14 +74,26 @@ namespace Thread_.NET.BLL.Services
 
         public async Task<bool> DeletePost(int postId)
         {
-            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
-            if (post != null)
+            var post = await _context.Posts
+                .Include(post => post.Comments)
+                    .ThenInclude(comment => comment.Reactions)
+                .FirstAsync(post => post.Id == postId);
+
+            if (post == null) return false;
             {
+                if (post.Comments.Count > 0)
+                {
+                    foreach (var comment in post.Comments)
+                    {
+                        if (comment.Reactions.Count > 0)    
+                            _context.CommentReactions.RemoveRange(comment.Reactions);
+                        _context.Comments.Remove(comment);
+                    }
+                }
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
                 return true;
             }
-            return false;
         }
     }
 }
