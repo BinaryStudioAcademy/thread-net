@@ -10,6 +10,10 @@ export class PostService {
 
     constructor(private httpService: HttpInternalService) {}
 
+    public deletePost(postId: number) {
+        return this.httpService.deleteFullRequest(`${this.routePrefix}/` + postId.toString());
+    }
+
     public getPosts() {
         return this.httpService.getFullRequest<Post[]>(`${this.routePrefix}`);
     }
