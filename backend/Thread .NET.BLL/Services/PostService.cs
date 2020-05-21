@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +70,18 @@ namespace Thread_.NET.BLL.Services
             await _postHub.Clients.All.SendAsync("NewPost", createdPostDTO);
 
             return createdPostDTO;
+        }
+
+        public async Task<bool> DeletePost(int postId)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
