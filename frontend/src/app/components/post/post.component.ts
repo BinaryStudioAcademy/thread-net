@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, Output } from '@angular/core';
 import { Post } from '../../models/post/post';
 import { AuthenticationService } from '../../services/auth.service';
 import { AuthDialogService } from '../../services/auth-dialog.service';
@@ -11,6 +11,7 @@ import { User } from '../../models/user';
 import { Comment } from '../../models/comment/comment';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-post',
@@ -20,6 +21,7 @@ import { SnackBarService } from '../../services/snack-bar.service';
 export class PostComponent implements OnDestroy {
     @Input() public post: Post;
     @Input() public currentUser: User;
+    @Output() public deleteClick = new EventEmitter<number>();
 
     public showComments = false;
     public newComment = {} as NewComment;
@@ -37,6 +39,10 @@ export class PostComponent implements OnDestroy {
     public ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+    public deletePost(postId: number) {
+        this.deleteClick.emit(postId);
     }
 
     public toggleComments() {

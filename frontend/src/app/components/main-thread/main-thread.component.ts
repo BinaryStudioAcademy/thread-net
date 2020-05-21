@@ -62,6 +62,21 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onDeletePost(postId: number) {
+        this.loadingPosts = true;
+        this.postService
+            .deletePost(postId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe( () => {
+                this.loading = false;
+                this.posts = this.cachedPosts 
+                    = this.cachedPosts.filter( (post) => {
+                        post.id !== postId
+                    });
+            });
+            
+    }
+
     public getPosts() {
         this.loadingPosts = true;
         this.postService

@@ -3,6 +3,7 @@
     <img mat-card-avatar src="{{post.author.avatar}}" alt="Avatar">
     <mat-card-title>{{post.author.userName}}</mat-card-title>
     <div class="date">{{post.createdAt | date:'d/M/yy, h:mm a'}}</div>
+    <button mat-icon-button class="button-to-right" (click)="deletePost(post.id)"><mat-icon color="warn">clear</mat-icon></button>
   </mat-card-header>
   <img mat-card-image *ngIf="post.previewImage" mat-card-image src="{{post.previewImage}}" alt="Photo">
   <mat-card-content>

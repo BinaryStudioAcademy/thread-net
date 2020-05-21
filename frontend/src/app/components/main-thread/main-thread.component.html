@@ -40,7 +40,8 @@
       <p class="no-content">There is nothing</p>
     </mat-toolbar>
     <div *ngFor="let _post of posts" class="user-post">
-      <app-post [post]="_post" [currentUser]="currentUser"></app-post>
+      <app-post [post]="_post" [currentUser]="currentUser"
+        (deleteClick)="onDeletePost($event)"></app-post>
     </div>
   </div>
 </mat-card>
