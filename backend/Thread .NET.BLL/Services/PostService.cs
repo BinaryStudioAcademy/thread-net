@@ -77,6 +77,8 @@ namespace Thread_.NET.BLL.Services
             var post = await _context.Posts
                 .Include(post => post.Comments)
                     .ThenInclude(comment => comment.Reactions)
+                .Include(post => post.Reactions)
+                .Include(post => post.Preview)
                 .FirstAsync(post => post.Id == postId);
 
             if (post == null) return false;
@@ -90,6 +92,13 @@ namespace Thread_.NET.BLL.Services
                         _context.Comments.Remove(comment);
                     }
                 }
+
+                if (post.Reactions.Count > 0)
+                    _context.PostReactions.RemoveRange(post.Reactions);
+
+                if (post.Preview != null)
+                    _context.Images.Remove(post.Preview);
+
                 _context.Posts.Remove(post);
                 await _context.SaveChangesAsync();
                 return true;
