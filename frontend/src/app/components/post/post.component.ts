@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, Output } from '@angular/core';
+import { Component, Input, OnDestroy, Output, OnInit } from '@angular/core';
 import { Post } from '../../models/post/post';
 import { AuthenticationService } from '../../services/auth.service';
 import { AuthDialogService } from '../../services/auth-dialog.service';
@@ -18,7 +18,7 @@ import { EventEmitter } from '@angular/core';
     templateUrl: './post.component.html',
     styleUrls: ['./post.component.sass']
 })
-export class PostComponent implements OnDestroy {
+export class PostComponent implements OnDestroy, OnInit {
     @Input() public post: Post;
     @Input() public currentUser: User;
     @Output() public deleteClick = new EventEmitter<number>();
@@ -34,11 +34,17 @@ export class PostComponent implements OnDestroy {
         private likeService: LikeService,
         private commentService: CommentService,
         private snackBarService: SnackBarService
-    ) {}
+    ) { }
 
     public ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
+    }
+
+    public ngOnInit() {
+        this.authService.getUser().subscribe(user => {
+            this.currentUser = user;
+        })
     }
 
     public deletePost(postId: number) {
@@ -99,6 +105,12 @@ export class PostComponent implements OnDestroy {
 
     public openAuthDialog() {
         this.authDialogService.openAuthDialog(DialogType.SignIn);
+    }
+
+    public isAuthor() {
+        let currentUserId = this.currentUser.id;
+        let postUserId = this.post.author.id;
+        return currentUserId === postUserId;
     }
 
     private catchErrorWrapper(obs: Observable<User>) {
