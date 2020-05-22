@@ -10,6 +10,9 @@
     <p>{{post.body}}</p>
   </mat-card-content>
   <mat-card-actions class="actions-buttons" align="end">
+    <button mat-icon-button color="primary" *ngIf="isAuthor()" class="button-to-left">
+      <mat-icon aria-label="Share">create</mat-icon>
+    </button>
     <button mat-icon-button color="primary" (click)="likePost()">
       <mat-icon matBadge="{{post.reactions.length}}" matBadgeColor="accent" matBadgeSize="medium"
         [matBadgeHidden]="post.reactions.length === 0" aria-label="Like">favorite</mat-icon>
