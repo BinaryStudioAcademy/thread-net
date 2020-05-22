@@ -72,8 +72,12 @@ export class MainThreadComponent implements OnInit, OnDestroy {
       .subscribe((resp) => {
         this.loadingPosts = false;
         if (resp.ok) {        
-          this.posts = this.cachedPosts = this.posts.filter( (post) => 
+          this.posts = this.cachedPosts = this.cachedPosts.filter( (post) => 
             post.id !== postId );
+
+            if (this.isOnlyMine) {
+              this.posts = this.showOnlyMine();
+            }
         }
       }, (err) => { 
           //TODO: show snackbak with delete error
@@ -149,9 +153,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
   public sliderChanged(event: MatSlideToggleChange) {
     if (event.checked) {
       this.isOnlyMine = true;
-      this.posts = this.cachedPosts.filter(
-        (x) => x.author.id === this.currentUser.id
-      );
+      this.posts = this.showOnlyMine();
     } else {
       this.isOnlyMine = false;
       this.posts = this.cachedPosts;
@@ -191,6 +193,12 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         this.posts = this.sortPostArray(this.posts.concat(newPost));
       }
     }
+  }
+
+  private showOnlyMine() {
+    return this.cachedPosts.filter(
+      (x) => x.author.id === this.currentUser.id
+    );
   }
 
   private getUser() {
