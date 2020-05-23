@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
@@ -36,6 +37,22 @@ namespace Thread_.NET.WebAPI.Controllers
             dto.AuthorId = this.GetUserIdFromToken();
 
             return Ok(await _postService.CreatePost(dto));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdatePost([FromBody] PostDTO dto)
+        {
+            try
+            {
+                var result = await _postService.UpdatePost(dto);
+                if (result > 0)
+                    return NoContent();
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }           
         }
         
         [HttpDelete("{postId:int}")]
