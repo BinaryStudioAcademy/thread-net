@@ -12,4 +12,8 @@ export class CommentService {
     public createComment(post: NewComment) {
         return this.httpService.postFullRequest<Comment>(`${this.routePrefix}`, post);
     }
+
+    public deleteComment(commentId: number) {
+        return this.httpService.deleteFullRequest(`${this.routePrefix}/`+ commentId.toString());
+    }
 }
