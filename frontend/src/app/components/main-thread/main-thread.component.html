@@ -1,7 +1,11 @@
+
+  <!-- new and edit post area -->
+
 <mat-card class="post-create-container" *ngIf="currentUser && showPostContainer">
   <div *ngIf="loading" class="mat-spinner-wrapper">
     <mat-spinner></mat-spinner>
   </div>
+
   <mat-card-content>
     <mat-form-field>
       <textarea [(ngModel)]="post.body" matInput placeholder="Write something..."></textarea>
@@ -21,6 +25,9 @@
     </button>
   </mat-card-actions>
 </mat-card>
+
+  <!-- end new and edit post area -->
+
 <mat-toolbar *ngIf="!currentUser">
   <p class="link" (click)="openAuthDialog()">Want to post? Sign in</p>
 </mat-toolbar>
@@ -41,6 +48,7 @@
     </mat-toolbar>
     <div *ngFor="let _post of posts" class="user-post">
       <app-post [post]="_post" [currentUser]="currentUser"
+        (editClick)="onEditPost($event)"
         (deleteClick)="onDeletePost($event)"></app-post>
     </div>
   </div>
