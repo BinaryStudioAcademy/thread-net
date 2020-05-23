@@ -8,6 +8,9 @@ namespace Thread_.NET.BLL.MappingProfiles
     {
         public PostProfile()
         {
+            CreateMap<PostDTO, Post>()
+                .ForMember(dest => dest.Preview, src => src.MapFrom(s => string.IsNullOrEmpty(s.PreviewImage) ? null : new Image { URL = s.PreviewImage }));
+
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.PreviewImage, src => src.MapFrom(x => x.Preview != null ? x.Preview.URL : string.Empty));
 
