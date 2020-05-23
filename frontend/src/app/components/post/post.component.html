@@ -10,7 +10,7 @@
     <p>{{post.body}}</p>
   </mat-card-content>
   <mat-card-actions class="actions-buttons" align="end">
-    <button mat-icon-button color="primary" *ngIf="isAuthor()" class="button-to-left">
+    <button mat-icon-button color="primary" *ngIf="isAuthor()" class="button-to-left" (click)="editPost(post.id)">
       <mat-icon aria-label="Share">create</mat-icon>
     </button>
     <button mat-icon-button color="primary" (click)="likePost()">
