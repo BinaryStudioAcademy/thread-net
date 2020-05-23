@@ -22,6 +22,7 @@ export class PostComponent implements OnDestroy, OnInit {
     @Input() public post: Post;
     @Input() public currentUser: User;
     @Output() public deleteClick = new EventEmitter<number>();
+    @Output() public editClick = new EventEmitter<number>();
 
     public showComments = false;
     public newComment = {} as NewComment;
@@ -44,11 +45,15 @@ export class PostComponent implements OnDestroy, OnInit {
     public ngOnInit() {
         this.authService.getUser().subscribe(user => {
             this.currentUser = user;
-        })
+        });
     }
 
     public deletePost(postId: number) {
         this.deleteClick.emit(postId);
+    }
+
+    public editPost(postId: number) {
+        this.editClick.emit(postId);
     }
 
     public toggleComments() {
