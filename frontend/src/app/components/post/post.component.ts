@@ -56,6 +56,17 @@ export class PostComponent implements OnDestroy, OnInit {
         this.editClick.emit(postId);
     }
 
+    public onDeleteComment(commentId: number) {
+        this.commentService.deleteComment(commentId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((resp) => {
+                if (!resp.ok) {this.snackBarService.showErrorMessage("Comment delete error")}
+                this.post.comments = this.post.comments.filter(
+                    (comment) => comment.id !== commentId);
+                this.snackBarService.showUsualMessage("Comment was deleted")
+            });
+    }
+
     public toggleComments() {
         if (!this.currentUser) {
             this.catchErrorWrapper(this.authService.getUser())
