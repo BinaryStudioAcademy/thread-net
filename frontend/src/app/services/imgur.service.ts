@@ -11,6 +11,10 @@ export class ImgurService {
         return this.imageDataToBase64(image).pipe(switchMap((imageBase64: string) => this.sendImgurRequest(imageBase64, title)));
     }
 
+    public getFromImgur(url: string) {
+        return this.httpService.getFullRequest(url);
+    }
+
     public deleteFromImgur(imageHash: string) {
         return this.httpService.deleteFullRequest(`https://api.imgur.com/3/image/${imageHash}`);
     }
