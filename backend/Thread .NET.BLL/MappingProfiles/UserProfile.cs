@@ -8,6 +8,9 @@ namespace Thread_.NET.BLL.MappingProfiles
     {
         public UserProfile()
         {
+            CreateMap<UserDTO, User>()
+                .ForMember(dest => dest.Avatar, src => src.MapFrom(s => string.IsNullOrEmpty(s.Avatar) ? null : new Image { URL = s.Avatar }));
+
             CreateMap<User, UserDTO>()
                .ForMember(dest => dest.Avatar, src => src.MapFrom(s => s.Avatar != null ? s.Avatar.URL : string.Empty));
 
