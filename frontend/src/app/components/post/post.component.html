@@ -38,6 +38,9 @@
     <div *ngIf="post.comments.length > 0" class="comments-count">
       Just {{post.comments.length}} in all
     </div>
-    <app-comment *ngFor="let _comment of post.comments" [comment]="_comment"></app-comment>
+    <app-comment *ngFor="let _comment of post.comments" 
+      [comment]="_comment"
+      [currentUser]="currentUser"
+      (deleteComment)="onDeleteComment($event)"></app-comment>
   </div>
 </mat-card>
