@@ -118,6 +118,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
 
   public sendPost() {
     if (this.isEditMode) {
+      this.loading = true;
       this.editPost();
       return;
     }
@@ -169,6 +170,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
   public removeImage() {
     this.imageUrl = undefined;
     this.imageFile = undefined;
+    this.editablePost.previewImage = null;
   }
 
   public sliderChanged(event: MatSlideToggleChange) {
@@ -216,6 +218,17 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     }
   }
 
+  private updatePost(updatedPost: Post) {
+    let oldPost = this.cachedPosts.find(post => post.id === updatedPost.id);
+    let index = this.cachedPosts.indexOf(oldPost);
+    this.cachedPosts.splice(index, 1, updatedPost);
+    if(this.isOnlyMine) {
+      this.posts = this.showOnlyMine();
+    } else {
+      this.posts = this.cachedPosts;
+    }
+  }
+
   private showOnlyMine() {
     return this.cachedPosts.filter((x) => x.author.id === this.currentUser.id);
   }
@@ -240,15 +253,22 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         );
 
     postSubscription.pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (respPost) => {
-        this.addNewPost(respPost.body);
-        this.removeImage();
-        this.post.body = undefined;
-        this.post.previewImage = undefined;
-        this.loading = false;
-        this.isEditMode = false;
+      (resp) => {
+        if(resp.ok) {
+          this.updatePost(this.editablePost);
+          this.removeImage();
+          this.post.body = undefined;
+          this.post.previewImage = undefined;
+          this.editablePost = {} as Post;
+          this.loading = false;
+          this.isEditMode = false;
+          this.showPostContainer = false;
+          this.snackBarService.showUsualMessage("Post was updated");
+        } else {
+          this.snackBarService.showErrorMessage("Update error");
+        }
       },
-      (error) => this.snackBarService.showErrorMessage(error)
+      (error) => this.snackBarService.showErrorMessage("Update error")
     );
   }
 
