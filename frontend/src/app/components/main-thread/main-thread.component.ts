@@ -23,11 +23,13 @@ export class MainThreadComponent implements OnInit, OnDestroy {
   public posts: Post[] = [];
   public cachedPosts: Post[] = [];
   public isOnlyMine = false;
+  public isEditMode = false;
 
   public currentUser: User;
   public imageUrl: string;
   public imageFile: File;
   public post = {} as NewPost;
+  public editablePost = {} as Post;
   public showPostContainer = false;
   public loading = false;
   public loadingPosts = false;
@@ -69,20 +71,35 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     this.postService
       .deletePost(postId)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((resp) => {
-        this.loadingPosts = false;
-        if (resp.ok) {        
-          this.posts = this.cachedPosts = this.cachedPosts.filter( (post) => 
-            post.id !== postId );
+      .subscribe(
+        (resp) => {
+          this.loadingPosts = false;
+          if (resp.ok) {
+            this.posts = this.cachedPosts = this.cachedPosts.filter(
+              (post) => post.id !== postId
+            );
 
             if (this.isOnlyMine) {
               this.posts = this.showOnlyMine();
             }
-        }
-      }, (err) => { 
-          //TODO: show snackbak with delete error
+          }
+        },
+        (err) => {
+          this.snackBarService.showErrorMessage("Server responsed with error");
           this.loadingPosts = false;
-         });
+        }
+      );
+  }
+
+  public onEditPost(postId: number) {
+    let post = this.cachedPosts.find((post) => post.id === postId);
+    if (post !== null) {
+      this.showPostContainer = true;
+      this.isEditMode = true;
+      this.imageUrl = post.previewImage;
+      this.post.body = post.body;
+      Object.assign(this.editablePost, post);
+    }
   }
 
   public getPosts() {
@@ -100,6 +117,10 @@ export class MainThreadComponent implements OnInit, OnDestroy {
   }
 
   public sendPost() {
+    if (this.isEditMode) {
+      this.editPost();
+      return;
+    }
     const postSubscription = !this.imageFile
       ? this.postService.createPost(this.post)
       : this.imgurService.uploadToImgur(this.imageFile, "title").pipe(
@@ -196,9 +217,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
   }
 
   private showOnlyMine() {
-    return this.cachedPosts.filter(
-      (x) => x.author.id === this.currentUser.id
-    );
+    return this.cachedPosts.filter((x) => x.author.id === this.currentUser.id);
   }
 
   private getUser() {
@@ -206,6 +225,31 @@ export class MainThreadComponent implements OnInit, OnDestroy {
       .getUser()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((user) => (this.currentUser = user));
+  }
+
+  //after edit set to False
+  private editPost() {
+    this.editablePost.body = this.post.body;
+    const postSubscription = !this.imageFile
+      ? this.postService.updatePost(this.editablePost)
+      : this.imgurService.uploadToImgur(this.imageFile, "title").pipe(
+          switchMap((imageData) => {
+            this.editablePost.previewImage = imageData.body.data.link;
+            return this.postService.updatePost(this.editablePost);
+          })
+        );
+
+    postSubscription.pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (respPost) => {
+        this.addNewPost(respPost.body);
+        this.removeImage();
+        this.post.body = undefined;
+        this.post.previewImage = undefined;
+        this.loading = false;
+        this.isEditMode = false;
+      },
+      (error) => this.snackBarService.showErrorMessage(error)
+    );
   }
 
   private sortPostArray(array: Post[]): Post[] {
