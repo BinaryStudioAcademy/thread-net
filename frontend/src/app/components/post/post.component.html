@@ -41,6 +41,6 @@
     <app-comment *ngFor="let _comment of post.comments" 
       [comment]="_comment"
       [currentUser]="currentUser"
-      (deleteComment)="onDeleteComment($event)"></app-comment>
+      (deleteClick)="onDeleteComment($event)"></app-comment>
   </div>
 </mat-card>
