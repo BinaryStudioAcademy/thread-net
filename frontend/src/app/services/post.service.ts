@@ -16,7 +16,7 @@ export class PostService {
     }
 
     public updatePost(post: Post) {
-        return this.httpService.putFullRequest<Post>(`${this.routePrefix}/` + post.id.toString(), post);    
+        return this.httpService.putFullRequest<Post>(`${this.routePrefix}`, post);    
     }
 
     public getPosts() {
