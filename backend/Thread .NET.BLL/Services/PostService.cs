@@ -72,6 +72,19 @@ namespace Thread_.NET.BLL.Services
             return createdPostDTO;
         }
 
+        public async Task<int> UpdatePost(PostDTO dto)
+        {
+            var postEntity = _mapper.Map<Post>(dto);
+            var oldPost = await _context.Posts
+                .Where(p => p.Id == postEntity.Id)
+                .FirstOrDefaultAsync();
+            if (oldPost == null) return 0;
+            oldPost.Body = postEntity.Body;
+            oldPost.Preview = postEntity.Preview;
+            oldPost.UpdatedAt = postEntity.UpdatedAt;
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task<bool> DeletePost(int postId)
         {
             var post = await _context.Posts
