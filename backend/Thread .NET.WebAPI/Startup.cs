@@ -1,7 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +24,10 @@ namespace Thread_.NET
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ThreadContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ThreadDBConnection")));
+            var migrationAssembly = typeof(ThreadContext).Assembly.GetName().Name;
+            services.AddDbContext<ThreadContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:ThreadDBConnection"], opt => opt.MigrationsAssembly(migrationAssembly)));
+
             services.RegisterAutoMapper();
 
             services.RegisterCustomServices();
@@ -39,7 +41,6 @@ namespace Thread_.NET
             services
                 .AddMvcCore(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .AddAuthorization()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation();
 
             services.ConfigureCustomValidationErrors();
@@ -73,7 +74,18 @@ namespace Thread_.NET
             {
                 cfg.MapControllers();
                 cfg.MapHub<PostHub>("/notifications/post");
-            });            
+            });
+
+            InitializeDatabase(app);
+        }
+
+        private static void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                using var context = scope.ServiceProvider.GetRequiredService<ThreadContext>();
+                context.Database.Migrate();
+            };
         }
     }
 }

@@ -27,4 +27,4 @@ import { MaterialComponentsModule } from './components/common/material-component
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

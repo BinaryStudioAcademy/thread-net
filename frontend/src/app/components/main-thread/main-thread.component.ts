@@ -11,8 +11,9 @@ import { EventService } from '../../services/event.service';
 import { ImgurService } from '../../services/imgur.service';
 import { NewPost } from '../../models/post/new-post';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-main-thread',
@@ -43,7 +44,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         private imgurService: ImgurService,
         private authDialogService: AuthDialogService,
         private eventService: EventService
-    ) {}
+    ) { }
 
     public ngOnDestroy() {
         this.unsubscribe$.next();
@@ -80,11 +81,11 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         const postSubscription = !this.imageFile
             ? this.postService.createPost(this.post)
             : this.imgurService.uploadToImgur(this.imageFile, 'title').pipe(
-                  switchMap((imageData) => {
-                      this.post.previewImage = imageData.body.data.link;
-                      return this.postService.createPost(this.post);
-                  })
-              );
+                switchMap((imageData) => {
+                    this.post.previewImage = imageData.body.data.link;
+                    return this.postService.createPost(this.post);
+                })
+            );
 
         this.loading = true;
 
@@ -143,7 +144,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     }
 
     public registerHub() {
-        this.postHub = new HubConnectionBuilder().withUrl('https://localhost:44344/notifications/post').build();
+        this.postHub = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/notifications/post`).build();
         this.postHub.start().catch((error) => this.snackBarService.showErrorMessage(error));
 
         this.postHub.on('NewPost', (newPost: Post) => {

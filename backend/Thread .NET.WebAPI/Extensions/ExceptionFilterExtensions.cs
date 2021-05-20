@@ -9,19 +9,14 @@ namespace Thread_.NET.Extensions
     {
         public static (HttpStatusCode statusCode, ErrorCode errorCode) ParseException(this Exception exception)
         {
-            switch (exception)
+            return exception switch
             {
-                case NotFoundException _:
-                    return (HttpStatusCode.NotFound, ErrorCode.NotFound);
-                case InvalidUsernameOrPasswordException _:
-                    return (HttpStatusCode.Unauthorized, ErrorCode.InvalidUsernameOrPassword);
-                case InvalidTokenException _:
-                    return (HttpStatusCode.Unauthorized, ErrorCode.InvalidToken);
-                case ExpiredRefreshTokenException _:
-                    return (HttpStatusCode.Unauthorized, ErrorCode.ExpiredRefreshToken);
-                default:
-                    return (HttpStatusCode.InternalServerError, ErrorCode.General);
-            }
+                NotFoundException _ => (HttpStatusCode.NotFound, ErrorCode.NotFound),
+                InvalidUsernameOrPasswordException _ => (HttpStatusCode.Unauthorized, ErrorCode.InvalidUsernameOrPassword),
+                InvalidTokenException _ => (HttpStatusCode.Unauthorized, ErrorCode.InvalidToken),
+                ExpiredRefreshTokenException _ => (HttpStatusCode.Unauthorized, ErrorCode.ExpiredRefreshToken),
+                _ => (HttpStatusCode.InternalServerError, ErrorCode.General),
+            };
         }
     }
 }
