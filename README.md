@@ -12,7 +12,7 @@
 
 ### Backend:
 
--   [.NET Core](https://dotnet.microsoft.com/download)
+-   [.NET 5](https://dotnet.microsoft.com/download)
 -   [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads)
 -   [EF Core](https://docs.microsoft.com/ef/core)
 -   [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
