@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../models/user';
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { AuthenticationService } from '../../services/auth.service';
-import { ImgurService } from '../../services/imgur.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { GyazoService } from 'src/app/services/gyazo.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -25,8 +25,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private snackBarService: SnackBarService,
         private authService: AuthenticationService,
-        private imgurService: ImgurService
-    ) {}
+        private gyazoService: GyazoService
+    ) { }
 
     public ngOnInit() {
         this.authService
@@ -43,12 +43,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     public saveNewInfo() {
         const userSubscription = !this.imageFile
             ? this.userService.updateUser(this.user)
-            : this.imgurService.uploadToImgur(this.imageFile, 'title').pipe(
-                  switchMap((imageData) => {
-                      this.user.avatar = imageData.body.data.link;
-                      return this.userService.updateUser(this.user);
-                  })
-              );
+            : this.gyazoService.uploadImage(this.imageFile).pipe(
+                switchMap((imageData) => {
+                    this.user.avatar = imageData.url;
+                    return this.userService.updateUser(this.user);
+                })
+            );
 
         this.loading = true;
 

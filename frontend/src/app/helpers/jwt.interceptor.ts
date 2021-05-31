@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-        if (req.url.indexOf('https://api.imgur.com/') !== -1) {
-            req = req.clone({ setHeaders: { Authorization: `Client-ID ${environment.imgurClientId}` } });
-        } else if (accessToken) {
+
+        if (accessToken && !req.url.includes('gyazo.com')) {
             req = req.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } });
         }
 

@@ -8,12 +8,12 @@ import { PostService } from '../../services/post.service';
 import { AuthDialogService } from '../../services/auth-dialog.service';
 import { DialogType } from '../../models/common/auth-dialog-type';
 import { EventService } from '../../services/event.service';
-import { ImgurService } from '../../services/imgur.service';
 import { NewPost } from '../../models/post/new-post';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { environment } from 'src/environments/environment';
+import { GyazoService } from 'src/app/services/gyazo.service';
 
 @Component({
     selector: 'app-main-thread',
@@ -41,7 +41,7 @@ export class MainThreadComponent implements OnInit, OnDestroy {
         private snackBarService: SnackBarService,
         private authService: AuthenticationService,
         private postService: PostService,
-        private imgurService: ImgurService,
+        private gyazoService: GyazoService,
         private authDialogService: AuthDialogService,
         private eventService: EventService
     ) { }
@@ -80,9 +80,9 @@ export class MainThreadComponent implements OnInit, OnDestroy {
     public sendPost() {
         const postSubscription = !this.imageFile
             ? this.postService.createPost(this.post)
-            : this.imgurService.uploadToImgur(this.imageFile, 'title').pipe(
+            : this.gyazoService.uploadImage(this.imageFile).pipe(
                 switchMap((imageData) => {
-                    this.post.previewImage = imageData.body.data.link;
+                    this.post.previewImage = imageData.url;
                     return this.postService.createPost(this.post);
                 })
             );
