@@ -12,7 +12,7 @@
 
 ### Backend:
 
--   [.NET 5](https://dotnet.microsoft.com/download)
+-   [.NET 6](https://dotnet.microsoft.com/download)
 -   [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads)
 -   [EF Core](https://docs.microsoft.com/ef/core)
 -   [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
@@ -34,7 +34,7 @@
 
 ## Установка:
 
--   Убедитесь, что у Вас установлен [.NET](https://dotnet.microsoft.com/download) v.5.0, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS и [Angular CLI](https://angular.io/cli).
+-   Убедитесь, что у Вас установлен [.NET](https://dotnet.microsoft.com/download) v.6.0, [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads), [Node.js](https://nodejs.org/en/) LTS и [Angular CLI](https://angular.io/cli).
 -   [Добавьте новую переменную окружения](https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html) `SecretJWTKey` со значением `DD70E219DCF6408A7506EA0186D183AE`.
 -   Зарегистрируйтесь на [Gyazo](https://gyazo.com/signup) и [создайте новое приложение](https://gyazo.com/oauth/applications) указав **Callback URL** как **http://example.com**.
     -   После успешного создания приложения откройте его и сгенерируйте **Access Token**. Вы получите получите токен который вам нужно добавить в Angular приложение. Для этого откройте файл **frontend/src/environments/environment.ts** и добавьте значение для свойства **gyazoAccessToken** в объект **environment**. Пример, как это должно выглядеть:
