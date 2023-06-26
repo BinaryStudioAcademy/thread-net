@@ -1,6 +1,6 @@
-﻿using Thread_.NET.Common.DTO.User;
+﻿using Thread.NET.Common.DTO.User;
 
-namespace Thread_.NET.Common.DTO.Like
+namespace Thread.NET.Common.DTO.Like
 {
     public sealed class ReactionDTO
     {

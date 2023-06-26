@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
-using Thread_.NET.BLL.Exceptions;
-using Thread_.NET.Enums;
+using Thread.NET.BLL.Exceptions;
+using Thread.NET.Enums;
 
-namespace Thread_.NET.Extensions
+namespace Thread.NET.Extensions
 {
     public static class ExceptionFilterExtensions
     {

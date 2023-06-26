@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Thread_.NET.Common.DTO.User;
-using Thread_.NET.DAL.Entities;
+using Thread.NET.Common.DTO.User;
+using Thread.NET.DAL.Entities;
 
-namespace Thread_.NET.BLL.MappingProfiles
+namespace Thread.NET.BLL.MappingProfiles
 {
     public sealed class UserProfile : Profile
     {

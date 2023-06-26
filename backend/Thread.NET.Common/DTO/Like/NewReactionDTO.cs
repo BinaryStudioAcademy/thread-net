@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.DTO.Like
+﻿namespace Thread.NET.Common.DTO.Like
 {
     public sealed class NewReactionDTO
     {

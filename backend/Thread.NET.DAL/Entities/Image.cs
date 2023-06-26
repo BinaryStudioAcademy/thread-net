@@ -1,6 +1,6 @@
-﻿using Thread_.NET.DAL.Entities.Abstract;
+﻿using Thread.NET.DAL.Entities.Abstract;
 
-namespace Thread_.NET.DAL.Entities
+namespace Thread.NET.DAL.Entities
 {
     public sealed class Image : BaseEntity
     {

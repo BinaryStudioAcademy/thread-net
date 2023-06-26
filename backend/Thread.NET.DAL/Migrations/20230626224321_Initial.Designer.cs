@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Thread_.NET.DAL.Context;
+using Thread.NET.DAL.Context;
 
 #nullable disable
 
-namespace Thread_.NET.DAL.Migrations
+namespace Thread.NET.DAL.Migrations
 {
     [DbContext(typeof(ThreadContext))]
-    [Migration("20230626132858_Initial")]
+    [Migration("20230626224321_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Thread_.NET.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Comment", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +238,7 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.CommentReaction", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.CommentReaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -452,7 +452,7 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Image", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -756,7 +756,7 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Post", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -970,7 +970,7 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.PostReaction", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.PostReaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1184,7 +1184,7 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1214,7 +1214,7 @@ namespace Thread_.NET.DAL.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.User", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1482,15 +1482,15 @@ namespace Thread_.NET.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Comment", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Comment", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.User", "Author")
+                    b.HasOne("Thread.NET.DAL.Entities.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Thread_.NET.DAL.Entities.Post", "Post")
+                    b.HasOne("Thread.NET.DAL.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1501,15 +1501,15 @@ namespace Thread_.NET.DAL.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.CommentReaction", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.CommentReaction", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.Comment", "Comment")
+                    b.HasOne("Thread.NET.DAL.Entities.Comment", "Comment")
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Thread_.NET.DAL.Entities.User", "User")
+                    b.HasOne("Thread.NET.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1520,15 +1520,15 @@ namespace Thread_.NET.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Post", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Post", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.User", "Author")
+                    b.HasOne("Thread.NET.DAL.Entities.User", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Thread_.NET.DAL.Entities.Image", "Preview")
+                    b.HasOne("Thread.NET.DAL.Entities.Image", "Preview")
                         .WithMany()
                         .HasForeignKey("PreviewId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -1538,15 +1538,15 @@ namespace Thread_.NET.DAL.Migrations
                     b.Navigation("Preview");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.PostReaction", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.PostReaction", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.Post", "Post")
+                    b.HasOne("Thread.NET.DAL.Entities.Post", "Post")
                         .WithMany("Reactions")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Thread_.NET.DAL.Entities.User", "User")
+                    b.HasOne("Thread.NET.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1557,9 +1557,9 @@ namespace Thread_.NET.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.User", "User")
+                    b.HasOne("Thread.NET.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1568,21 +1568,21 @@ namespace Thread_.NET.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.User", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.User", b =>
                 {
-                    b.HasOne("Thread_.NET.DAL.Entities.Image", "Avatar")
+                    b.HasOne("Thread.NET.DAL.Entities.Image", "Avatar")
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
                     b.Navigation("Avatar");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Comment", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Comment", b =>
                 {
                     b.Navigation("Reactions");
                 });
 
-            modelBuilder.Entity("Thread_.NET.DAL.Entities.Post", b =>
+            modelBuilder.Entity("Thread.NET.DAL.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
 

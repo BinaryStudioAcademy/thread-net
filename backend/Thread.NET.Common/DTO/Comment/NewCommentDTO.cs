@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.DTO.Comment
+﻿namespace Thread.NET.Common.DTO.Comment
 {
     public sealed class NewCommentDTO
     {

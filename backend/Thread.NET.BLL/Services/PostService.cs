@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Hubs;
-using Thread_.NET.BLL.Services.Abstract;
-using Thread_.NET.Common.DTO.Post;
-using Thread_.NET.DAL.Context;
-using Thread_.NET.DAL.Entities;
+using Thread.NET.BLL.Hubs;
+using Thread.NET.BLL.Services.Abstract;
+using Thread.NET.Common.DTO.Post;
+using Thread.NET.DAL.Context;
+using Thread.NET.DAL.Entities;
 
-namespace Thread_.NET.BLL.Services
+namespace Thread.NET.BLL.Services
 {
     public sealed class PostService : BaseService
     {

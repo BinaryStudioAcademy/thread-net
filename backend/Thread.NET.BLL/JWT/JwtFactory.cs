@@ -7,11 +7,11 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Exceptions;
-using Thread_.NET.Common.Auth;
-using Thread_.NET.Common.Security;
+using Thread.NET.BLL.Exceptions;
+using Thread.NET.Common.Auth;
+using Thread.NET.Common.Security;
 
-namespace Thread_.NET.BLL.JWT
+namespace Thread.NET.BLL.JWT
 {
     public sealed class JwtFactory
     {

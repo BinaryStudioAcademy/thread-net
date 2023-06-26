@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thread_.NET.BLL.Exceptions
+namespace Thread.NET.BLL.Exceptions
 {
     public sealed class ExpiredRefreshTokenException : Exception
     {
