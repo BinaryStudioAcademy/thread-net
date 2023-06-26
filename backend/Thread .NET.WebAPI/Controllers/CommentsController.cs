@@ -19,6 +19,9 @@ namespace Thread_.NET.WebAPI.Controllers
             _commentService = commentService;
         }
 
+        /// <summary>
+        /// Adds new comment to post
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<CommentDTO>> CreatePost([FromBody] NewCommentDTO comment)
         {

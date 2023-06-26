@@ -20,6 +20,9 @@ namespace Thread_.NET.WebAPI.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Create new user
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserRegisterDTO user)
         {

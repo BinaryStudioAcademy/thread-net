@@ -18,6 +18,19 @@ namespace Thread_.NET.WebAPI.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Generates user token for authorization
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request with existing user:
+        ///
+        ///     POST /api/auth/login
+        ///     {
+        ///        "email": "test@gmail.com",
+        ///        "password": "passw0rd"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("login")]
         public async Task<ActionResult<AuthUserDTO>> Login(UserLoginDTO dto)
         {

@@ -19,6 +19,9 @@ namespace Thread_.NET.WebAPI.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Refreshes user token and creates new access token
+        /// </summary>
         [HttpPost("refresh")]
         [AllowAnonymous]
         public async Task<ActionResult<AccessTokenDTO>> Refresh([FromBody] RefreshTokenDTO dto)
@@ -26,6 +29,9 @@ namespace Thread_.NET.WebAPI.Controllers
             return Ok(await _authService.RefreshToken(dto));
         }
 
+        /// <summary>
+        /// Revokes refresh tokens
+        /// </summary>
         [HttpPost("revoke")]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDTO dto)
         {

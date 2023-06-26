@@ -23,6 +23,9 @@ namespace Thread_.NET.WebAPI.Controllers
             _likeService = likeService;
         }
 
+        /// <summary>
+        /// Get all existing posts
+        /// </summary>
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<ICollection<PostDTO>>> Get()
@@ -30,6 +33,9 @@ namespace Thread_.NET.WebAPI.Controllers
             return Ok(await _postService.GetAllPosts());
         }
 
+        /// <summary>
+        /// Create new post for all users
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<PostDTO>> CreatePost([FromBody] PostCreateDTO dto)
         {
@@ -38,6 +44,9 @@ namespace Thread_.NET.WebAPI.Controllers
             return Ok(await _postService.CreatePost(dto));
         }
 
+        /// <summary>
+        /// Add like reaction to post
+        /// </summary>
         [HttpPost("like")]
         public async Task<IActionResult> LikePost(NewReactionDTO reaction)
         {
