@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Security.Cryptography;
+using Thread_.NET.Common.Security.SecurityProvider;
 
 namespace Thread_.NET.Common.Security
 {
@@ -20,6 +21,20 @@ namespace Thread_.NET.Common.Security
         public static byte[] GetRandomBytes(int length = 32)
         {
             using (var randomNumberGenerator = new RNGCryptoServiceProvider())
+            {
+                var salt = new byte[length];
+                randomNumberGenerator.GetBytes(salt);
+
+                return salt;
+            }
+        }
+
+        /// <summary>
+        /// For seeding and test purposes only!!!
+        /// </summary>
+        public static byte[] GetDeterminedBytes(int length = 32)
+        {
+            using (var randomNumberGenerator = new DeterministicRandomGenerator())
             {
                 var salt = new byte[length];
                 randomNumberGenerator.GetBytes(salt);
