@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+
+    sql_server:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: sql_server
+        ports:
+            - 1433:1433
+        networks:
+            - back
+        environment:
+            SA_PASSWORD: MySecretPassword!
+            ACCEPT_EULA: "Y"
+
+networks:
+    back:
+        driver: bridge

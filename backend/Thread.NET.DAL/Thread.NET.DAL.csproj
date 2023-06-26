@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Thread .NET.Common\Thread .NET.Common.csproj" />
+    <ProjectReference Include="..\Thread.NET.Common\Thread.NET.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

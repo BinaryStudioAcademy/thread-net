@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Thread .NET.Common\Thread .NET.Common.csproj" />
-    <ProjectReference Include="..\Thread .NET.DAL\Thread .NET.DAL.csproj" />
+    <ProjectReference Include="..\Thread.NET.Common\Thread.NET.Common.csproj" />
+    <ProjectReference Include="..\Thread.NET.DAL\Thread.NET.DAL.csproj" />
   </ItemGroup>
 
 </Project>

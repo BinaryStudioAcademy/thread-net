@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  thread-dotnet:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+      args:
+        - PROJECT_PORT=5000
+    container_name: 'thread-dotnet'
+    restart: on-failure
+    ports:
+        - "5000:5000"
+    networks:
+        - back
+    environment:
+        ASPNETCORE_ENVIRONMENT: 'Development'
+        ConnectionStrings__ThreadDBConnection: 'Server=sql_server;Database=ThreadDB;User ID=SA;Password=MySecretPassword!'
+
+  thread-dotnet_client:
+    depends_on:
+        - thread-dotnet
+    build:
+        context: ./frontend
+        dockerfile: Dockerfile.dev
+    container_name: 'thread-dotnet_frontend'
+    restart: on-failure
+    ports:
+        - "4200:80"
+    networks:
+        - back
+        - front
+
+networks:
+    back:
+        driver: bridge
+    front:
+        driver: bridge

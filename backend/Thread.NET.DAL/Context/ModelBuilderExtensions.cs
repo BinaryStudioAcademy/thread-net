@@ -11,7 +11,7 @@ namespace Thread_.NET.DAL.Context
 {
     public static class ModelBuilderExtensions
     {
-        private static DateTime _usedDateTime = new DateTime(2020, 07, 01);
+        private static readonly DateTime _usedDateTime = new DateTime(2020, 07, 01);
 
         private const int ENTITY_COUNT = 20;
 
