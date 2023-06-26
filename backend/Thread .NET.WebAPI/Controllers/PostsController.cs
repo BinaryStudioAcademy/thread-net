@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTO.Like;
 using Thread_.NET.Common.DTO.Post;
+using Thread_.NET.Common.Logic.Abstractions;
 using Thread_.NET.Extensions;
 
 namespace Thread_.NET.WebAPI.Controllers
@@ -16,11 +17,13 @@ namespace Thread_.NET.WebAPI.Controllers
     {
         private readonly PostService _postService;
         private readonly LikeService _likeService;
+        private readonly IUserIdGetter _userIdGetter;
 
-        public PostsController(PostService postService, LikeService likeService)
+        public PostsController(PostService postService, LikeService likeService, IUserIdGetter userIdGetter)
         {
             _postService = postService;
             _likeService = likeService;
+            _userIdGetter = userIdGetter;
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PostDTO>> CreatePost([FromBody] PostCreateDTO dto)
         {
-            dto.AuthorId = this.GetUserIdFromToken();
+            dto.AuthorId = _userIdGetter.CurrentUserId;
 
             return Ok(await _postService.CreatePost(dto));
         }
@@ -50,7 +53,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [HttpPost("like")]
         public async Task<IActionResult> LikePost(NewReactionDTO reaction)
         {
-            reaction.UserId = this.GetUserIdFromToken();
+            reaction.UserId = _userIdGetter.CurrentUserId;
 
             await _likeService.LikePost(reaction);
             return Ok();

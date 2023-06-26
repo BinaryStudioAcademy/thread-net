@@ -7,6 +7,7 @@ using Thread_.NET.BLL.JWT;
 using Thread_.NET.BLL.Services.Abstract;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Common.Logic.Abstractions;
 using Thread_.NET.Common.Security;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.DAL.Entities;
@@ -16,10 +17,12 @@ namespace Thread_.NET.BLL.Services
     public sealed class AuthService : BaseService
     {
         private readonly JwtFactory _jwtFactory;
+        private readonly IUserIdGetter _userIdGetter;
 
-        public AuthService(ThreadContext context, IMapper mapper, JwtFactory jwtFactory) : base(context, mapper)
+        public AuthService(ThreadContext context, IMapper mapper, JwtFactory jwtFactory, IUserIdGetter userIdGetter) : base(context, mapper)
         {
             _jwtFactory = jwtFactory;
+            _userIdGetter = userIdGetter;
         }
 
         public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
@@ -102,8 +105,10 @@ namespace Thread_.NET.BLL.Services
             return new AccessTokenDTO(jwtToken, refreshToken);
         }
 
-        public async Task RevokeRefreshToken(string refreshToken, int userId)
+        public async Task RevokeRefreshToken(string refreshToken)
         {
+            var userId = _userIdGetter.CurrentUserId;
+
             var rToken = _context.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken && t.UserId == userId);
 
             if (rToken == null)

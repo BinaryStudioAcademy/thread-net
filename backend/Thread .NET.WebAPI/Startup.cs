@@ -6,9 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Thread_.NET.BLL.Hubs;
+using Thread_.NET.Common.Logic.Abstractions;
 using Thread_.NET.DAL.Context;
 using Thread_.NET.Extensions;
 using Thread_.NET.Filters;
+using Thread_.NET.Logic;
+using Thread_.NET.Middlewares;
 
 namespace Thread_.NET
 {
@@ -81,6 +84,8 @@ namespace Thread_.NET
             app.UseHttpsRedirection();
             app.UseAuthentication();
 			app.UseAuthorization();
+
+            app.UseMiddleware<UserIdSaverMiddleware>();
 
             app.UseEndpoints(cfg =>
             {

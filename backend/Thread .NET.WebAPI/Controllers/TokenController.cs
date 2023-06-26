@@ -35,9 +35,7 @@ namespace Thread_.NET.WebAPI.Controllers
         [HttpPost("revoke")]
         public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenDTO dto)
         {
-            var userId = this.GetUserIdFromToken();
-            await _authService.RevokeRefreshToken(dto.RefreshToken, userId);
-
+            await _authService.RevokeRefreshToken(dto.RefreshToken);
             return Ok();
         }
     }

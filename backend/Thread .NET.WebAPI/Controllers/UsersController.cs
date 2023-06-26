@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Common.Logic.Abstractions;
 using Thread_.NET.Extensions;
 
 namespace Thread_.NET.Controllers
@@ -14,10 +15,12 @@ namespace Thread_.NET.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService _userService;
+        private readonly IUserIdGetter _userIdGetter;
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, IUserIdGetter userIdGetter)
         {
             _userService = userService;
+            _userIdGetter = userIdGetter;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace Thread_.NET.Controllers
         [HttpGet("fromToken")]
         public async Task<ActionResult<UserDTO>> GetUserFromToken()
         {
-            return Ok(await _userService.GetUserById(this.GetUserIdFromToken()));
+            return Ok(await _userService.GetUserById(_userIdGetter.CurrentUserId));
         }
 
         /// <summary>

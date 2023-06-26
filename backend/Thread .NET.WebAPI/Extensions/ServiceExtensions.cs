@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +19,8 @@ using Thread_.NET.BLL.Services;
 using Thread_.NET.Common.Auth;
 using Thread_.NET.Common.DTO.Auth;
 using Thread_.NET.Common.DTO.User;
+using Thread_.NET.Common.Logic.Abstractions;
+using Thread_.NET.Logic;
 using Thread_.NET.Validators;
 
 namespace Thread_.NET.Extensions
@@ -38,6 +39,10 @@ namespace Thread_.NET.Extensions
             services.AddScoped<CommentService>();
 
             services.AddScoped<PostHub>();
+
+            services.AddScoped<UserIdStorage>();
+            services.AddTransient<IUserIdSetter>(s => s.GetService<UserIdStorage>());
+            services.AddTransient<IUserIdGetter>(s => s.GetService<UserIdStorage>());
         }
 
         public static void RegisterCustomValidators(this IServiceCollection services)
