@@ -88,7 +88,8 @@ git clone https://github.com/BinaryStudioAcademy/thread-net.git
 ### Project launch
 - **Backend**:
   - Open **backend/Thread .NET.sln** with Visual Studio, build a solution, and start a project **Thread .NET.WebAPI**.
-    - **Note:** By default application will be started on port 44344 and will be available using the address https://localhost:44344. If you are starting the application with the command `dotnet run` or you changed the default port, you will have to update property apiUrl_ in file **frontend/src/environments/environment.ts**. Also, you will have to update _JwtIssuerOptions.Audience_ in file `appsettings.json`, which is located in folder **backend/Thread .NET.WebAPI**.
+    - **Note:** By default application will be started on port 44344 and will be available using the address https://localhost:5001. If you are starting the application with the command `dotnet run` or you changed the default port, you will have to update property apiUrl_ in file **frontend/src/environments/environment.ts**. Also, you will have to update _JwtIssuerOptions.Audience_ in file `appsettings.json`, which is located in folder **backend/Thread .NET.WebAPI**.
+  - If you need to create migration, execute **./migrate_db.sh** or **migrate_db.cmd** files based on your system and follow the script.
 
 - **Frontend**:
   - Open folder **frontend/** in Visual Studio Code and execute command `ng serve` in a console. The application will be started on port 4200 and will be available using the address http://localhost:4200.
