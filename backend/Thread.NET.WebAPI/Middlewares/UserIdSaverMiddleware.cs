@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Threading.Tasks;
-using Thread_.NET.Common.Logic.Abstractions;
+using Thread.NET.Common.Logic.Abstractions;
 
-namespace Thread_.NET.Middlewares
+namespace Thread.NET.Middlewares
 {
-    public class UserIdSaverMiddleware 
+    public class UserIdSaverMiddleware
     {
         private readonly RequestDelegate _next;
 
@@ -17,7 +17,7 @@ namespace Thread_.NET.Middlewares
         public async Task InvokeAsync(HttpContext context, IUserIdSetter userIdSetter)
         {
             var claimsUserId = context.User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
-            
+
             if (claimsUserId != null && int.TryParse(claimsUserId, out int userId))
             {
                 userIdSetter.SetUserId(userId);

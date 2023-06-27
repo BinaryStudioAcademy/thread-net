@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Thread_.NET.Common.DTO.Comment;
-using Thread_.NET.Common.DTO.Like;
-using Thread_.NET.Common.DTO.User;
+using Thread.NET.Common.DTO.Comment;
+using Thread.NET.Common.DTO.Like;
+using Thread.NET.Common.DTO.User;
 
-namespace Thread_.NET.Common.DTO.Post
+namespace Thread.NET.Common.DTO.Post
 {
     public sealed class PostDTO
     {

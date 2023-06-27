@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.DTO.Auth
+﻿namespace Thread.NET.Common.DTO.Auth
 {
     public sealed class RevokeRefreshTokenDTO
     {

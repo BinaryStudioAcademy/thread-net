@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Thread_.NET.BLL.Exceptions;
+using Thread.NET.BLL.Exceptions;
 
-namespace Thread_.NET.Extensions
+namespace Thread.NET.Extensions
 {
     public static class ControllerBaseExtensions
     {

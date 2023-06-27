@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.DTO.User
+﻿namespace Thread.NET.Common.DTO.User
 {
     public sealed class UserLoginDTO
     {

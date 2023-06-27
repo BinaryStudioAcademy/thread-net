@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Thread_.NET.Common.DTO.Post
+namespace Thread.NET.Common.DTO.Post
 {
     public sealed class PostCreateDTO
     {

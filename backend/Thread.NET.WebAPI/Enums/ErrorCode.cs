@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Enums
+﻿namespace Thread.NET.Enums
 {
     public enum ErrorCode
     {

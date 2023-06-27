@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Thread_.NET.Common.Security;
-using Thread_.NET.DAL.Entities;
-using Thread_.NET.DAL.Entities.Abstract;
+using Thread.NET.Common.Security;
+using Thread.NET.DAL.Entities;
+using Thread.NET.DAL.Entities.Abstract;
 
-namespace Thread_.NET.DAL.Context
+namespace Thread.NET.DAL.Context
 {
     public static class ModelBuilderExtensions
     {

@@ -4,7 +4,7 @@ TITLE DB scaffold
 
 set /P migrationname="Enter migration name: " 
 
-dotnet ef migrations add --project="..\Thread .NET.DAL\Thread .NET.DAL.csproj" %migrationname%
+dotnet ef migrations add --project="..\Thread.NET.DAL\Thread.NET.DAL.csproj" %migrationname%
 
 ECHO Db migration created
 
@@ -15,7 +15,7 @@ IF /I "%applymigration%" EQU "y" (GOTO Apply)
 GOTO Finished
 
 :Apply
-dotnet ef database update --project="..\Thread .NET.DAL\Thread .NET.DAL.csproj"
+dotnet ef database update --project="..\Thread.NET.DAL\Thread.NET.DAL.csproj"
 
 GOTO Finished
 

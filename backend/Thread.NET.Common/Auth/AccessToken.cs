@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.Auth
+﻿namespace Thread.NET.Common.Auth
 {
     public sealed class AccessToken
     {

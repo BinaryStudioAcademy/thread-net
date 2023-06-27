@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using System.Linq;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Services.Abstract;
-using Thread_.NET.Common.DTO.Like;
-using Thread_.NET.DAL.Context;
+using Thread.NET.BLL.Services.Abstract;
+using Thread.NET.Common.DTO.Like;
+using Thread.NET.DAL.Context;
 
-namespace Thread_.NET.BLL.Services
+namespace Thread.NET.BLL.Services
 {
     public sealed class LikeService : BaseService
     {

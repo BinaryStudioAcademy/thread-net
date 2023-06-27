@@ -1,7 +1,7 @@
-﻿using Thread_.NET.BLL.Exceptions;
-using Thread_.NET.Common.Logic.Abstractions;
+﻿using Thread.NET.BLL.Exceptions;
+using Thread.NET.Common.Logic.Abstractions;
 
-namespace Thread_.NET.Logic
+namespace Thread.NET.Logic
 {
     public class UserIdStorage : IUserIdGetter, IUserIdSetter
     {

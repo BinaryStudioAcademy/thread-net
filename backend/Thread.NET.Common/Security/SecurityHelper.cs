@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Security.Cryptography;
-using Thread_.NET.Common.Security.SecurityProvider;
+using Thread.NET.Common.Security.SecurityProvider;
 
-namespace Thread_.NET.Common.Security
+namespace Thread.NET.Common.Security
 {
     public static class SecurityHelper
     {

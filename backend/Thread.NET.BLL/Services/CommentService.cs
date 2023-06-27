@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Services.Abstract;
-using Thread_.NET.Common.DTO.Comment;
-using Thread_.NET.DAL.Context;
-using Thread_.NET.DAL.Entities;
+using Thread.NET.BLL.Services.Abstract;
+using Thread.NET.Common.DTO.Comment;
+using Thread.NET.DAL.Context;
+using Thread.NET.DAL.Entities;
 
-namespace Thread_.NET.BLL.Services
+namespace Thread.NET.BLL.Services
 {
     public sealed class CommentService : BaseService
     {

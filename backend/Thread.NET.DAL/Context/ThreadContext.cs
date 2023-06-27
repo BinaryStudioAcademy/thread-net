@@ -1,8 +1,8 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
-using Thread_.NET.DAL.Entities;
+using Thread.NET.DAL.Entities;
 
-namespace Thread_.NET.DAL.Context
+namespace Thread.NET.DAL.Context
 {
     public class ThreadContext : DbContext
     {

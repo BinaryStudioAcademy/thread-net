@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Thread_.NET.Common.DTO.Auth;
+using Thread.NET.Common.DTO.Auth;
 
-namespace Thread_.NET.Validators
+namespace Thread.NET.Validators
 {
     public sealed class RevokeRefreshTokenDTOValidator : AbstractValidator<RevokeRefreshTokenDTO>
     {

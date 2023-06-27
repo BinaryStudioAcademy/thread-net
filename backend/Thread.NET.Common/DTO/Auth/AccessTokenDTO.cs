@@ -1,6 +1,6 @@
-﻿using Thread_.NET.Common.Auth;
+﻿using Thread.NET.Common.Auth;
 
-namespace Thread_.NET.Common.DTO.Auth
+namespace Thread.NET.Common.DTO.Auth
 {
     public sealed class AccessTokenDTO
     {

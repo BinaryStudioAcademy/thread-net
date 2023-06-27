@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Thread_.NET.BLL.Hubs;
-using Thread_.NET.DAL.Context;
-using Thread_.NET.Extensions;
-using Thread_.NET.Filters;
+using Thread.NET.BLL.Hubs;
+using Thread.NET.DAL.Context;
+using Thread.NET.Extensions;
+using Thread.NET.Filters;
+using Thread.NET.Middlewares;
 
-namespace Thread_.NET
+namespace Thread.NET
 {
     public class Startup
     {
@@ -44,6 +45,11 @@ namespace Thread_.NET
                 .AddFluentValidation();
 
             services.ConfigureCustomValidationErrors();
+
+            services
+                .AddEndpointsApiExplorer()
+                .AddMvc();
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +65,13 @@ namespace Thread_.NET
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
+            });
+
             app.UseCors(builder => builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
@@ -68,7 +81,9 @@ namespace Thread_.NET
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthentication();
-			app.UseAuthorization();
+            app.UseAuthorization();
+
+            app.UseMiddleware<UserIdSaverMiddleware>();
 
             app.UseEndpoints(cfg =>
             {

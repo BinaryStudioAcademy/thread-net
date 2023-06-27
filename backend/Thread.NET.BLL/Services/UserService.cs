@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Exceptions;
-using Thread_.NET.BLL.Services.Abstract;
-using Thread_.NET.Common.DTO.User;
-using Thread_.NET.Common.Security;
-using Thread_.NET.DAL.Context;
-using Thread_.NET.DAL.Entities;
+using Thread.NET.BLL.Exceptions;
+using Thread.NET.BLL.Services.Abstract;
+using Thread.NET.Common.DTO.User;
+using Thread.NET.Common.Security;
+using Thread.NET.DAL.Context;
+using Thread.NET.DAL.Entities;
 
-namespace Thread_.NET.BLL.Services
+namespace Thread.NET.BLL.Services
 {
     public sealed class UserService : BaseService
     {

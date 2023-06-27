@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thread_.NET.Common.Security.SecurityProvider
+namespace Thread.NET.Common.Security.SecurityProvider
 {
     internal class DeterministicRandomGenerator : System.Security.Cryptography.RandomNumberGenerator
     {

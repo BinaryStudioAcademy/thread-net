@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Thread_.NET.BLL.Services;
-using Thread_.NET.Common.DTO.User;
+using Thread.NET.BLL.Services;
+using Thread.NET.Common.DTO.User;
 
-namespace Thread_.NET.WebAPI.Controllers
+namespace Thread.NET.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [AllowAnonymous]
@@ -18,6 +18,19 @@ namespace Thread_.NET.WebAPI.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Generates user token for authorization
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request with existing user:
+        ///
+        ///     POST /api/auth/login
+        ///     {
+        ///        "email": "test@gmail.com",
+        ///        "password": "passw0rd"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("login")]
         public async Task<ActionResult<AuthUserDTO>> Login(UserLoginDTO dto)
         {

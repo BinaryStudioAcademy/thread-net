@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.DAL.Entities.Abstract
+﻿namespace Thread.NET.DAL.Entities.Abstract
 {
     public abstract class Reaction : BaseEntity
     {

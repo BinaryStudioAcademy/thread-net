@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Thread_.NET.Common.DTO.Like;
-using Thread_.NET.Common.DTO.User;
+using Thread.NET.Common.DTO.Like;
+using Thread.NET.Common.DTO.User;
 
-namespace Thread_.NET.Common.DTO.Comment
+namespace Thread.NET.Common.DTO.Comment
 {
     public sealed class CommentDTO
     {

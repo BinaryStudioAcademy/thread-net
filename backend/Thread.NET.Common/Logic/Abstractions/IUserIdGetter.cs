@@ -1,4 +1,4 @@
-﻿namespace Thread_.NET.Common.Logic.Abstractions
+﻿namespace Thread.NET.Common.Logic.Abstractions
 {
     public interface IUserIdGetter
     {

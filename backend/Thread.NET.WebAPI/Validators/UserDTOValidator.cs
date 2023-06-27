@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Thread_.NET.Common.DTO.User;
+using Thread.NET.Common.DTO.User;
 
-namespace Thread_.NET.Validators
+namespace Thread.NET.Validators
 {
     public sealed class UserRegisterDTOValidator : AbstractValidator<UserRegisterDTO>
     {
