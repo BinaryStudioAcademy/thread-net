@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     apiUrl: 'http://localhost:5000',
-    gyazoAccessToken: 'T8KqYQoCBMZ82aSgCRkZl7uZFWAOvprIcqVLQ5vZRxg'
+    gyazoAccessToken: ''
 };
 
 /*
